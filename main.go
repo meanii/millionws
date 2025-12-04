@@ -49,6 +49,7 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	addr := flag.String("addr", "0.0.0.0", "addr interface where to expose")
 	port := flag.Int("port", 4001, "port number where to run")
+	flag.Parse()
 
 	http.HandleFunc("/ws", wsHandler)
 	fmt.Printf("millionws server running on http://%s:%d 🦆\n", *addr, *port)
