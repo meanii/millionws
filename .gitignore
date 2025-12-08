@@ -36,3 +36,6 @@ dist
 millionws
 
 data
+
+.venv
+__pycache__
