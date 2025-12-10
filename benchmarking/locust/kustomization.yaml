@@ -1,0 +1,13 @@
+namespace: locusttests
+
+configMapGenerator:
+  - name: locustfile
+    files:
+      - locustfile.py
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+  - namespace.yaml
+  - locusttest.yaml

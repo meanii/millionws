@@ -1,0 +1,11 @@
+apiVersion: locust.cloud/v1
+kind: LocustTest
+metadata:
+  name: load-test-millionws
+  namespace: locusttests
+spec:
+  workers: 10
+  args: "-f /home/locust/locustfile.py"
+  locustfile:
+    configMap:
+      name: locustfile
