@@ -14,6 +14,9 @@ module "aws_eks" {
   cluster_name = local.cluster_name
   environment  = local.environment
 
+  enable_cluster_autoscaler = true
+  enable_aws_lbc            = true
+
   nodes = {
     "millionws" = {
       node_group_name = "millionws"

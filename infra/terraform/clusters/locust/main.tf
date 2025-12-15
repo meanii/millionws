@@ -39,27 +39,6 @@ module "aws_eks" {
         Version     = "1.34"
       }
     }
-    "monitoring" = {
-      node_group_name = "monitoring"
-      capacity_type   = "SPOT"
-      instance_type   = "t3.small"
-      min_size        = 1
-      max_size        = 10
-      desired_size    = 1
-      disk_size       = 20
-      tags = {
-        Name        = "monitor-nodes"
-        Environment = "benchmarking"
-        Namespace   = "benchmarking"
-        Version     = "1.34"
-      }
-      labels = {
-        Name        = "monitor-nodes"
-        Environment = "benchmarking"
-        Namespace   = "benchmarking"
-        Version     = "1.34"
-      }
-    }
   }
 }
 
