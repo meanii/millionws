@@ -33,7 +33,6 @@ go.work.sum
 
 # Build dist and binary
 dist
-millionws
 
 data
 

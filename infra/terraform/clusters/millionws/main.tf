@@ -1,5 +1,5 @@
 locals {
-  cluster_name = "locust"
+  cluster_name = "millionws"
   environment  = "benchmarking"
   region       = "ap-south-1"
 }
@@ -14,12 +14,9 @@ module "aws_eks" {
   cluster_name = local.cluster_name
   environment  = local.environment
 
-  enable_cluster_autoscaler = true
-  enable_aws_lbc            = true
-
   nodes = {
-    "locust" = {
-      node_group_name = "locust"
+    "millionws" = {
+      node_group_name = "millionws"
       capacity_type   = "SPOT"
       instance_type   = "t3.small"
       min_size        = 1
@@ -84,16 +81,6 @@ module "helm_deployments" {
       create_namespace = true
       version          = "3.13.0"
       values           = [file("${path.module}/values/metrics-server.yaml")]
-    },
-    locust-operator = {
-      enabled          = true
-      name             = "locust-operator"
-      repository       = "https://locustcloud.github.io/k8s-operator"
-      chart            = "locust-operator"
-      namespace        = "locust"
-      create_namespace = true
-      version          = "0.1.8"
-      values           = [file("${path.module}/values/locust-operator.yaml")]
     },
   }
 }

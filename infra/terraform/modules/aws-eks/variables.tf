@@ -9,6 +9,24 @@ variable "eks_version" {
   default     = "1.34"
 }
 
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "ap-south-1"
+}
+
+variable "enable_cluster_autoscaler" {
+  description = "Enable cluster autoscaler"
+  type        = bool
+  default     = false
+}
+
+variable "enable_aws_lbc" {
+  description = "Enable AWS Load Balancer Controller"
+  type        = bool
+  default     = false
+}
+
 variable "environment" {
   description = "Name of the environment"
   type        = string
