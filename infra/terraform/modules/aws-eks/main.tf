@@ -1,30 +1,3 @@
-provider "aws" {
-  region = "ap-south-1"
-}
-
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "6.25.0"
-    }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "3.1.1"
-    }
-  }
-}
-
-locals {
-  env         = "test"
-  name        = "locust"
-  eks_name    = "locust"
-  eks_version = "1.34"
-  region      = "ap-south1"
-  zone1       = "ap-south-1a"
-  zone2       = "ap-south-1b"
-}
-
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"
 
@@ -32,7 +5,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${local.name}-main"
+    Name = "${var.cluster_name}-main"
   }
 }
 
@@ -40,44 +13,48 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "${local.name}-igw"
+    Name = "${var.cluster_name}-igw"
   }
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
 }
 
 resource "aws_subnet" "private_zone_1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.0.0/19"
-  availability_zone = local.zone1
+  availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name                                               = "${local.name}-private-${local.zone1}"
-    "kubernetes.io/role/internal-elb"                  = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${local.env}-${local.name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                                           = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[0]}"
+    "kubernetes.io/role/internal-elb"                              = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
 resource "aws_subnet" "private_zone_2" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.32.0/19"
-  availability_zone = local.zone2
+  availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
-    Name                                               = "${local.name}-private-${local.zone2}"
-    "kubernetes.io/role/internal-elb"                  = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${local.env}-${local.name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                                           = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[1]}"
+    "kubernetes.io/role/internal-elb"                              = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
 resource "aws_subnet" "public_zone_1" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.64.0/19"
-  availability_zone       = local.zone1
+  availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                               = "${local.name}-public-${local.zone1}"
-    "kubernetes.io/role/elb"                           = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${local.env}-${local.name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                                           = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[0]}"
+    "kubernetes.io/role/elb"                                       = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
@@ -85,20 +62,20 @@ resource "aws_subnet" "public_zone_1" {
 resource "aws_subnet" "public_zone_2" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.96.0/19"
-  availability_zone       = local.zone2
+  availability_zone       = data.aws_availability_zones.available.names[1]
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                               = "${local.name}-public-${local.zone2}"
-    "kubernetes.io/role/elb"                           = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${local.env}-${local.name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                                           = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[1]}"
+    "kubernetes.io/role/elb"                                       = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
 resource "aws_eip" "nat" {
   domain = "vpc"
   tags = {
-    Name = "${local.name}-nat"
+    Name = "${var.cluster_name}-nat"
   }
 }
 
@@ -108,7 +85,7 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = aws_subnet.public_zone_1.id
 
   tags = {
-    Name = "${local.name}-nat"
+    Name = "${var.cluster_name}-nat"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -126,7 +103,7 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "${local.name}-private"
+    Name = "${var.cluster_name}-private"
   }
 }
 
@@ -140,7 +117,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "${local.name}-public"
+    Name = "${var.cluster_name}-public"
   }
 }
 
@@ -167,7 +144,7 @@ resource "aws_route_table_association" "public_zone_2" {
 
 # EKS configs
 resource "aws_iam_role" "eks" {
-  name = "${local.env}-${local.name}-eks-cluster"
+  name = "${var.environment}-${var.cluster_name}-eks-cluster"
 
   assume_role_policy = <<POLICY
 {
@@ -191,8 +168,8 @@ resource "aws_iam_role_policy_attachment" "eks" {
 }
 
 resource "aws_eks_cluster" "eks" {
-  name     = "${local.env}-${local.name}"
-  version  = local.eks_version
+  name     = var.cluster_name
+  version  = var.eks_version
   role_arn = aws_iam_role.eks.arn
 
   vpc_config {
@@ -217,7 +194,7 @@ resource "aws_eks_cluster" "eks" {
 
 # EKS Node Group
 resource "aws_iam_role" "nodes" {
-  name = "${local.env}-${local.name}-eks-nodes"
+  name = "${var.environment}-${var.cluster_name}-eks-nodes"
 
   assume_role_policy = <<POLICY
 {
@@ -251,23 +228,25 @@ resource "aws_iam_role_policy_attachment" "amazon_ec2_container_registry_read_on
   role       = aws_iam_role.nodes.name
 }
 
-resource "aws_eks_node_group" "general" {
+
+resource "aws_eks_node_group" "nodes" {
+  for_each        = var.nodes
   cluster_name    = aws_eks_cluster.eks.name
-  version         = local.eks_version
-  node_group_name = "general"
+  node_group_name = "${each.key}-${var.cluster_name}"
+  version         = var.eks_version
   node_role_arn   = aws_iam_role.nodes.arn
   subnet_ids = [
     aws_subnet.private_zone_1.id,
     aws_subnet.private_zone_2.id,
   ]
-  capacity_type  = "SPOT" # either SPOT or ON_DEMAND
-  instance_types = ["t3.large"]
-  disk_size      = 50
+  capacity_type  = each.value.capacity_type
+  instance_types = [each.value.instance_type]
+  disk_size      = each.value.disk_size
 
   scaling_config {
-    desired_size = 1
-    max_size     = 10
-    min_size     = 0
+    desired_size = each.value.desired_size
+    max_size     = each.value.max_size
+    min_size     = each.value.min_size
   }
 
   update_config {
@@ -275,7 +254,8 @@ resource "aws_eks_node_group" "general" {
   }
 
   labels = {
-    role = "general"
+    role        = each.key
+    environment = var.environment
   }
 
   depends_on = [
@@ -291,50 +271,10 @@ resource "aws_eks_node_group" "general" {
 
 }
 
-output "update_kubeconfig_command" {
-  value = "aws eks update-kubeconfig --region ap-south-1 --name ${aws_eks_cluster.eks.name}"
-}
-
-# Helm provider
 data "aws_eks_cluster" "eks" {
   name = aws_eks_cluster.eks.name
 }
 
 data "aws_eks_cluster_auth" "eks" {
   name = aws_eks_cluster.eks.name
-}
-
-provider "helm" {
-  kubernetes = {
-    host                   = data.aws_eks_cluster.eks.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority[0].data)
-    token                  = data.aws_eks_cluster_auth.eks.token
-  }
-}
-
-# https://artifacthub.io/packages/helm/metrics-server/metrics-server
-resource "helm_release" "metrics_server" {
-  name       = "metrics-server"
-  repository = "https://kubernetes-sigs.github.io/metrics-server/"
-  chart      = "metrics-server"
-  namespace  = "kube-system"
-  version    = "3.13.0"
-
-  values = [file("${path.module}/values/metrics-server.yaml")]
-
-  depends_on = [aws_eks_node_group.general]
-}
-
-# https://docs.locust.io/en/stable/locust-cloud/kubernetes-operator.html#inline-locustfile
-resource "helm_release" "locust-operator" {
-  name             = "locust-operator"
-  repository       = "https://locustcloud.github.io/k8s-operator"
-  chart            = "locust-operator"
-  namespace        = "locust"
-  create_namespace = true
-  version          = "0.1.8"
-
-  values = [file("${path.module}/values/locust.yaml")]
-
-  depends_on = [aws_eks_node_group.general]
 }
