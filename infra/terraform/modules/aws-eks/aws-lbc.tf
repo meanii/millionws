@@ -21,7 +21,7 @@ resource "aws_iam_role" "aws_lbc" {
 }
 
 resource "aws_iam_policy" "aws_lbc" {
-  name   = "AWSLoadBalancerController"
+  name   = "AWSLoadBalancerController-${var.cluster_name}"
   policy = file("${path.module}/iam/AWSLoadBalancerController.json")
 }
 

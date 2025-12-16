@@ -17,3 +17,7 @@ output "cluster_name" {
 output "cluster_auth_token" {
   value = data.aws_eks_cluster_auth.eks.token
 }
+
+output "node_groups" {
+  value = aws_eks_node_group.nodes
+}

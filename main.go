@@ -87,6 +87,10 @@ func main() {
 
 	http.HandleFunc("/echo", wsHandler)
 	http.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, "OK")
+	})
 
 	fmt.Printf("millionws server running on http://%s:%d 🦆\n", *addr, *port)
 

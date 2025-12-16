@@ -4,7 +4,7 @@ metadata:
   name: load-test-millionws
   namespace: locusttests
 spec:
-  workers: 10
+  workers: 50
   args: "-f /home/locust/locustfile.py"
   locustfile:
     configMap:

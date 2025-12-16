@@ -17,4 +17,5 @@ COPY --from=builder /app/millionws /app/millionws
 EXPOSE 8080
 USER nonroot:nonroot
 
-ENTRYPOINT ["/app/millionws -port=8080"]
+ENTRYPOINT ["/app/millionws"]
+CMD ["-port=8080"]

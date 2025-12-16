@@ -27,9 +27,9 @@ resource "aws_subnet" "private_zone_1" {
   availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name                                                           = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[0]}"
-    "kubernetes.io/role/internal-elb"                              = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                        = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[0]}"
+    "kubernetes.io/role/internal-elb"           = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
@@ -39,9 +39,9 @@ resource "aws_subnet" "private_zone_2" {
   availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
-    Name                                                           = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[1]}"
-    "kubernetes.io/role/internal-elb"                              = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                        = "${var.cluster_name}-private-${data.aws_availability_zones.available.names[1]}"
+    "kubernetes.io/role/internal-elb"           = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
@@ -52,9 +52,9 @@ resource "aws_subnet" "public_zone_1" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                                           = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[0]}"
-    "kubernetes.io/role/elb"                                       = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                        = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[0]}"
+    "kubernetes.io/role/elb"                    = "1"      # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
@@ -66,9 +66,9 @@ resource "aws_subnet" "public_zone_2" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name                                                           = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[1]}"
-    "kubernetes.io/role/elb"                                       = "1"     # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
-    "kubernetes.io/cluster/${var.environment}-${var.cluster_name}" = "owned" # owned or shared, this for managing multiple clusters in single aws account
+    Name                                        = "${var.cluster_name}-public-${data.aws_availability_zones.available.names[1]}"
+    "kubernetes.io/role/elb"                    = "1"      # docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared" # owned or shared, this for managing multiple clusters in single aws account
   }
 }
 
@@ -240,7 +240,7 @@ resource "aws_eks_node_group" "nodes" {
     aws_subnet.private_zone_2.id,
   ]
   capacity_type  = each.value.capacity_type
-  instance_types = [each.value.instance_type]
+  instance_types = each.value.instance_types
   disk_size      = each.value.disk_size
 
   scaling_config {

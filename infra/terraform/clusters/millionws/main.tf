@@ -4,8 +4,22 @@ locals {
   region       = "ap-south-1"
 }
 
+variable "aws_secret_key" {
+  type        = string
+  description = "AWS Secret Key"
+  sensitive   = true
+}
+
+variable "aws_access_key" {
+  type        = string
+  description = "AWS Access Key"
+  sensitive   = true
+}
+
 provider "aws" {
-  region = local.region
+  region     = local.region
+  secret_key = var.aws_secret_key
+  access_key = var.aws_access_key
 }
 
 module "aws_eks" {
@@ -20,20 +34,20 @@ module "aws_eks" {
   nodes = {
     "millionws" = {
       node_group_name = "millionws"
-      capacity_type   = "SPOT"
-      instance_type   = "t3.small"
+      capacity_type   = "ON_DEMAND" # SPOT, ON_DEMAND
+      instance_types  = ["c6a.xlarge"]
       min_size        = 1
       max_size        = 10
       desired_size    = 1
       disk_size       = 20
       tags = {
-        Name        = "locust-nodes"
+        Name        = "millionws"
         Environment = "benchmarking"
         Namespace   = "benchmarking"
         Version     = "1.34"
       }
       labels = {
-        Name        = "locust-nodes"
+        Name        = "millionws"
         Environment = "benchmarking"
         Namespace   = "benchmarking"
         Version     = "1.34"
@@ -41,20 +55,19 @@ module "aws_eks" {
     }
     "monitoring" = {
       node_group_name = "monitoring"
-      capacity_type   = "SPOT"
-      instance_type   = "t3.small"
+      capacity_type   = "ON_DEMAND"
+      instance_types  = ["c6a.xlarge"]
       min_size        = 1
       max_size        = 10
       desired_size    = 1
       disk_size       = 20
       tags = {
-        Name        = "monitor-nodes"
         Environment = "benchmarking"
         Namespace   = "benchmarking"
         Version     = "1.34"
       }
       labels = {
-        Name        = "monitor-nodes"
+        role        = "monitoring"
         Environment = "benchmarking"
         Namespace   = "benchmarking"
         Version     = "1.34"
@@ -85,7 +98,30 @@ module "helm_deployments" {
       version          = "3.13.0"
       values           = [file("${path.module}/values/metrics-server.yaml")]
     },
+    prometheus = {
+      enabled          = true
+      name             = "prometheus"
+      repository       = "https://prometheus-community.github.io/helm-charts"
+      chart            = "prometheus"
+      namespace        = "monitoring"
+      create_namespace = true
+      version          = "27.50.1"
+      values           = [file("${path.module}/values/prometheus.yaml")]
+    },
+    grafana = {
+      enabled          = true
+      name             = "grafana"
+      repository       = "https://grafana.github.io/helm-charts"
+      chart            = "grafana"
+      namespace        = "monitoring"
+      create_namespace = true
+      version          = "10.3.1"
+      values           = [file("${path.module}/values/grafana.yaml")]
+    },
   }
+  depends_on = [
+    module.aws_eks.node_groups
+  ]
 }
 
 output "update_kubeconfig_command" {

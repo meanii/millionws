@@ -39,19 +39,24 @@ variable "nodes" {
   type = map(object({
     node_group_name = string
     capacity_type   = string # SPOT, ON_DEMAND
-    instance_type   = string
+    instance_types  = list(string)
     min_size        = number
     max_size        = number
     desired_size    = number
     disk_size       = number
     tags            = map(string)
     labels          = map(string)
+    taints = optional(list(object({
+      key    = string
+      value  = string
+      effect = string
+    })))
   }))
   default = {
     "general" = {
       node_group_name = "general"
       capacity_type   = "ON_DEMAND"
-      instance_type   = "t3.medium"
+      instance_types  = ["t3.small", "t3a.small", "t4g.small"]
       min_size        = 1
       max_size        = 10
       desired_size    = 1
@@ -70,7 +75,7 @@ variable "nodes" {
     "monitoring" = {
       node_group_name = "monitoring"
       capacity_type   = "SPOT"
-      instance_type   = "t3.medium"
+      instance_types  = ["t3.small", "t3a.small", "t4g.small"]
       min_size        = 1
       max_size        = 10
       desired_size    = 1

@@ -7,4 +7,8 @@ resource "helm_release" "deployments" {
   namespace        = each.value.namespace
   values           = each.value.values
   create_namespace = each.value.create_namespace
+
+  # This prevents half-installed releases.
+  atomic          = true
+  cleanup_on_fail = true
 }

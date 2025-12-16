@@ -1,7 +1,7 @@
 name := "millionws"
 registry := "docker.io/meanii"
 image := registry + "/" + name
-tag := "latest"
+tag := "v1.0.0"
 
 # build main
 build:

@@ -13,11 +13,15 @@ spec:
     metadata:
       labels:
         app: millionws
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
     spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: millionws
-          image: docker.io/meanii/millionws:latest
+          image: docker.io/meanii/millionws:v1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -30,7 +34,6 @@ spec:
               cpu: "1000m"
               memory: "512Mi"
 
-          # Graceful shutdown for WebSockets
           lifecycle:
             preStop:
               exec:
@@ -43,7 +46,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
@@ -51,7 +54,7 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 20
