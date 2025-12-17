@@ -1,47 +1,83 @@
 import time
 
-import websocket  # You'll need to install this: pip install websocket-client
-from locust import User, events, task
-from locust.user.wait_time import constant
+from websockets.sync.client import connect
+
+from locust import User, between, events, task
 
 
 class WebSocketUser(User):
-    host = "ws://localhost:4001/echo"  # Your WebSocket server URL
-    wait_time = constant(1)  # Simulate user think time
+    host = "ws://localhost:4001"
+    wait_time = between(0.5, 2)  # Users wait 0.5-2 seconds between tasks
 
     def on_start(self):
+        """Called when a virtual user starts."""
+        # The host is passed via the --host flag when running Locust
         if not self.host:
-            return
-        self.ws = websocket.create_connection(self.host)
-        print(f"WebSocket connected for user {self.environment.runner.user_count}")
+            raise ValueError("Host must be specified (e.g., via --host)")
+        self.ws_url = f"{self.host.rstrip('/')}/echo"
+        self.connect()
 
-    @task
-    def send_and_receive_message(self):
-        start_time = time.time()
+    def connect(self):
+        """Establish the WebSocket connection."""
         try:
-            message = "Hello from Locust!"
-            self.ws.send(message)
-            received_message = self.ws.recv()
-
+            self.ws = connect(self.ws_url, timeout=10)
             events.request.fire(
                 request_type="WebSocket",
-                name="/ws/send_receive",
-                response_time=(time.time() - start_time) * 1000,
-                response_length=len(received_message),
+                name="connect",
+                response_time=0,
+                response_length=0,
                 exception=None,
             )
-            print(f"Received: {received_message}")
-
         except Exception as e:
             events.request.fire(
                 request_type="WebSocket",
-                name="/ws/send_receive",
-                response_time=(time.time() - start_time) * 1000,
+                name="connect",
+                response_time=0,
                 response_length=0,
                 exception=e,
             )
-            print(f"Error during WebSocket interaction: {e}")
+            raise e
 
     def on_stop(self):
-        self.ws.close()
-        print(f"WebSocket closed for user {self.environment.runner.user_count}")
+        """Called when a virtual user stops."""
+        if hasattr(self, "ws"):
+            try:
+                self.ws.close()
+            except:
+                pass
+
+    @task
+    def send_and_echo(self):
+        """Main task: send a message and wait for the echo."""
+        message = f"Hello from Locust at {time.time()}"
+        self._send_receive(message)
+
+    def _send_receive(self, message):
+        """Helper to send a message and record the round-trip."""
+        start_time = time.time()
+        try:
+            self.ws.send(message)
+            echo = self.ws.recv()  # Wait for the server's echo
+
+            # Record a successful request
+            response_time = int((time.time() - start_time) * 1000)  # in ms
+            events.request.fire(
+                request_type="WebSocket",
+                name="echo",
+                response_time=response_time,
+                response_length=len(echo),
+                exception=None,
+                context={"message": message},
+            )
+
+        except Exception as e:
+            response_time = int((time.time() - start_time) * 1000)
+            events.request.fire(
+                request_type="WebSocket",
+                name="echo",
+                response_time=response_time,
+                response_length=0,
+                exception=e,
+            )
+            # Reconnect on error
+            self.connect()

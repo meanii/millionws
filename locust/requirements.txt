@@ -1,0 +1,2 @@
+locust==2.42.6
+websockets>=15.0.1

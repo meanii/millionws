@@ -5,6 +5,17 @@ go 1.25.4
 require github.com/gorilla/websocket v1.5.3
 
 require (
+	github.com/panjf2000/ants/v2 v2.11.3 // indirect
+	github.com/panjf2000/gnet/v2 v2.9.5 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
+	go.uber.org/zap v1.27.0 // indirect
+	golang.org/x/sync v0.13.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
+	nhooyr.io/websocket v1.8.17 // indirect
+)
+
+require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
