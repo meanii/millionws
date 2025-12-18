@@ -43,8 +43,15 @@ class WebSocketUser(User):
         if hasattr(self, "ws"):
             try:
                 self.ws.close()
-            except:
-                pass
+            except Exception as e:
+                events.request.fire(
+                    request_type="WebSocket",
+                    name="disconnect",
+                    response_time=0,
+                    response_length=0,
+                    exception=e,
+                )
+                raise e
 
     @task
     def send_and_echo(self):
