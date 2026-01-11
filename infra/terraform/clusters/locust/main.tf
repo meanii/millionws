@@ -24,7 +24,7 @@ module "aws_eks" {
       instance_types  = ["c6a.xlarge"]
       min_size        = 1
       max_size        = 10
-      desired_size    = 1
+      desired_size    = 2
       disk_size       = 50
 
       labels = {

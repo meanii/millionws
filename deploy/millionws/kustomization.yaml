@@ -1,0 +1,11 @@
+namespace: millionws
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+  - namespace.yaml
+  - deployment.yaml 
+  - service.yaml
+  - hpa.yaml
+  - pdb.yaml

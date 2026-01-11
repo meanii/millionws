@@ -3,23 +3,8 @@ locals {
   environment  = "benchmarking"
   region       = "ap-south-1"
 }
-
-variable "aws_secret_key" {
-  type        = string
-  description = "AWS Secret Key"
-  sensitive   = true
-}
-
-variable "aws_access_key" {
-  type        = string
-  description = "AWS Access Key"
-  sensitive   = true
-}
-
 provider "aws" {
   region     = local.region
-  secret_key = var.aws_secret_key
-  access_key = var.aws_access_key
 }
 
 module "aws_eks" {
@@ -38,7 +23,7 @@ module "aws_eks" {
       instance_types  = ["c6a.xlarge"]
       min_size        = 1
       max_size        = 10
-      desired_size    = 1
+      desired_size    = 2
       disk_size       = 20
       tags = {
         Name        = "millionws"

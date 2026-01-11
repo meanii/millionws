@@ -1,7 +1,7 @@
 name := "millionws"
 registry := "docker.io/meanii"
 image := registry + "/" + name
-tag := "v1.0.0"
+tag := "v2.0.0"
 
 # build main
 build:
@@ -41,12 +41,12 @@ docker-build-push: docker-build docker-push
 
 # local development
 start-monitoring:
-    @docker-compose -f deploy/local/compose.yml up -d --force-recreate
+    @docker compose -f deploy/local/compose.yml up -d --force-recreate
     @echo open grafana, http://localhost:8001
     @echo open prometheus, http://localhost:9090
 
-start-monitoring-logs:
-    @docker-compose -f deploy/local/compose.yml logs --follow --tail 10
+start-monitoring-logs: start-monitoring
+    @docker compose -f deploy/local/compose.yml logs --follow --tail 10
 
 stop-monitoring:
-    docker-compose -f deploy/local/compose.yml down
+    docker compose -f deploy/local/compose.yml down

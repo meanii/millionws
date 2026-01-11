@@ -14,7 +14,7 @@ class WebSocketUser(User):
         # The host is passed via the --host flag when running Locust
         if not self.host:
             raise ValueError("Host must be specified (e.g., via --host)")
-        self.ws_url = f"{self.host.rstrip('/')}/echo"
+        self.ws_url = f"{self.host.rstrip('/')}/ws"
         self.connect()
 
     def connect(self):

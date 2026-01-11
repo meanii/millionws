@@ -1,24 +1,24 @@
 package main
 
 import (
-	"flag"
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"time"
 
-	"github.com/gorilla/websocket"
+	"github.com/lesismal/nbio/nbhttp"
+	"github.com/lesismal/nbio/nbhttp/websocket"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-// Upgrader is used to upgrade HTTP connections to WebSocket connections.
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
-}
+var (
+	upgrader = newUpgrader()
+)
 
 var (
 	totalConnections = promauto.NewCounter(prometheus.CounterOpts{
@@ -37,62 +37,65 @@ var (
 	})
 )
 
-func wsHandler(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println("upgrade error:", err)
-		return
-	}
-
-	defer func() {
-		err := conn.Close()
+func newUpgrader() *websocket.Upgrader {
+	u := websocket.NewUpgrader()
+	u.OnOpen(func(c *websocket.Conn) {
+		activeConnections.Inc()
+		totalConnections.Inc()
+		// echo
+		// fmt.Println("OnOpen:", c.RemoteAddr().String())
+	})
+	u.OnMessage(func(c *websocket.Conn, messageType websocket.MessageType, data []byte) {
+		// echo
+		// fmt.Println("OnMessage:", messageType, string(data))
+		if err := c.WriteMessage(messageType, data); err != nil {
+			log.Printf("failed to send message: %v", err)
+		}
+	})
+	u.OnClose(func(c *websocket.Conn, err error) {
 		activeConnections.Dec()
 		totalDisconnections.Inc()
-		if err != nil {
-			fmt.Print(err)
-		}
-	}()
+		fmt.Println("OnClose:", c.RemoteAddr().String(), err)
+	})
+	return u
+}
 
-	activeConnections.Inc()
-	totalConnections.Inc()
-
-	fmt.Printf("client:[%s][%s] connected\n", conn.RemoteAddr(), time.Now().UTC())
-
-	for {
-		_, msg, err := conn.ReadMessage()
-		if err != nil {
-			// client disconnected — not an error
-			if !websocket.IsCloseError(err,
-				websocket.CloseNormalClosure,
-				websocket.CloseGoingAway,
-				websocket.CloseAbnormalClosure,
-			) {
-				log.Println("read error:", err)
-			}
-			return
-		}
-		fmt.Printf("client:[%s][%s] message: %s\n", conn.RemoteAddr(), time.Now().UTC(), msg)
-
-		if err := conn.WriteMessage(websocket.TextMessage, msg); err != nil {
-			log.Println("write error:", err)
-			return
-		}
+func onWebsocket(w http.ResponseWriter, r *http.Request) {
+	_, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		panic(err)
 	}
 }
 
 func main() {
-	addr := flag.String("addr", "0.0.0.0", "addr interface where to expose")
-	port := flag.Int("port", 4001, "port number where to run")
-	flag.Parse()
-
-	http.HandleFunc("/echo", wsHandler)
-	http.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+	mux := &http.ServeMux{}
+	mux.HandleFunc("/ws", onWebsocket)
+	mux.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, "OK")
 	})
+	engine := nbhttp.NewEngine(nbhttp.Config{
+		Network:                 "tcp",
+		Addrs:                   []string{"0.0.0.0:8080"},
+		MaxLoad:                 1000000,
+		ReleaseWebsocketPayload: true,
+		Handler:                 mux,
+	})
 
-	fmt.Printf("millionws server running on http://%s:%d 🦆\n", *addr, *port)
+	err := engine.Start()
+	if err != nil {
+		fmt.Printf("nbio.Start failed: %v\n", err)
+		return
+	}
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%d", *addr, *port), nil))
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt)
+	<-interrupt
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	defer cancel()
+	if err = engine.Shutdown(ctx); err != nil {
+		panic(err)
+	}
 }
