@@ -43,12 +43,8 @@ func newUpgrader() *websocket.Upgrader {
 	u.OnOpen(func(c *websocket.Conn) {
 		activeConnections.Inc()
 		totalConnections.Inc()
-		// echo
-		// fmt.Println("OnOpen:", c.RemoteAddr().String())
 	})
 	u.OnMessage(func(c *websocket.Conn, messageType websocket.MessageType, data []byte) {
-		// echo
-		// fmt.Println("OnMessage:", messageType, string(data))
 		if err := c.WriteMessage(messageType, data); err != nil {
 			log.Printf("failed to send message: %v", err)
 		}
@@ -88,6 +84,7 @@ func main() {
 		Handler:                 mux,
 	})
 
+	log.Printf("starting millionw server on ws://%s:%d", *addr, *port)
 	err := engine.Start()
 	if err != nil {
 		fmt.Printf("nbio.Start failed: %v\n", err)
