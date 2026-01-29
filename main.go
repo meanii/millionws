@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -68,6 +69,10 @@ func onWebsocket(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	addr := flag.String("addr", "0.0.0.0", "network interface you want to run on")
+	port := flag.Int("port", 8080, "port number for the service")
+	flag.Parse()
+
 	mux := &http.ServeMux{}
 	mux.HandleFunc("/ws", onWebsocket)
 	mux.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
@@ -77,7 +82,7 @@ func main() {
 	})
 	engine := nbhttp.NewEngine(nbhttp.Config{
 		Network:                 "tcp",
-		Addrs:                   []string{"0.0.0.0:8080"},
+		Addrs:                   []string{fmt.Sprintf("%s:%d", *addr, *port)},
 		MaxLoad:                 1000000,
 		ReleaseWebsocketPayload: true,
 		Handler:                 mux,
