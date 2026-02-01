@@ -33,6 +33,11 @@ provider "hcloud" {
   token = var.hcloud_token
 }
 
+resource "hcloud_ssh_key" "main" {
+  name       = "pop_os_default_ssh"
+  public_key = file("~/.ssh/id_ed25519.pub")
+}
+
 # Create a new server running debian
 # use `cx23` for testing purpose deployment because of €0.005 / h
 # `ccx33` for actual workload, 8 AMD vCPU, 32 RAM - €0.077 / h
@@ -45,7 +50,7 @@ resource "hcloud_server" "server" {
     "millionws" : "true"
   }
   ssh_keys = [
-    "hi@meanii.dev" # default ssh key
+    hcloud_ssh_key.main.name
   ]
   server_type = "cx23"
   public_net {
