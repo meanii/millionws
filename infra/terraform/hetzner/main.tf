@@ -57,6 +57,13 @@ resource "hcloud_server" "server" {
     ipv4_enabled = true  # €0.50 /mo
     ipv6_enabled = false # free basically, do not use it - you might end up having compatible issues from your any device end
   }
+  user_data = <<EOF
+#!/bin/bash
+apt-get update -y
+apt-get install -y docker.io docker-compose git
+systemctl enable --now docker
+EOF
+
 }
 
 
