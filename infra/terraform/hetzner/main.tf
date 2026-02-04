@@ -40,6 +40,7 @@ resource "hcloud_ssh_key" "main" {
 
 # Create a new server running debian
 # use `cx23` for testing purpose deployment because of €0.005 / h
+# or alt `cx33` €0.008 / h 4.99 / mo
 # `ccx33` for actual workload, 8 AMD vCPU, 32 RAM - €0.077 / h
 resource "hcloud_server" "server" {
   name     = "millionws-hz"
@@ -52,7 +53,7 @@ resource "hcloud_server" "server" {
   ssh_keys = [
     hcloud_ssh_key.main.name
   ]
-  server_type = "cx23"
+  server_type = "cx33"
   public_net {
     ipv4_enabled = true  # €0.50 /mo
     ipv6_enabled = false # free basically, do not use it - you might end up having compatible issues from your any device end
@@ -60,12 +61,13 @@ resource "hcloud_server" "server" {
   user_data = <<EOF
 #!/bin/bash
 apt-get update -y
-apt-get install -y docker.io docker-compose git
+apt-apt install curl -y 
+curl -o- https://get.docker.com | sh
 systemctl enable --now docker
+git clone https://github.com/meanii/millionws.git ~/millionws
+docker compose -f ~/millionws/deploy/local/compose.yml up -d
 EOF
-
 }
-
 
 output "server" {
   value = "server has been created\nssh root@${hcloud_server.server.ipv4_address}"
