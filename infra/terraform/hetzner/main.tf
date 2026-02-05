@@ -65,10 +65,18 @@ apt-apt install curl -y
 curl -o- https://get.docker.com | sh
 systemctl enable --now docker
 git clone https://github.com/meanii/millionws.git ~/millionws
-docker compose -f ~/millionws/deploy/local/compose.yml up -d
+docker compose -f ~/millionws/deploy/hetzner/compose.yml up -d
 EOF
 }
 
 output "server" {
   value = "server has been created\nssh root@${hcloud_server.server.ipv4_address}"
+}
+
+output "grafana" {
+  value = "grafana http://${hcloud_server.server.ipv4_address}:8001\nusername: admin\npassword: admin"
+}
+
+output "prometheus" {
+  value = "prometheus http://${hcloud_server.server.ipv4_address}:9090"
 }
