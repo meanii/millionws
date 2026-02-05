@@ -4,9 +4,9 @@ services:
     build:
       context: ../..
       dockerfile: Dockerfile
-      ports:
-        - "8001:8001"
-      restart: always
+    ports:
+      - "8001:8001"
+    restart: always
 
   grafana:
     image: grafana/grafana
