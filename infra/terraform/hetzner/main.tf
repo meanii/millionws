@@ -60,12 +60,22 @@ resource "hcloud_server" "server" {
   }
   user_data = <<EOF
 #!/bin/bash
+echo "[cloud-init] starting cloud-init script" >> /tmp/cloud-init.log
+
 apt-get update -y
-apt-apt install curl -y 
+apt-apt install curl -y
+echo "[cloud-init] updated and installed packages" >> /tmp/cloud-init.log
+
+echo "[cloud-init] installing docker & docker compose" >> /tmp/cloud-init.log
 curl -o- https://get.docker.com | sh
 systemctl enable --now docker
+
+echo "[cloud-init] started docker daemon" >> /tmp/cloud-init.log
 git clone https://github.com/meanii/millionws.git ~/millionws
+
+echo "[cloud-init] starting compose.yaml for locust" >> /tmp/cloud-init.log
 docker compose -f ~/millionws/deploy/hetzner/compose.yml up -d
+echo "[cloud-init] cloud-init done" >> /tmp/cloud-init.log
 EOF
 }
 
