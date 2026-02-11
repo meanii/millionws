@@ -5,7 +5,7 @@ services:
       context: ../..
       dockerfile: Dockerfile
     ports:
-      - "8002:8001"
+      - "8002:8080"
     restart: always
 
   grafana:
