@@ -7,4 +7,4 @@ scrape_configs:
       - names:
           - millionws  # goes here
         type: A
-        port: 8002
+        port: 8001

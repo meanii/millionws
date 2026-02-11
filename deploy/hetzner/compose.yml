@@ -24,7 +24,8 @@ services:
       GF_SECURITY_ADMIN_USER: "admin"
     volumes:
       - "grafana_data:/var/lib/grafana"
-      - "../configs/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml"
+      - "../provisioning/datasources:/etc/grafana/provisioning/datasources" # mounting for automatically provisioning datasources
+      - "../provisioning/dashboards:/etc/grafana/dashboards" # mounting for automatically provisioning dashboards
     depends_on:
       - prometheus
 

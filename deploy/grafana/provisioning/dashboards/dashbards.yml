@@ -1,0 +1,10 @@
+apiVersion: 1
+providers:
+  - name: 'MillionWS Dashboard'
+    folder: 'MillionWS' # Name of the folder in the Grafana UI
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10 # Grafana will scan for changes every 10 seconds
+    options:
+      path: /etc/grafana/dashboards/ # Internal container path
+

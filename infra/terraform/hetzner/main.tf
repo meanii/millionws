@@ -42,7 +42,7 @@ resource "hcloud_ssh_key" "main" {
 # use `cx23` for testing purpose deployment because of €0.005 / h
 # or alt `cx33` €0.008 / h 4.99 / mo
 # `ccx33` for actual workload, 8 AMD vCPU, 32 RAM - €0.077 / h
-resource "hcloud_server" "server" {
+resource "hcloud_server" "millionws" {
   name     = "millionws-hz"
   image    = "ubuntu-24.04"
   location = "nbg1" # https://docs.hetzner.com/cloud/general/locations/#what-locations-are-there
@@ -60,12 +60,10 @@ resource "hcloud_server" "server" {
   }
   user_data = <<EOF
 #!/usr/bin/env bash
-set -euxo pipefail
 
 LOG=/tmp/cloud-init.log
-exec > >(tee -a \$LOG) 2>&1
 
-echo "[cloud-init] starting cloud-init script"
+echo "[cloud-init] starting cloud-init script" >> $LOG
 
 # Ensure non-interactive apt
 export DEBIAN_FRONTEND=noninteractive
@@ -76,7 +74,7 @@ apt-get install -y \
   curl \
   git
 
-echo "[cloud-init] installed base packages"
+echo "[cloud-init] installed base packages" >> $LOG
 
 echo "[cloud-init] installing docker"
 curl -fsSL https://get.docker.com | sh
@@ -85,7 +83,7 @@ systemctl enable --now docker
 # Allow ubuntu/root to run docker without sudo (optional)
 usermod -aG docker ubuntu || true
 
-echo "[cloud-init] tuning kernel parameters"
+echo "[cloud-init] tuning kernel parameters" >> $LOG
 cat >/etc/sysctl.d/99-millionws.conf <<'SYSCTL'
 fs.file-max = 1000000
 net.core.somaxconn = 65535
@@ -97,7 +95,7 @@ SYSCTL
 
 sysctl --system
 
-echo "[cloud-init] raising file descriptor limits"
+echo "[cloud-init] raising file descriptor limits" >> $LOG
 cat >/etc/security/limits.d/99-millionws.conf <<'LIMITS'
 * soft nofile 200000
 * hard nofile 200000
@@ -108,26 +106,26 @@ LIMITS
 # Ensure home exists (cloud-init runs as root)
 mkdir -p /root/millionws
 
-echo "[cloud-init] cloning repository"
+echo "[cloud-init] cloning repository" >> $LOG
 git clone https://github.com/meanii/millionws.git /root/millionws
 
-echo "[cloud-init] starting docker compose"
+echo "[cloud-init] starting docker compose" >> $LOG
 cd /root/millionws/deploy/hetzner
 docker compose up -d
 
-echo "[cloud-init] cloud-init done"
+echo "[cloud-init] cloud-init done" >> $LOG
 EOF
 
 }
 
 output "server" {
-  value = "server has been created\nssh root@${hcloud_server.server.ipv4_address}"
+  value = "server has been created\nssh root@${hcloud_server.millionws.ipv4_address}"
 }
 
 output "grafana" {
-  value = "grafana http://${hcloud_server.server.ipv4_address}:8001\nusername: admin\npassword: admin"
+  value = "\ngrafana http://${hcloud_server.millionws.ipv4_address}:8001\nusername: admin\npassword: admin"
 }
 
 output "prometheus" {
-  value = "prometheus http://${hcloud_server.server.ipv4_address}:9090"
+  value = "\nprometheus http://${hcloud_server.millionws.ipv4_address}:9090\n"
 }
