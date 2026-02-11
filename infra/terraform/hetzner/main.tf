@@ -45,7 +45,7 @@ resource "hcloud_ssh_key" "main" {
 resource "hcloud_server" "server" {
   name     = "millionws-hz"
   image    = "ubuntu-24.04"
-  location = "fsn1" # https://docs.hetzner.com/cloud/general/locations/#what-locations-are-there
+  location = "nbg1" # https://docs.hetzner.com/cloud/general/locations/#what-locations-are-there
   labels = {
     "benchmarking" : "true"
     "millionws" : "true"
@@ -53,30 +53,71 @@ resource "hcloud_server" "server" {
   ssh_keys = [
     hcloud_ssh_key.main.name
   ]
-  server_type = "cx33"
+  server_type = "cx23"
   public_net {
     ipv4_enabled = true  # €0.50 /mo
     ipv6_enabled = false # free basically, do not use it - you might end up having compatible issues from your any device end
   }
   user_data = <<EOF
-#!/bin/bash
-echo "[cloud-init] starting cloud-init script" >> /tmp/cloud-init.log
+#!/usr/bin/env bash
+set -euxo pipefail
+
+LOG=/tmp/cloud-init.log
+exec > >(tee -a \$LOG) 2>&1
+
+echo "[cloud-init] starting cloud-init script"
+
+# Ensure non-interactive apt
+export DEBIAN_FRONTEND=noninteractive
 
 apt-get update -y
-apt-apt install curl -y
-echo "[cloud-init] updated and installed packages" >> /tmp/cloud-init.log
+apt-get install -y \
+  ca-certificates \
+  curl \
+  git
 
-echo "[cloud-init] installing docker & docker compose" >> /tmp/cloud-init.log
-curl -o- https://get.docker.com | sh
+echo "[cloud-init] installed base packages"
+
+echo "[cloud-init] installing docker"
+curl -fsSL https://get.docker.com | sh
 systemctl enable --now docker
 
-echo "[cloud-init] started docker daemon" >> /tmp/cloud-init.log
-git clone https://github.com/meanii/millionws.git ~/millionws
+# Allow ubuntu/root to run docker without sudo (optional)
+usermod -aG docker ubuntu || true
 
-echo "[cloud-init] starting compose.yaml for locust" >> /tmp/cloud-init.log
-docker compose -f ~/millionws/deploy/hetzner/compose.yml up -d
-echo "[cloud-init] cloud-init done" >> /tmp/cloud-init.log
+echo "[cloud-init] tuning kernel parameters"
+cat >/etc/sysctl.d/99-millionws.conf <<'SYSCTL'
+fs.file-max = 1000000
+net.core.somaxconn = 65535
+net.core.netdev_max_backlog = 16384
+net.ipv4.ip_local_port_range = 1024 65000
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 15
+SYSCTL
+
+sysctl --system
+
+echo "[cloud-init] raising file descriptor limits"
+cat >/etc/security/limits.d/99-millionws.conf <<'LIMITS'
+* soft nofile 200000
+* hard nofile 200000
+root soft nofile 200000
+root hard nofile 200000
+LIMITS
+
+# Ensure home exists (cloud-init runs as root)
+mkdir -p /root/millionws
+
+echo "[cloud-init] cloning repository"
+git clone https://github.com/meanii/millionws.git /root/millionws
+
+echo "[cloud-init] starting docker compose"
+cd /root/millionws/deploy/hetzner
+docker compose up -d
+
+echo "[cloud-init] cloud-init done"
 EOF
+
 }
 
 output "server" {
