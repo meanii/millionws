@@ -106,9 +106,10 @@ Approximate memory usage: **~38 KB per connection**
 
 9 directories, 23 files
 
+```
 ### References
 - https://dyte.io/blog/scaling-websockets-to-millions/
 - https://www.freecodecamp.org/news/million-websockets-and-go-cc58418460bb/
 - https://github.com/gobwas/ws-examples/blob/master/src/chat/main.go#L135
 
-```
+
