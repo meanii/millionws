@@ -6,5 +6,4 @@ providers:
     disableDeletion: false
     updateIntervalSeconds: 10 # Grafana will scan for changes every 10 seconds
     options:
-      path: /etc/grafana/dashboards/ # Internal container path
-
+      path: /etc/grafana/provisioning/dashboards/ # Internal container path

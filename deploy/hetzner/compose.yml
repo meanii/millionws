@@ -25,7 +25,7 @@ services:
     volumes:
       - "grafana_data:/var/lib/grafana"
       - "../grafana/provisioning/datasources:/etc/grafana/provisioning/datasources" # mounting for automatically provisioning datasources
-      - "../grafana/provisioning/dashboards:/etc/grafana/dashboards" # mounting for automatically provisioning dashboards
+      - "../grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards" # mounting for automatically provisioning dashboards
     depends_on:
       - prometheus
 
