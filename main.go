@@ -84,8 +84,16 @@ func main() {
 		mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
 	}
 
+	// "tcp" on 0.0.0.0 makes Go open a dual-stack [::] socket, so every
+	// accepted IPv4 connection is an IPv6 socket in the kernel (a larger slab
+	// object) and carries an IPv6 address in Go. Use "tcp4" for IPv4 hosts.
+	network := "tcp"
+	if ip := net.ParseIP(*addr); ip != nil && ip.To4() != nil {
+		network = "tcp4"
+	}
+
 	engine := nbhttp.NewEngine(nbhttp.Config{
-		Network:                 "tcp",
+		Network:                 network,
 		Addrs:                   []string{net.JoinHostPort(*addr, strconv.Itoa(*port))},
 		MaxLoad:                 1000000,
 		ReleaseWebsocketPayload: true,
