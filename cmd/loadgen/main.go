@@ -225,12 +225,11 @@ func dialLoop(ctx context.Context, engine *nbhttp.Engine, upgrader *websocket.Up
 				d := &websocket.Dialer{Engine: engine, Upgrader: upgrader, DialTimeout: timeout}
 				start := time.Now()
 				dialsTotal.Inc()
-				c, res, err := d.Dial(url, nil)
+				c, _, err := d.Dial(url, nil)
 				if err != nil {
+					// A non-101 answer such as the server's 503 is reported by
+					// nbio as a bad handshake, labelled "handshake".
 					reason := classify(err)
-					if res != nil && res.StatusCode == http.StatusServiceUnavailable {
-						reason = "rejected_503"
-					}
 					dialErrors.WithLabelValues(reason).Inc()
 					if reason == "other" && loggedOther.Add(1) <= 10 {
 						log.Printf("loadgen: unclassified dial error: %v", err)
