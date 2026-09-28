@@ -19,9 +19,10 @@ var goMemoryLimit = promauto.NewGauge(prometheus.GaugeOpts{
 	Help: "Soft memory limit given to the Go runtime; 0 when not managed by the server",
 })
 
-// memoryHeadroom is kept free below the cgroup limit for bursts between two
-// adjustments: new connections allocate kernel memory before the next tick.
-const memoryHeadroom = 0.05
+// goLimitShare is the share of the cgroup limit that Go memory plus kernel
+// memory may use before the GC works harder. It sits just below rejectAbove, so
+// garbage is collected before the admission guard starts turning clients away.
+const goLimitShare = rejectAbove - 0.02
 
 // manageMemoryLimit keeps the Go soft memory limit equal to what the cgroup
 // has left after kernel memory.
@@ -35,7 +36,7 @@ const memoryHeadroom = 0.05
 // connection count.
 //
 // Once a second this reads memory.current, subtracts the memory the Go runtime
-// holds, and sets the Go limit to what remains under memory.max minus 5%.
+// holds, and sets the Go limit to what remains under 88% of memory.max.
 // When the limit binds, the GC runs more often, which costs CPU (the runtime
 // caps GC at about 50% of CPU time in that state) instead of the process.
 //
@@ -56,7 +57,8 @@ func manageMemoryLimit() {
 		{Name: "/memory/classes/total:bytes"},
 		{Name: "/memory/classes/heap/released:bytes"},
 	}
-	headroom := int64(float64(cgroupMax) * memoryHeadroom)
+	target := int64(float64(cgroupMax) * goLimitShare)
+	floor := cgroupMax / 20
 	var last int64
 
 	for range time.Tick(time.Second) {
@@ -67,10 +69,7 @@ func manageMemoryLimit() {
 		metrics.Read(samples)
 		goMapped := int64(samples[0].Value.Uint64() - samples[1].Value.Uint64())
 		other := max(current-goMapped, 0) // kernel memory and page cache
-		limit := cgroupMax - other - headroom
-		if limit < headroom {
-			limit = headroom
-		}
+		limit := max(target-other, floor)
 		// Skip changes under 1% so the runtime is not reconfigured every tick.
 		if d := limit - last; d > last/100 || -d > last/100 {
 			debug.SetMemoryLimit(limit)
