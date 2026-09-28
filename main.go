@@ -43,8 +43,14 @@ var (
 	})
 )
 
-func newUpgrader() *websocket.Upgrader {
+func newUpgrader(keepalive time.Duration) *websocket.Upgrader {
 	u := websocket.NewUpgrader()
+	// Zero disables the per-connection read-deadline timers: nbio skips
+	// both the deadline at upgrade and the reset on every message when
+	// KeepaliveTime is not positive. The engine still applies its own
+	// 120s floor to plain HTTP connections, but upgraded websockets are
+	// governed only by this value.
+	u.KeepaliveTime = keepalive
 	u.OnOpen(func(c *websocket.Conn) {
 		activeConnections.Inc()
 		totalConnections.Inc()
@@ -64,12 +70,18 @@ func main() {
 	addr := flag.String("addr", "0.0.0.0", "network interface you want to run on")
 	port := flag.Int("port", 8080, "port number for the service")
 	enablePprof := flag.Bool("pprof", false, "serve /debug/pprof/ on the same port")
+	// Per-connection websocket read deadline, reset on every message. Zero
+	// disables it entirely: no timers, but dead peers are never reaped.
+	// nbio's upgrader already treats 0 as disabled (only sets a deadline when > 0).
+	keepalive := flag.Duration("keepalive", 120*time.Second, "websocket read deadline, reset per message; 0 disables it")
+	// Number of nbio poller goroutines. Zero keeps nbio's default (NumCPU/4, min 1).
+	pollers := flag.Int("pollers", 0, "nbio event-loop goroutines; 0 uses the library default")
 	flag.Parse()
 
 	go manageMemoryLimit()
 	go guardMemory()
 
-	upgrader := newUpgrader()
+	upgrader := newUpgrader(*keepalive)
 	mux := &http.ServeMux{}
 	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		if overloaded.Load() {
@@ -105,6 +117,7 @@ func main() {
 		Addrs:                   []string{net.JoinHostPort(*addr, strconv.Itoa(*port))},
 		MaxLoad:                 1000000,
 		ReleaseWebsocketPayload: true,
+		NPoller:                 *pollers,
 		Handler:                 mux,
 	})
 
