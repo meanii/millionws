@@ -27,17 +27,24 @@ import urllib.parse
 import urllib.request
 
 PROM = os.environ.get("PROM_URL", "http://127.0.0.1:19090")
-STEP = 5  # seconds between samples
+STEP = 2  # seconds between samples
+
+# Read from the server's /metrics at the same moment as the cgroup files, so
+# both describe the same instant. Prometheus keeps returning the last scraped
+# value for a few seconds after the server dies.
+SERVER_METRICS = os.environ.get("SERVER_METRICS_URL", "http://127.0.0.1:18080/metrics")
+SERVER_FIELDS = {
+    "millionws_connections_active": "server_conns",
+    "go_goroutines": "goroutines",
+    "process_open_fds": "open_fds",
+    "process_resident_memory_bytes": "process_rss",
+    "go_memstats_heap_inuse_bytes": "go_heap_inuse",
+    "go_memstats_stack_inuse_bytes": "go_stack_inuse",
+}
 
 QUERIES = {
-    "server_conns": 'sum(millionws_connections_active{job="server"})',
     "loadgen_conns": "sum(loadgen_connections_active)",
     "loadgen_target": "sum(loadgen_connections_target)",
-    "goroutines": 'go_goroutines{job="server"}',
-    "open_fds": 'process_open_fds{job="server"}',
-    "process_rss": 'process_resident_memory_bytes{job="server"}',
-    "go_heap_inuse": 'go_memstats_heap_inuse_bytes{job="server"}',
-    "go_stack_inuse": 'go_memstats_stack_inuse_bytes{job="server"}',
     "dial_errors_15s": "sum(increase(loadgen_dial_errors_total[15s]))",
     "echo_rate": "sum(rate(loadgen_messages_received_total[30s]))",
     "echo_p50_ms": "1000 * histogram_quantile(0.50, sum by (le) (rate(loadgen_echo_latency_seconds_bucket[30s])))",
@@ -64,6 +71,19 @@ def prom(query):
         return None
     v = float(data[0]["value"][1])
     return None if v != v else v  # NaN from empty histograms
+
+
+def scrape_server():
+    out = dict.fromkeys(SERVER_FIELDS.values())
+    try:
+        with urllib.request.urlopen(SERVER_METRICS, timeout=3) as r:
+            for line in r.read().decode().splitlines():
+                name, _, value = line.partition(" ")
+                if name in SERVER_FIELDS:
+                    out[SERVER_FIELDS[name]] = float(value)
+    except Exception:
+        pass
+    return out
 
 
 def prom_vector(query):
@@ -146,6 +166,7 @@ class Sampler:
         if usage is not None:
             self.last_cpu = (usage, now)
 
+        s.update(scrape_server())
         for k, q in QUERIES.items():
             s[k] = prom(q)
         s["conntrack"] = conntrack_count()
@@ -224,7 +245,8 @@ def cmd_run(args):
 
 
 def write_summary(args, idle, rows, reason, errors):
-    live = [r for r in rows if r["server_conns"]]
+    # Only samples where the server answered and the cgroup still existed.
+    live = [r for r in rows if r["server_conns"] and r["cg_memory"] is not None]
     # Use the last sample within 0.5% of the maximum: memory and latency have
     # settled there, while the first sample to hit the maximum is mid-ramp.
     top = max((r["server_conns"] for r in live), default=0)
@@ -253,7 +275,8 @@ def write_summary(args, idle, rows, reason, errors):
         },
         "cpu_pct_near_peak_avg": round(sum(cpu) / len(cpu), 1) if cpu else None,
         "final_state": last["state"],
-        "oom_kills": last["oom_kills"],
+        "oom_killed": " true " in f" {last['state']} ",
+        "cgroup_memory_peak": max((r["cg_peak"] or 0) for r in rows),
         "dial_errors_by_reason": err,
     }
     with open(os.path.join(args.out, "summary.json"), "w") as f:
@@ -291,7 +314,8 @@ def write_summary(args, idle, rows, reason, errors):
         f"| Process RSS | {kb(b['process_rss'])} |",
         f"| Go heap | {kb(b['go_heap'])} |",
         "",
-        f"Final container state: `{last['state']}`, OOM kills: {last['oom_kills']}.",
+        f"Final container state: `{last['state']}` (status, OOM-killed, exit code). "
+        f"Highest cgroup memory during the run: {fmt_bytes(summary['cgroup_memory_peak'])}.",
         "",
         "Dial errors by reason: " + (", ".join(f"{k} {v:,}" for k, v in sorted(err.items())) or "none") + ".",
         "",

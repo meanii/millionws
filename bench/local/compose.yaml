@@ -10,6 +10,7 @@ services:
   server:
     image: ${SERVER_IMAGE:?set by run.sh}
     hostname: server
+    command: ${SERVER_ARGS:--port=8080}
     cpus: ${SERVER_CPUS:-1}
     mem_limit: ${SERVER_MEM:-1g}
     memswap_limit: ${SERVER_MEM:-1g}

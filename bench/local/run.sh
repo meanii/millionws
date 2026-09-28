@@ -9,7 +9,7 @@
 # results/local/<date>-<variant>/.
 #
 # Environment overrides:
-#   SERVER_CPUS (1)  SERVER_MEM (1g)  LOADGEN_RATE (1000 per replica)
+#   SERVER_CPUS (1)  SERVER_MEM (1g)  LOADGEN_RATE (1000/replicas per replica)
 #   LOADGEN_INTERVAL (30s)  HOLD (60)  PLATEAU (90)  MAX (1800)  KEEP (0)
 set -euo pipefail
 
@@ -28,6 +28,7 @@ SERVER_IMAGE=millionws-bench:$variant
 LOADGEN_CONNS=$(( (total + replicas - 1) / replicas ))
 SERVER_CPUS=${SERVER_CPUS:-1}
 SERVER_MEM=${SERVER_MEM:-1g}
+LOADGEN_RATE=${LOADGEN_RATE:-$(( 1000 / replicas ))} # 1,000 new connections per second in total
 set +a
 
 out="$root/results/local/$(date +%F)-$variant"
@@ -56,7 +57,7 @@ cat >"$out/environment.md" <<EOF
 | Harness commit | \`$(git -C "$root" rev-parse --short HEAD)\` |
 | Server limits | ${SERVER_CPUS} CPU, ${SERVER_MEM} memory, no swap, nofile 1048576 |
 | Server tuning | GOMEMLIMIT=\`${SERVER_GOMEMLIMIT:-unset}\`, GOGC=\`${SERVER_GOGC:-unset}\` |
-| Load generators | ${replicas} containers x ${LOADGEN_CONNS} connections, ${LOADGEN_RATE:-1000} dials/s each |
+| Load generators | ${replicas} containers x ${LOADGEN_CONNS} connections, ${LOADGEN_RATE} dials/s each |
 | Messages | ${LOADGEN_PAYLOAD:-32} bytes every ${LOADGEN_INTERVAL:-30s} per connection |
 | Host CPU | $(grep -m1 "model name" /proc/cpuinfo | cut -d: -f2 | xargs), $(nproc) threads |
 | Host memory | $(free -g | awk '/Mem:/ {print $2}') GiB |

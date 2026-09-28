@@ -6,7 +6,7 @@ package main
 
 import (
 	"context"
-	"encoding/binary"
+	"bytes"
 	"errors"
 	"flag"
 	"fmt"
@@ -70,6 +70,8 @@ var (
 	})
 )
 
+var loggedOther atomic.Int64
+
 // registry holds open connections so the sender can walk them in order.
 // Each connection stores its slot index in its session for O(1) removal.
 type registry struct {
@@ -123,13 +125,13 @@ func main() {
 	rate := flag.Int("rate", envInt("LOADGEN_RATE", 1000), "maximum new dials per second")
 	inflight := flag.Int("inflight", envInt("LOADGEN_INFLIGHT", 200), "maximum dials in progress at once")
 	interval := flag.Duration("interval", envDuration("LOADGEN_INTERVAL", 30*time.Second), "time between messages on one connection; 0 disables messages")
-	payload := flag.Int("payload", envInt("LOADGEN_PAYLOAD", 32), "message size in bytes, minimum 8")
+	payload := flag.Int("payload", envInt("LOADGEN_PAYLOAD", 32), "message size in bytes, minimum 20")
 	dialTimeout := flag.Duration("dial-timeout", envDuration("LOADGEN_DIAL_TIMEOUT", 10*time.Second), "timeout for connect plus handshake")
 	metricsAddr := flag.String("metrics", envOr("LOADGEN_METRICS", ":9100"), "address for the Prometheus metrics endpoint")
 	flag.Parse()
 
-	if *payload < 8 {
-		*payload = 8
+	if *payload < 20 {
+		*payload = 20 // room for a Unix nanosecond timestamp
 	}
 	urls := strings.Split(*target, ",")
 	connsTarget.Set(float64(*conns))
@@ -139,10 +141,17 @@ func main() {
 
 	upgrader := websocket.NewUpgrader()
 	upgrader.OnMessage(func(c *websocket.Conn, _ websocket.MessageType, data []byte) {
-		if len(data) < 8 {
+		// Payload is the send time in Unix nanoseconds as decimal text, padded
+		// with spaces. Text keeps it valid for servers that echo every
+		// message as a text frame.
+		end := bytes.IndexByte(data, ' ')
+		if end < 0 {
+			end = len(data)
+		}
+		sent, err := strconv.ParseInt(string(data[:end]), 10, 64)
+		if err != nil {
 			return
 		}
-		sent := int64(binary.BigEndian.Uint64(data))
 		echoLatency.Observe(time.Duration(time.Now().UnixNano() - sent).Seconds())
 		messagesReceived.Inc()
 	})
@@ -218,7 +227,11 @@ func dialLoop(ctx context.Context, engine *nbhttp.Engine, upgrader *websocket.Up
 				dialsTotal.Inc()
 				c, _, err := d.Dial(url, nil)
 				if err != nil {
-					dialErrors.WithLabelValues(classify(err)).Inc()
+					reason := classify(err)
+					dialErrors.WithLabelValues(reason).Inc()
+					if reason == "other" && loggedOther.Add(1) <= 10 {
+						log.Printf("loadgen: unclassified dial error: %v", err)
+					}
 					return
 				}
 				dialLatency.Observe(time.Since(start).Seconds())
@@ -236,7 +249,7 @@ func sendLoop(ctx context.Context, reg *registry, interval time.Duration, size i
 	const step = 100 * time.Millisecond
 	tick := time.NewTicker(step)
 	defer tick.Stop()
-	buf := make([]byte, size)
+	buf := bytes.Repeat([]byte{' '}, size)
 	var batch []*websocket.Conn
 	cursor := 0
 	var carry float64
@@ -255,8 +268,8 @@ func sendLoop(ctx context.Context, reg *registry, interval time.Duration, size i
 		carry -= float64(n)
 		batch, cursor = reg.batch(batch, cursor, n)
 		for _, c := range batch {
-			binary.BigEndian.PutUint64(buf, uint64(time.Now().UnixNano()))
-			if err := c.WriteMessage(websocket.BinaryMessage, buf); err == nil {
+			strconv.AppendInt(buf[:0], time.Now().UnixNano(), 10)
+			if err := c.WriteMessage(websocket.TextMessage, buf); err == nil {
 				messagesSent.Inc()
 			}
 		}
