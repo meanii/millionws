@@ -5,8 +5,8 @@
 package main
 
 import (
-	"context"
 	"bytes"
+	"context"
 	"errors"
 	"flag"
 	"fmt"

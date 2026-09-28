@@ -53,7 +53,7 @@ QUERIES = {
 
 FIELDS = [
     "t", "state", "server_conns", "loadgen_conns", "loadgen_target",
-    "cg_memory", "cg_anon", "cg_sock", "cg_kernel", "cg_file", "cg_peak",
+    "cg_memory", "cg_anon", "cg_sock", "cg_kernel", "cg_slab", "cg_percpu", "cg_file", "cg_peak",
     "oom_kills", "cpu_pct", "pids", "process_rss", "go_heap_inuse",
     "go_stack_inuse", "goroutines", "open_fds", "dial_errors_15s",
     "echo_rate", "echo_p50_ms", "echo_p99_ms", "conntrack",
@@ -151,6 +151,8 @@ class Sampler:
         s["cg_anon"] = stat.get("anon")
         s["cg_sock"] = stat.get("sock")
         s["cg_kernel"] = stat.get("kernel")
+        s["cg_slab"] = stat.get("slab")
+        s["cg_percpu"] = stat.get("percpu")
         s["cg_file"] = stat.get("file")
         s["oom_kills"] = kv(read(f"{self.cg}/memory.events")).get("oom_kill")
         pids = read(f"{self.cg}/pids.current").strip()
@@ -270,6 +272,7 @@ def write_summary(args, idle, rows, reason, errors):
             "cgroup_anon": per_conn(peak["cg_anon"], idle["cg_anon"], conns),
             "kernel_sockets": per_conn(peak["cg_sock"], idle["cg_sock"], conns),
             "kernel_other": per_conn(peak["cg_kernel"], idle.get("cg_kernel"), conns),
+            "kernel_slab": per_conn(peak["cg_slab"], idle.get("cg_slab"), conns),
             "process_rss": per_conn(peak["process_rss"], idle["process_rss"], conns),
             "go_heap": per_conn(peak["go_heap_inuse"], idle.get("go_heap_inuse"), conns),
         },
@@ -310,6 +313,7 @@ def write_summary(args, idle, rows, reason, errors):
         f"| Container total (cgroup) | {kb(b['cgroup_total'])} |",
         f"| Anonymous memory | {kb(b['cgroup_anon'])} |",
         f"| Kernel memory (socket structs, epoll, slab) | {kb(b['kernel_other'])} |",
+        f"| of which slab objects | {kb(b['kernel_slab'])} |",
         f"| Kernel socket buffers | {kb(b['kernel_sockets'])} |",
         f"| Process RSS | {kb(b['process_rss'])} |",
         f"| Go heap | {kb(b['go_heap'])} |",
