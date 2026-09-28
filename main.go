@@ -5,9 +5,13 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
+	"net/http/pprof"
 	"os"
 	"os/signal"
+	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/lesismal/nbio/nbhttp"
@@ -15,10 +19,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-)
-
-var (
-	upgrader = newUpgrader()
 )
 
 var (
@@ -36,6 +36,11 @@ var (
 		Name: "millionws_disconnections_total",
 		Help: "Total number of websocket connections closed",
 	})
+
+	upgradeErrors = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "millionws_upgrade_errors_total",
+		Help: "Requests to /ws that failed the WebSocket handshake",
+	})
 )
 
 func newUpgrader() *websocket.Upgrader {
@@ -45,59 +50,60 @@ func newUpgrader() *websocket.Upgrader {
 		totalConnections.Inc()
 	})
 	u.OnMessage(func(c *websocket.Conn, messageType websocket.MessageType, data []byte) {
-		if err := c.WriteMessage(messageType, data); err != nil {
-			log.Printf("failed to send message: %v", err)
-		}
+		// A failed write closes the connection, and OnClose records it.
+		_ = c.WriteMessage(messageType, data)
 	})
 	u.OnClose(func(c *websocket.Conn, err error) {
 		activeConnections.Dec()
 		totalDisconnections.Inc()
-		fmt.Println("OnClose:", c.RemoteAddr().String(), err)
 	})
 	return u
-}
-
-func onWebsocket(w http.ResponseWriter, r *http.Request) {
-	_, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		panic(err)
-	}
 }
 
 func main() {
 	addr := flag.String("addr", "0.0.0.0", "network interface you want to run on")
 	port := flag.Int("port", 8080, "port number for the service")
+	enablePprof := flag.Bool("pprof", false, "serve /debug/pprof/ on the same port")
 	flag.Parse()
 
+	upgrader := newUpgrader()
 	mux := &http.ServeMux{}
-	mux.HandleFunc("/ws", onWebsocket)
-	mux.HandleFunc("/metrics", promhttp.Handler().ServeHTTP)
+	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		// Upgrade has already written the HTTP error response on failure.
+		if _, err := upgrader.Upgrade(w, r, nil); err != nil {
+			upgradeErrors.Inc()
+		}
+	})
+	mux.Handle("/metrics", promhttp.Handler())
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, "OK")
 	})
+	if *enablePprof {
+		mux.HandleFunc("/debug/pprof/", pprof.Index)
+		mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	}
+
 	engine := nbhttp.NewEngine(nbhttp.Config{
 		Network:                 "tcp",
-		Addrs:                   []string{fmt.Sprintf("%s:%d", *addr, *port)},
+		Addrs:                   []string{net.JoinHostPort(*addr, strconv.Itoa(*port))},
 		MaxLoad:                 1000000,
 		ReleaseWebsocketPayload: true,
 		Handler:                 mux,
 	})
 
-	log.Printf("starting millionw server on ws://%s:%d", *addr, *port)
-	err := engine.Start()
-	if err != nil {
-		fmt.Printf("nbio.Start failed: %v\n", err)
-		return
+	log.Printf("starting millionws server on ws://%s", net.JoinHostPort(*addr, strconv.Itoa(*port)))
+	if err := engine.Start(); err != nil {
+		log.Fatalf("nbio.Start failed: %v", err)
 	}
 
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt)
-	<-interrupt
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+	<-ctx.Done()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	if err = engine.Shutdown(ctx); err != nil {
-		panic(err)
+	if err := engine.Shutdown(shutdownCtx); err != nil {
+		log.Printf("shutdown: %v", err)
 	}
 }
