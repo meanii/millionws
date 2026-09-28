@@ -67,10 +67,16 @@ func main() {
 	flag.Parse()
 
 	go manageMemoryLimit()
+	go guardMemory()
 
 	upgrader := newUpgrader()
 	mux := &http.ServeMux{}
 	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		if overloaded.Load() {
+			rejectedConnections.Inc()
+			w.WriteHeader(http.StatusServiceUnavailable)
+			return
+		}
 		// Upgrade has already written the HTTP error response on failure.
 		if _, err := upgrader.Upgrade(w, r, nil); err != nil {
 			upgradeErrors.Inc()

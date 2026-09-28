@@ -7,6 +7,7 @@ import (
 	"runtime/metrics"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -75,6 +76,49 @@ func manageMemoryLimit() {
 			debug.SetMemoryLimit(limit)
 			goMemoryLimit.Set(float64(limit))
 			last = limit
+		}
+	}
+}
+
+// Admission control thresholds, as a share of the cgroup memory limit.
+const (
+	rejectAbove = 0.90
+	acceptBelow = 0.85
+)
+
+var (
+	overloaded = atomic.Bool{}
+
+	rejectedConnections = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "millionws_connections_rejected_total",
+		Help: "WebSocket requests answered with 503 because container memory was above the admission threshold",
+	})
+)
+
+// guardMemory sets overloaded when container memory passes 90% of the cgroup
+// limit and clears it below 85%. While it is set, /ws answers 503 instead of
+// upgrading. Without it, the next connections past the limit trigger the OOM
+// killer, which drops every open connection at once; with it, existing
+// connections stay up and only new clients are turned away.
+func guardMemory() {
+	cgroupMax, ok := readCgroupInt("/sys/fs/cgroup/memory.max")
+	if !ok {
+		return
+	}
+	high := int64(float64(cgroupMax) * rejectAbove)
+	low := int64(float64(cgroupMax) * acceptBelow)
+	for range time.Tick(250 * time.Millisecond) {
+		current, ok := readCgroupInt("/sys/fs/cgroup/memory.current")
+		if !ok {
+			continue
+		}
+		switch {
+		case current > high && !overloaded.Load():
+			overloaded.Store(true)
+			log.Printf("memory guard: %d MiB of %d MiB used, rejecting new connections", current>>20, cgroupMax>>20)
+		case current < low && overloaded.Load():
+			overloaded.Store(false)
+			log.Printf("memory guard: %d MiB of %d MiB used, accepting new connections", current>>20, cgroupMax>>20)
 		}
 	}
 }
