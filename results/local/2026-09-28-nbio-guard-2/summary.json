@@ -1,0 +1,59 @@
+{
+  "variant": "nbio-guard",
+  "stop_reason": "no growth above 180,784 connections for 90s",
+  "duration_s": 269,
+  "peak_connections": 181184,
+  "loadgen_target": 300000.0,
+  "at_peak": {
+    "server_conns": 181184.0,
+    "loadgen_conns": 181184.0,
+    "loadgen_target": 300000.0,
+    "cg_memory": 1006022656,
+    "cg_anon": 292319232,
+    "cg_sock": 12288,
+    "cg_kernel": 712433664,
+    "cg_slab": 711486264,
+    "cg_percpu": 4984,
+    "cg_file": 0,
+    "cg_peak": 1007632384,
+    "oom_kills": 0,
+    "cpu_pct": 43.4,
+    "pids": 13,
+    "process_rss": 299442176.0,
+    "go_heap_inuse": 273604608.0,
+    "go_stack_inuse": 1146880.0,
+    "goroutines": 18.0,
+    "open_fds": 181199.0,
+    "dial_errors_15s": 14969.100420084018,
+    "echo_rate": 6039.4400000000005,
+    "echo_p50_ms": 3.1999696998390306,
+    "echo_p99_ms": 32.8373432282004,
+    "conntrack": 463,
+    "rejected": 90042.0
+  },
+  "idle": {
+    "cg_memory": 5775360,
+    "cg_anon": 4288512,
+    "cg_sock": 0,
+    "cg_kernel": 712704,
+    "process_rss": 11649024.0,
+    "goroutines": 18.0,
+    "open_fds": 15.0
+  },
+  "bytes_per_connection": {
+    "cgroup_total": 5521,
+    "cgroup_anon": 1590,
+    "kernel_sockets": 0,
+    "kernel_other": 3928,
+    "kernel_slab": 3925,
+    "process_rss": 1588,
+    "go_heap": 1429
+  },
+  "cpu_pct_near_peak_avg": 43.1,
+  "final_state": "running false 0",
+  "oom_killed": false,
+  "cgroup_memory_peak": 1007632384,
+  "dial_errors_by_reason": {
+    "handshake": 86651
+  }
+}

@@ -1,0 +1,23 @@
+File: millionws
+Build ID: 5c00122827de038ecb145ef5081cf34bb33f6648
+Type: inuse_space
+Time: 2026-09-28 17:47:52 IST
+Showing nodes accounting for 102.06MB, 99.03% of 103.06MB total
+Dropped 8 nodes (cum <= 0.52MB)
+Showing top 15 nodes out of 57
+      flat  flat%   sum%        cum   cum%
+   20.50MB 19.89% 19.89%    20.50MB 19.89%  github.com/lesismal/nbio.dupStdConn
+      16MB 15.53% 35.42%       16MB 15.53%  github.com/lesismal/nbio/nbhttp/websocket.newConn
+      13MB 12.61% 48.04%       13MB 12.61%  syscall.anyToSockaddr
+   12.08MB 11.72% 59.76%    12.08MB 11.72%  time.newTimer
+    9.50MB  9.22% 68.98%     9.50MB  9.22%  net.sockaddrToTCP
+    8.53MB  8.28% 77.26%     8.53MB  8.28%  github.com/lesismal/nbio.(*Engine).Start
+    5.50MB  5.34% 82.59%    19.58MB 19.00%  github.com/lesismal/nbio.(*Conn).setDeadline
+    5.01MB  4.86% 87.46%    45.10MB 43.76%  github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking
+    3.50MB  3.40% 90.85%    71.10MB 68.99%  github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1
+    3.16MB  3.07% 93.92%     3.16MB  3.07%  github.com/lesismal/nbio/taskpool.New
+       2MB  1.94% 95.86%    14.08MB 13.67%  github.com/lesismal/nbio/timer.(*Timer).AfterFunc (inline)
+    1.76MB  1.71% 97.57%     2.26MB  2.20%  compress/flate.NewWriter (inline)
+    1.50MB  1.46% 99.03%     1.50MB  1.46%  github.com/lesismal/nbio.(*Conn).Execute
+         0     0% 99.03%     2.26MB  2.20%  bufio.(*Writer).Flush
+         0     0% 99.03%     2.26MB  2.20%  compress/gzip.(*Writer).Write
