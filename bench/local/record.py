@@ -40,6 +40,7 @@ SERVER_FIELDS = {
     "process_resident_memory_bytes": "process_rss",
     "go_memstats_heap_inuse_bytes": "go_heap_inuse",
     "go_memstats_stack_inuse_bytes": "go_stack_inuse",
+    "millionws_connections_rejected_total": "rejected",
 }
 
 QUERIES = {
@@ -56,7 +57,7 @@ FIELDS = [
     "cg_memory", "cg_anon", "cg_sock", "cg_kernel", "cg_slab", "cg_percpu", "cg_file", "cg_peak",
     "oom_kills", "cpu_pct", "pids", "process_rss", "go_heap_inuse",
     "go_stack_inuse", "goroutines", "open_fds", "dial_errors_15s",
-    "echo_rate", "echo_p50_ms", "echo_p99_ms", "conntrack",
+    "echo_rate", "echo_p50_ms", "echo_p99_ms", "conntrack", "rejected",
 ]
 
 
