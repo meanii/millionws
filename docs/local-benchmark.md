@@ -82,8 +82,42 @@ Each run writes `results/local/<date>-<variant>/`:
 | `samples.csv` | Every sample during the run |
 | `summary.md`, `summary.json` | Peak, memory per connection, stop reason, dial errors |
 | `server.log`, `loadgen.log` | Last lines of each log |
+| `evidence/` | Screenshots for the report, when the run was kept for evidence (see below) |
 
-`KEEP=1` also serves Prometheus on `127.0.0.1:19090`. Add `--profile grafana` to a `docker compose up` in `bench/local` to get Grafana on `127.0.0.1:18001`.
+## Grafana and evidence screenshots
+
+`KEEP=1` leaves the stack running and serves Prometheus on `127.0.0.1:19090`. Grafana is behind the `grafana` Compose profile because `run.sh` does not start it on its own; bring it up next to a running stack (it needs the same `SERVER_IMAGE` only for Compose interpolation):
+
+```sh
+KEEP=1 bench/local/run.sh nbio-tuned 300000 5   # full peak run, stack stays up
+SERVER_IMAGE=millionws-bench:nbio-tuned \
+  docker compose --profile grafana up -d grafana   # run from bench/local
+```
+
+Grafana is then on `127.0.0.1:18001` with anonymous admin access. Two dashboards are provisioned under the MillionWS folder:
+
+| Dashboard | UID | Use |
+| --- | --- | --- |
+| `MillionWS` | `ypFZFgvmz` | Kubernetes deployment (filters on `namespace`/`pod` labels) |
+| `MillionWS local bench` | `millionws-local` | Local benchmark: same panels with the pod filter removed, pinned to `{namespace="millionws"}` |
+
+Only the local one shows data for bench runs, because the local Prometheus (`bench/local/prometheus.yml`) labels the server job with `namespace="millionws"` but sets no `pod` label, so every panel of the k8s dashboard matches nothing.
+
+Screenshots were taken headless with Playwright against the live stack (no desktop browser needed):
+
+- Grafana: `http://127.0.0.1:18001/d/millionws-local/millionws-local-bench?orgId=1&from=now-1h&to=now`, scrolled top to bottom first so lazily rendered panels load, then a full-page capture.
+- Prometheus console (v3): preselect the query through URL parameters, e.g. `/query?g0.expr=sum(millionws_connections_active)&g0.tab=1&g0.range_input=1h`. Typing into the CodeMirror box trips its autocomplete; the `g0.*` parameters avoid that. Omit empty parameters — an empty `g0.end_input=` makes the page fail with "Invalid time value".
+
+### Evidence run: `results/local/2026-09-28-nbio-tuned-4`
+
+Re-ran `nbio-tuned` at the full 300,000 target with 5 load generators to attach dashboard evidence to the report. It reproduced the comparison medians: **190,764 connections at 4.9 KiB each, no OOM** (`running false 0`, stopped on the 90 s plateau), with 87,190 dial errors — all `handshake`, i.e. the 503 admission guard turning new clients away while existing connections stayed up.
+
+| File in `evidence/` | Shows |
+| --- | --- |
+| `grafana-dashboard.png` | Local bench dashboard: connections ramp to ~190k and hold, process memory, Go memstats |
+| `prometheus-connections.png` | Console table: `sum(millionws_connections_active)` = 190764 |
+| `prometheus-connections-graph.png` | Console graph: linear ramp, then the flat guarded plateau |
+| `prometheus-targets.png` | Scrape health: 5/5 loadgen targets UP, 1/1 server UP |
 
 ## Limits of this setup
 
