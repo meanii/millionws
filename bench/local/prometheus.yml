@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 5s
+  scrape_timeout: 4s
+
+scrape_configs:
+  - job_name: server
+    static_configs:
+      - targets: ["server:8080"]
+        labels:
+          namespace: millionws # the Grafana dashboard filters on this label
+
+  - job_name: loadgen
+    dns_sd_configs:
+      - names: ["loadgen"] # resolves to every replica
+        type: A
+        port: 9100
+        refresh_interval: 5s
