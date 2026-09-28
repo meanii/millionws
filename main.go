@@ -66,6 +66,8 @@ func main() {
 	enablePprof := flag.Bool("pprof", false, "serve /debug/pprof/ on the same port")
 	flag.Parse()
 
+	go manageMemoryLimit()
+
 	upgrader := newUpgrader()
 	mux := &http.ServeMux{}
 	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
