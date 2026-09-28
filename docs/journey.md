@@ -38,3 +38,46 @@ A review of the repository before continuing found these gaps (full list in [roa
 Cost check: Hetzner raised cloud prices in June 2026. The comment in `infra/terraform/hetzner/main.tf` had `ccx33` at €0.077 per hour; the listed price is now €0.2227 per hour. A full 1M run with enough client machines came to an estimated €6 per hour.
 
 Decision: I have $200 of AWS promotional credit, so the load tests move to plain EC2 in one availability zone: one server and four clients, talking over private IPs so data transfer is free. The server listens on 16 ports, which gives each client IP 16 × 64,000 possible connections. The EKS setup stays in the repository as the earlier approach.
+
+## September 2026: local benchmark at 1 CPU and 1 GiB
+
+Before paying for cloud machines I wanted a number for each version of the server, measured the same way. The setup is in [local-benchmark.md](local-benchmark.md): the server in a container capped at 1 CPU and 1 GiB with no swap, five Go load generators each opening up to 60,000 connections, one 32-byte message per connection every 30 seconds, and a recorder that reads the container's cgroup files. Every variant ran three times; the table is in [results/local/2026-09-28-comparison.md](../results/local/2026-09-28-comparison.md).
+
+### The harness had bugs first
+
+- The first recorder took the connection count from Prometheus. Prometheus keeps answering with the last scraped value for a few seconds after a target dies, so right after an OOM kill it reported connections for a container that no longer existed. The recorder now reads the server's `/metrics` itself at the same moment as the cgroup files (`5e91058`).
+- The load generator sent the timestamp as 8 raw bytes. The gorilla server echoes every message as a text frame, the client rejected the invalid UTF-8 and closed the connection, and gorilla had no latency numbers. Payloads are decimal text now.
+- At 5,000 new connections per second the server died between two samples. The gorilla peak in that run was 25,513; at 1,000 per second, sampled every 2 seconds, it is 39,770.
+- Docker on this machine runs rootless. Container cgroups sit under `user.slice`, not `system.slice`, and container-to-container traffic is tracked in Docker's own network namespace. The recorder finds the cgroup from the container's PID and reads conntrack through a helper container.
+
+### Step by step
+
+Medians of three runs:
+
+| Step | Commit | Peak connections | KiB per connection | Result |
+| --- | --- | --- | --- | --- |
+| gorilla/websocket | `99609ad` | 39,770 | 25.11 | OOM kill |
+| nbio, first version | `27b4027` | 193,532 | 5.31 | OOM kill |
+| No panic, no log per close | `1b82b39` | 194,014 | 5.36 | OOM kill |
+| IPv4 listener | `4e46794` | 200,694 | 5.19 | OOM kill |
+| Go memory limit from cgroup | `9a1d737` | 210,730 | 4.93 | OOM kill |
+| 503 above 90% of memory | `dadb29f` | 180,842 | 5.39 | stays up |
+| Go limit under the 503 threshold | `476f773` | 190,894 | 4.91 | stays up |
+
+gorilla to nbio. gorilla runs one goroutine per connection, each with its own buffers, and used 21.08 KiB of process memory per connection. nbio holds 193,532 connections with fewer than 150 goroutines and 1.35 KiB of process memory each. That is 4.9 times the connections in the same 1 GiB.
+
+The kernel's share. With nbio, 3.96 of the 5.31 KiB per connection is kernel memory: the TCP socket, its inode and file, and the epoll entry. gorilla has the same 4.00 KiB. This part does not depend on the Go code, so it sets the floor: 1 GiB can never hold more than about 270,000 idle TCP connections on this kernel, whatever the server does.
+
+The fixes in `1b82b39` changed nothing measurable, as expected: the benchmark has no failed upgrades and no disconnects before the end.
+
+IPv4 listener. With `"tcp"` on `0.0.0.0`, Go opens a dual-stack `[::]` socket, and every IPv4 client becomes an IPv6 socket in the kernel. Listening on `tcp4` cut kernel memory from 3.96 to 3.83 KiB per connection and raised the peak by 3.7%.
+
+Go memory limit. The heap profile at 120,000 connections showed the live data, but the heap was larger: with the default `GOGC=100`, Go lets the heap grow to twice the live data before collecting, and that garbage was still mapped when the kernel killed the process. A fixed `GOMEMLIMIT` does not fit because the kernel's share grows with every connection. The server now reads `memory.current` once a second and gives Go whatever the kernel leaves. Go memory per connection fell from 1.35 to 1.10 KiB and the peak rose to 210,730. The cost is CPU: the GC ran almost all the time near the limit, CPU went from 37% to 99% of the core, and echo p99 went from 19 ms to 201 ms. The process still died.
+
+Admission guard. An OOM kill closes every connection at once. The server now answers new clients with 503 above 90% of the memory limit. The first version held 180,842 connections and stayed up, fewer than before, because the Go limit was still at 95%: the GC had no reason to collect before the guard started turning clients away.
+
+Final step. With the Go limit at 88%, two points under the guard, garbage is collected first and the guard trips only on live memory. The server held 190,894 connections in all three runs, rejected the rest with 503, and was still running when each run ended. That is 9% fewer than the run that got OOM-killed at 210,730, and I prefer it: at the limit, the earlier version drops 210,000 clients, while this one refuses new ones.
+
+What I did not change: each connection still has its own read-deadline timer and its own copies of its addresses. Together they were about 350 bytes per connection in the heap profile. Replacing the timers with one shared sweep is the next Go-side change to try, but with the kernel at 3.83 KiB it can win at most a few percent.
+
+For the 1M run this gives a sizing estimate: 1,000,000 × 4.91 KiB is about 4.7 GiB, so the server needs a memory limit of about 5.2 GiB with the guard at 90%.

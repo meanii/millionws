@@ -28,17 +28,27 @@ Each (client IP, server port) pair can hold about 64,000 connections. Four clien
 
 ### 1. Code
 
+Done:
+
+- Failed upgrades are counted in a metric instead of calling `panic` (`1b82b39`).
+- The per-disconnect log line is gone (`1b82b39`).
+- Go load generator in `cmd/loadgen`, on nbio. It opens connections at a set rate, keeps them mostly idle, sends a message on a set interval, and exports connected, failed by reason, and echo latency.
+- The local benchmark sets `ulimits` of 1,048,576 on the server container and scrapes the load generators.
+- Memory management for containers: the Go memory limit follows the cgroup limit, and new connections get a 503 above 90% of it (`476f773`).
+
+Still to do:
+
 - Server listens on 16 ports.
-- Failed upgrades are logged instead of calling `panic`.
-- Remove the per-disconnect `fmt.Println`.
-- New Go load generator in `cmd/loadgen`, using nbio. It opens connections at a set rate, keeps them mostly idle, sends a message on a set interval, and exports its own metrics (connected, failed, echo latency).
-- `ulimits` of 1,048,576 on the server container, and `fs.nr_open` raised with the other sysctls.
-- Prometheus scrapes the load generators as well as the server.
+- `ulimits` and `fs.nr_open` in the Hetzner and EC2 setups, which still use a host limit of 200,000.
 - CI: `go vet`, `go test`, `terraform fmt -check`, `terraform validate`.
 
 ### 2. Local run
 
-On a workstation with 12 cores and 40 GB of RAM. Loopback accepts any address in `127.0.0.0/8` as a source IP, which removes the 64,000 limit without extra machines. Expected ceiling is 300,000 to 500,000 connections (estimate, limited by memory for both server and clients on one machine). This run gives the first nbio number for memory per connection.
+Done on 2026-09-28, with the server capped at 1 CPU and 1 GiB rather than using the whole workstation. The cap makes the limit reproducible and turns the result into a per-connection cost. Method in [local-benchmark.md](local-benchmark.md), results in [results/local/2026-09-28-comparison.md](../results/local/2026-09-28-comparison.md).
+
+The final version held 190,894 connections at 4.91 KiB each. 3.83 KiB of that is kernel memory for the socket, which no change to the Go code can remove.
+
+What this means for 1,000,000 connections, as an estimate from the per-connection cost: 1,000,000 × 4.91 KiB is about 4.7 GiB, and with the admission guard at 90% the server needs a memory limit of about 5.2 GiB. The earlier plan of an 8 vCPU, 32 GiB server has more memory than that needs. The CPU need is less clear: near the memory limit the GC used a full core.
 
 ### 3. Terraform for EC2
 
@@ -63,17 +73,16 @@ A results table in the README comparing gorilla/websocket, nbio locally, and nbi
 
 Blocking the 1M run:
 
-- No load generator on the Hetzner stack.
-- The Locust client cannot hold 1M connections (see [journey.md](journey.md), September 2026).
+- The Hetzner stack has no load generator. `cmd/loadgen` can fill that role now.
+- The Locust client cannot hold 1M connections (see [journey.md](journey.md), September 2026). `cmd/loadgen` replaces it for connection-count tests.
 - Only one server port, so one client IP is limited to about 64,000 connections.
-- File descriptor limit is 200,000 on the host and not set on the container.
-- The Hetzner Terraform uses `cx23` (2 vCPU); a 1M run needs a larger instance.
+- File descriptor limit is 200,000 on the Hetzner host and not set on its container.
+- The Hetzner Terraform uses `cx23` (2 vCPU, 4 GB); a 1M run needs about 5.2 GiB for the server alone (estimate above).
 - `locustfile.py` defaults to `ws://localhost:4001`, while the server listens on 8080 (8002 on the Hetzner host).
 
-Correctness:
+Server:
 
-- `onWebsocket` calls `panic` when an upgrade fails.
-- `OnClose` prints one line per disconnect.
+- Near the memory limit the GC uses a full core and echo p99 rises to about 100 ms. Each connection has its own read-deadline timer and stores its local and remote address; in the heap profile at 120,000 connections these were about 20 MB and 22.5 MB. A shared idle sweep instead of per-connection timers could save part of the 1.08 KiB of Go memory per connection. Not measured yet.
 - `deploy/millionws/deployment.yaml` limits each pod to 512 MiB and scales on CPU, which does not track idle connections.
 
 Security, since the Hetzner server has a public IP:

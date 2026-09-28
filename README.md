@@ -11,27 +11,28 @@ Work in progress. The target of 1,000,000 connections has not been reached yet.
 | Stage | State |
 | --- | --- |
 | Echo server with Prometheus metrics | Done |
-| Switch from gorilla/websocket to nbio (epoll) | Done, not yet re-measured |
+| Switch from gorilla/websocket to nbio (epoll) | Done, measured |
 | Grafana dashboard, auto-provisioned | Done |
 | Single-server deployment on Hetzner Cloud | Done |
-| Go load generator that can open 250k connections per machine | Not started |
-| Local run at 300k to 500k connections | Not started |
+| Go load generator (`cmd/loadgen`) | Done |
+| Local benchmark with the server capped at 1 CPU and 1 GiB | Done |
 | AWS EC2 runs from 100k up to 1M connections | Not started |
 
 The plan, the open items, and the cost estimates are in [docs/roadmap.md](docs/roadmap.md). A dated log of decisions and mistakes is in [docs/journey.md](docs/journey.md).
 
-## Measurements so far
+## Results so far
 
-One measurement exists. It was taken with the first version of the server, which used gorilla/websocket and one goroutine per connection.
+Local benchmark on 2026-09-28: the server in a Docker container limited to 1 CPU and 1 GiB with no swap, clients opening 1,000 connections per second until the server stops accepting, one 32-byte message per connection every 30 seconds. Medians of three runs per version:
 
-| Metric | Value |
-| --- | --- |
-| Active connections | 5,000 |
-| Process memory | 192 MiB |
-| Goroutines | 5,010 |
-| Open file descriptors | 5,010 |
+| Server version | Peak connections | Memory per connection | Kernel part | Go part | After the peak |
+| --- | --- | --- | --- | --- | --- |
+| gorilla/websocket, goroutine per connection | 39,770 | 25.11 KiB | 4.00 KiB | 21.08 KiB | OOM-killed |
+| nbio, first version | 193,532 | 5.31 KiB | 3.96 KiB | 1.35 KiB | OOM-killed |
+| nbio, current | 190,894 | 4.91 KiB | 3.83 KiB | 1.08 KiB | still running, new clients get 503 |
 
-That is about 38 KB per connection. The goroutine count matching the connection count is the cost the nbio switch is meant to remove. The nbio version has not been measured yet, so no figure is claimed for it.
+The current version holds slightly fewer connections than the first nbio version but does not crash at its limit. Most of each connection's cost is now kernel memory for the TCP socket, which the Go code cannot reduce. Near the memory limit the GC uses the whole CPU core and echo p99 is about 93 ms.
+
+Every step between these rows, the method, and its limits: [docs/local-benchmark.md](docs/local-benchmark.md), [docs/journey.md](docs/journey.md), and the raw data in [results/local](results/local).
 
 ## How it works
 
@@ -41,10 +42,17 @@ That is about 38 KB per connection. The goroutine count matching the connection 
 | WebSocket | [nbio](https://github.com/lesismal/nbio) v1.6.8, event loop on epoll |
 | Metrics | Prometheus client, scraped every 5 s |
 | Dashboards | Grafana, provisioned from `deploy/grafana/provisioning` |
-| Load testing | Locust (current); a Go client is planned |
+| Load testing | `cmd/loadgen` (Go, nbio) for connection counts; Locust for the earlier EKS setup |
 | Infrastructure | Terraform for Hetzner Cloud and AWS EKS |
 
 With gorilla/websocket each connection needs a goroutine blocked on read, so 1M connections means 1M goroutines and their stacks. nbio registers every socket with epoll and runs callbacks from a small pool of goroutines, so the goroutine count stays flat as connections grow.
+
+When the server runs under a cgroup v2 memory limit, it manages memory itself (`memory.go`):
+
+- Once a second it sets the Go soft memory limit to 88% of the cgroup limit minus the memory the kernel holds for sockets. The kernel's share grows with every connection, so a fixed `GOMEMLIMIT` would be wrong at most connection counts. Setting `GOMEMLIMIT` turns this off.
+- Above 90% of the cgroup limit, `/ws` answers 503 until usage falls below 85%. This keeps the process out of the OOM killer, which would close every connection at once.
+
+The listener uses `tcp4` when `-addr` is an IPv4 address. A dual-stack `[::]` listener turns every IPv4 client into an IPv6 socket, which uses more kernel memory.
 
 ### Endpoints
 
@@ -54,7 +62,7 @@ With gorilla/websocket each connection needs a goroutine blocked on read, so 1M 
 | `/health` | Returns `200 OK` |
 | `/metrics` | Prometheus metrics |
 
-The server listens on `0.0.0.0:8080` by default. Use `-addr` and `-port` to change it.
+The server listens on `0.0.0.0:8080` by default. Use `-addr` and `-port` to change it, and `-pprof` to serve `/debug/pprof/` on the same port.
 
 ### Metrics
 
@@ -63,6 +71,9 @@ The server listens on `0.0.0.0:8080` by default. Use `-addr` and `-port` to chan
 | `millionws_connections_total` | Counter of accepted connections |
 | `millionws_connections_active` | Gauge of open connections |
 | `millionws_disconnections_total` | Counter of closed connections |
+| `millionws_upgrade_errors_total` | Counter of failed WebSocket handshakes |
+| `millionws_connections_rejected_total` | Counter of 503 answers from the memory guard |
+| `millionws_go_memory_limit_bytes` | Gauge of the Go memory limit the server set |
 
 Process memory, goroutine count, and open file descriptors come from the default Go and process collectors.
 
@@ -73,6 +84,13 @@ Local, with [just](https://github.com/casey/just) and Docker:
 ```sh
 just run                # build and start the server on :8080
 just start-monitoring   # Prometheus on :9090, Grafana on :8001
+```
+
+Local benchmark, the server capped at 1 CPU and 1 GiB (needs Docker and Python 3; see [docs/local-benchmark.md](docs/local-benchmark.md)):
+
+```sh
+just bench nbio-tuned   # one run of one version, results in results/local/
+just bench-matrix 3     # every version 3 times, plus a comparison table
 ```
 
 On Hetzner Cloud (creates one server; you are billed per hour until you destroy it):
@@ -90,7 +108,10 @@ The Hetzner stack exposes Grafana with the default `admin/admin` login on a publ
 
 | Path | Contents |
 | --- | --- |
-| `main.go` | The server |
+| `main.go`, `memory.go` | The server |
+| `cmd/loadgen` | Load generator: holds N connections and measures echo latency |
+| `bench/local` | Local benchmark: Compose file, run and recording scripts, one file per server version |
+| `results/local` | Benchmark output, one directory per run |
 | `deploy/local` | Docker Compose for local Prometheus and Grafana |
 | `deploy/hetzner` | Docker Compose for the single-server Hetzner stack |
 | `deploy/grafana` | Grafana datasource and dashboard provisioning |
@@ -98,7 +119,7 @@ The Hetzner stack exposes Grafana with the default `admin/admin` login on a publ
 | `infra/terraform/hetzner` | Terraform for one Hetzner Cloud server |
 | `infra/terraform/clusters`, `modules` | Terraform for two EKS clusters (earlier approach, see journey) |
 | `locust` | Locust test and Locust Operator manifests |
-| `docs` | Roadmap and journey |
+| `docs` | Roadmap, journey, and benchmark method |
 
 ## References
 
