@@ -41,7 +41,7 @@ resource "hcloud_ssh_key" "main" {
 # Create a new server running debian
 # use `cx23` for testing purpose deployment because of €0.005 / h
 # or alt `cx33` €0.008 / h 4.99 / mo
-# `ccx33` for actual workload, 8 AMD vCPU, 32 RAM - €0.077 / h
+# `ccx33` for actual workload, 8 AMD vCPU, 32 GB RAM - €0.2227 / h (listed price, checked 2026-09)
 resource "hcloud_server" "millionws" {
   name     = "millionws-hz"
   image    = "ubuntu-24.04"

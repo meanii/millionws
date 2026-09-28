@@ -19,11 +19,11 @@ benchmark:
     go test -bench=.
 
 locust:
-    locust -f tools/locust/load_testing.py
+    locust -f locust/locustfile.py
 
 locust-report:
     mkdir -p dist
-    locust -f tools/locust/load_testing.py \
+    locust -f locust/locustfile.py \
         --headless \
         -u 100 \
         -r 10 \
