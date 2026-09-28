@@ -36,6 +36,15 @@ def stat(values, fmt):
     return f"{mid} ({fmt(min(values))} to {fmt(max(values))})"
 
 
+def stop_label(run):
+    if run.get("oom_killed"):
+        return "OOM kill"
+    reason = run["stop_reason"]
+    if reason.startswith("no growth"):
+        return "stopped growing, server still up"
+    return reason
+
+
 def main():
     groups = load(sys.argv[1:])
     count = lambda v: f"{v:,.0f}"
@@ -46,7 +55,7 @@ def main():
     print("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
     for variant, runs in groups.items():
         b = [r["bytes_per_connection"] for r in runs]
-        stops = sorted({"OOM kill" if r.get("oom_killed") else r["stop_reason"] for r in runs})
+        stops = sorted({stop_label(r) for r in runs})
         print("| " + " | ".join([
             f"`{variant}`",
             str(len(runs)),

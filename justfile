@@ -5,7 +5,8 @@ tag := "v2.0.0"
 
 # build main
 build:
-    @go build -o ./dist/{{name}} ./...
+    @go build -o ./dist/{{name}} .
+    @go build -o ./dist/loadgen ./cmd/loadgen
 
 run: build
     @echo "use blow IP on prometheus.yml target host, since prometheus docker network wouldn't be able to access it through host"
@@ -29,6 +30,14 @@ locust-report:
         -r 10 \
         --run-time 1m \
         --html dist/locust-report.html
+
+# one local benchmark run of a variant in bench/local/variants
+bench variant="nbio-tuned" total="300000" replicas="5":
+    bench/local/run.sh {{variant}} {{total}} {{replicas}}
+
+# every variant, several times, plus a comparison table
+bench-matrix repeats="3":
+    bench/local/matrix.sh {{repeats}}
 
 docker-build:
     docker build -t {{image}}:{{tag}} .
