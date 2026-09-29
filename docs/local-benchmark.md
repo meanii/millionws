@@ -65,10 +65,8 @@ Each file in `bench/local/variants/` names a git commit of the server. `run.sh` 
 | `nbio-pollers1` | `bb8dfdb` | `-pollers=1` instead of the default (`NumCPU/4`) |
 | `nbio-gogc50` / `nbio-gogc200` | `476f773` | `GOGC=50` / `GOGC=200` via container env |
 | `nbio-profile` | `bb8dfdb` | tuned behavior plus `-pprof`, for heap/CPU profiles at peak |
-| `nbio-nokeepalive` | `bb8dfdb` | `-keepalive=0s`: no per-connection read-deadline timers |
-| `nbio-pollers1` | `bb8dfdb` | `-pollers=1` instead of the default (`NumCPU/4`) |
-| `nbio-profile` | `bb8dfdb` | tuned behavior plus `-pprof`, for heap/CPU profiles at peak |
 | `nbio-gogc50` / `nbio-gogc200` | `476f773` | tuned code with `GOGC=50` / `GOGC=200` |
+| `nbio-2ports` | `99d9237` | `-ports=8081` second listener; 1 loadgen × 2 ports held 100k with zero dial errors, proving the ~64k-per-(client IP, server port) ceiling is gone |
 
 Environment overrides change the limits without a new variant: `SERVER_CPUS`,
 `SERVER_MEM`, `LOADGEN_RATE` (per replica, default 1,000/replicas total),

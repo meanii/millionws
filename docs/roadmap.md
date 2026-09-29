@@ -38,9 +38,20 @@ Done:
 
 Still to do:
 
-- Server listens on 16 ports.
-- `ulimits` and `fs.nr_open` in the Hetzner and EC2 setups, which still use a host limit of 200,000.
-- CI: `go vet`, `go test`, `terraform fmt -check`, `terraform validate`.
+- Nothing on the code side; all three done 2026-09-29 (see Done below).
+
+Done, 2026-09-29:
+
+- Server listens on N ports: `-ports=8081,8090-8095` fans out to nbio
+  `Addrs` (`99d9237`), `-port` unchanged for the single-port case. Proven
+  locally: 1 loadgen × 2 ports held 100k with zero dial errors
+  (`results/local/2026-09-29-nbio-2ports/`), past the ~64k-per-pair ceiling.
+- fd limits raised everywhere: Hetzner host `nofile` 200k → 2M,
+  `file-max` → 3M, `fs.nr_open` = 2M, `nf_conntrack_max` = 1M, container
+  `ulimits` 2M, 16 ports published; same block in the EC2 cloud-init.
+- CI (`.github/workflows/ci.yml`): `gofmt` clean, `go vet`, `go test`,
+  `go build`, plus `terraform fmt -check`, `init`, `validate` for
+  `hetzner` and `aws-ec2`.
 
 ### 2. Local run
 
@@ -52,7 +63,23 @@ What this means for 1,000,000 connections, as an estimate from the per-connectio
 
 ### 3. Terraform for EC2
 
-`infra/terraform/aws-ec2`: one VPC, one public subnet, a security group that allows SSH and Grafana only from my IP and all traffic between the instances, one server and N clients. Spot by default with a flag for on-demand. The cloud-init script from the Hetzner setup is reused.
+Done 2026-09-29 in `infra/terraform/aws-ec2` (fmt + init + validate green,
+both cloud-init scripts `bash -n` clean and template-render tested): one VPC,
+one public subnet in a single AZ, a security group that allows SSH, Grafana
+and Prometheus only from `my_ip` with all traffic between the instances, one
+server and N clients. Spot by default with a `use_spot` flag for on-demand.
+The cloud-init reuses the Hetzner tuning block (adapted to AL2023/`dnf`,
+`ec2-user`), with the 2M fd limits and 1M conntrack from the start.
+
+Two design points worth knowing: server and clients discover each other
+through the EC2 API (tagged instances + an IAM describe role), so there are
+no Terraform cross-references and no dependency cycle — one `apply` brings
+everything up, clients wait up to 20 minutes for the server and vice versa.
+And the server's Prometheus targets (each client's `9101..910N` loadgen
+metrics ports) are rendered into `deploy/aws/prometheus.yml` by cloud-init
+before compose starts. Grafana reuses the repo provisioning, including the
+local-bench dashboard (the EC2 scrape config sets the same
+`namespace="millionws"` label it filters on).
 
 ### 4. AWS runs
 

@@ -4,14 +4,23 @@ services:
     build:
       context: ../..
       dockerfile: Dockerfile
+    # 16 ports: one client IP holds ~64k connections per server port.
+    command: ["-ports=8081-8095", "-keepalive=0s"]
+    ulimits:
+      nofile:
+        soft: 2097152
+        hard: 2097152
     ports:
-      - "8002:8080"
+      - "8002-8017:8080-8095"
     restart: always
 
   grafana:
     image: grafana/grafana
+    # Bound to localhost: reach Grafana through an SSH tunnel
+    # (ssh -L 8001:localhost:8001 root@<host>). The default admin/admin
+    # credentials must never sit on a public port.
     ports:
-      - "8001:3000"
+      - "127.0.0.1:8001:3000"
     restart: always
     environment:
       # Image renderer settings
@@ -42,8 +51,11 @@ services:
 
   prometheus:
     image: prom/prometheus
+    # Same as Grafana above: localhost only, use the SSH tunnel.
+    # --web.enable-lifecycle below allows remote shutdown/restart,
+    # which is safe only behind this bind.
     ports:
-      - "9090:9090"
+      - "127.0.0.1:9090:9090"
     volumes:
       - "../grafana/provisioning/datasources/prometheus.yml:/etc/prometheus/prometheus.yml"
       - "prometheus_data:/prometheus"

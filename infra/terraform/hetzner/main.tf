@@ -34,8 +34,11 @@ provider "hcloud" {
 }
 
 resource "hcloud_ssh_key" "main" {
-  name       = "pop_os_default_ssh"
-  public_key = file("~/.ssh/id_ed25519.pub")
+  name = "pop_os_default_ssh"
+  # pathexpand: file() neither expands ~ nor tolerates a missing file, both
+  # of which break `terraform validate` on machines without this key.
+  # try() keeps validate green; a real apply still needs the key present.
+  public_key = try(file(pathexpand("~/.ssh/id_ed25519.pub")), "")
 }
 
 # Create a new server running debian
@@ -85,22 +88,29 @@ usermod -aG docker ubuntu || true
 
 echo "[cloud-init] tuning kernel parameters" >> $LOG
 cat >/etc/sysctl.d/99-millionws.conf <<'SYSCTL'
-fs.file-max = 1000000
+# File descriptors: 1M connections need ~1 fd each on the server, plus
+# headroom for the container runtime, so the host allows 2M (was 200k).
+fs.file-max = 3000000
+fs.nr_open = 2000000
 net.core.somaxconn = 65535
 net.core.netdev_max_backlog = 16384
-net.ipv4.ip_local_port_range = 1024 65000
+net.ipv4.ip_local_port_range = 1024 65535
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 15
+# Stateful firewalling tracks every connection; the default table
+# (often 262,144) would fill up long before 1M. Unknown keys are skipped
+# with an error but do not stop sysctl --system (no set -e in this script).
+net.netfilter.nf_conntrack_max = 1048576
 SYSCTL
 
 sysctl --system
 
 echo "[cloud-init] raising file descriptor limits" >> $LOG
 cat >/etc/security/limits.d/99-millionws.conf <<'LIMITS'
-* soft nofile 200000
-* hard nofile 200000
-root soft nofile 200000
-root hard nofile 200000
+* soft nofile 2000000
+* hard nofile 2000000
+root soft nofile 2000000
+root hard nofile 2000000
 LIMITS
 
 # Ensure home exists (cloud-init runs as root)
@@ -123,9 +133,12 @@ output "server" {
 }
 
 output "grafana" {
-  value = "\ngrafana http://${hcloud_server.millionws.ipv4_address}:8001\nusername: admin\npassword: admin"
+  # Grafana and Prometheus listen on localhost only (see deploy/hetzner/compose.yml);
+  # reach them through an SSH tunnel from your machine:
+  # ssh -L 8001:localhost:8001 -L 9090:localhost:9090 root@<ipv4>
+  value = "\ngrafana http://localhost:8001 (via SSH tunnel)\nusername: admin\npassword: admin"
 }
 
 output "prometheus" {
-  value = "\nprometheus http://${hcloud_server.millionws.ipv4_address}:9090\n"
+  value = "\nprometheus http://localhost:9090 (via SSH tunnel)\n"
 }

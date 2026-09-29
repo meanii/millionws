@@ -35,7 +35,10 @@ services:
       target: loadgen
     restart: "no"
     environment:
-      LOADGEN_URL: ws://server:8080${SERVER_PATH:-/ws}
+      # Full override wins, so multi-port tests can list several server ports
+      # (comma-separated, used round-robin by loadgen), e.g.
+      # LOADGEN_URL=ws://server:8080/ws,ws://server:8081/ws
+      LOADGEN_URL: ${LOADGEN_URL:-ws://server:8080${SERVER_PATH:-/ws}}
       LOADGEN_CONNS: ${LOADGEN_CONNS:-10000}
       LOADGEN_RATE: ${LOADGEN_RATE:-1000}
       LOADGEN_INTERVAL: ${LOADGEN_INTERVAL:-30s}
