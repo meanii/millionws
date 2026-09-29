@@ -16,19 +16,17 @@ jobs:
       - run: go test ./...
       - run: go build -o /dev/null .
 
-  terraform:
+  opentofu:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dir: [infra/terraform/hetzner, infra/terraform/aws-ec2]
+        dir: [infra/opentofu/hetzner, infra/opentofu/aws-ec2]
     defaults:
       run:
         working-directory: ${{ matrix.dir }}
     steps:
       - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.x
-      - run: terraform fmt -check
-      - run: terraform init -backend=false -input=false
-      - run: terraform validate
+      - uses: opentofu/setup-opentofu@v1
+      - run: tofu fmt -check
+      - run: tofu init -backend=false -input=false
+      - run: tofu validate

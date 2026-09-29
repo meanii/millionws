@@ -96,10 +96,10 @@ just bench-matrix 3     # every version 3 times, plus a comparison table
 On Hetzner Cloud (creates one server; you are billed per hour until you destroy it):
 
 ```sh
-cd infra/terraform/hetzner
+cd infra/opentofu/hetzner
 export HZ_TOKEN=...     # Hetzner Cloud API token
-make start              # terraform apply; cloud-init installs Docker and starts the stack
-make stop               # terraform destroy
+make start              # tofu apply; cloud-init installs Docker and starts the stack
+make stop               # tofu destroy
 ```
 
 The Hetzner stack exposes Grafana with the default `admin/admin` login on a public IP. Change the password or restrict the firewall before leaving it running.
@@ -116,8 +116,9 @@ The Hetzner stack exposes Grafana with the default `admin/admin` login on a publ
 | `deploy/hetzner` | Docker Compose for the single-server Hetzner stack |
 | `deploy/grafana` | Grafana datasource and dashboard provisioning |
 | `deploy/millionws` | Kubernetes manifests (EKS approach) |
-| `infra/terraform/hetzner` | Terraform for one Hetzner Cloud server |
-| `infra/terraform/clusters`, `modules` | Terraform for two EKS clusters (earlier approach, see journey) |
+| `infra/opentofu/hetzner` | OpenTofu for one Hetzner Cloud server |
+| `infra/opentofu/aws-ec2` | OpenTofu for the EC2 load-test stack (server + clients) |
+| `infra/opentofu/clusters`, `modules` | OpenTofu for two EKS clusters (earlier approach, see journey) |
 | `locust` | Locust test and Locust Operator manifests |
 | `docs` | Roadmap, journey, and benchmark method |
 

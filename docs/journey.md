@@ -35,7 +35,7 @@ A review of the repository before continuing found these gaps (full list in [roa
 - The file descriptor limit is 200,000 while the server is configured for `MaxLoad: 1000000`, and the container has no `ulimits` of its own.
 - The server panics when a WebSocket upgrade fails and prints a line on every disconnect. Both are a problem under load.
 
-Cost check: Hetzner raised cloud prices in June 2026. The comment in `infra/terraform/hetzner/main.tf` had `ccx33` at €0.077 per hour; the listed price is now €0.2227 per hour. A full 1M run with enough client machines came to an estimated €6 per hour.
+Cost check: Hetzner raised cloud prices in June 2026. The comment in `infra/opentofu/hetzner/main.tf` had `ccx33` at €0.077 per hour; the listed price is now €0.2227 per hour. A full 1M run with enough client machines came to an estimated €6 per hour.
 
 Decision: I have $200 of AWS promotional credit, so the load tests move to plain EC2 in one availability zone: one server and four clients, talking over private IPs so data transfer is free. The server listens on 16 ports, which gives each client IP 16 × 64,000 possible connections. The EKS setup stays in the repository as the earlier approach.
 

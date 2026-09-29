@@ -1,5 +1,5 @@
 # Server side of the EC2 benchmark stack. Started by cloud-init
-# (infra/terraform/aws-ec2/user_data_server.sh), which clones this repo,
+# (infra/opentofu/aws-ec2/user_data_server.sh), which clones this repo,
 # writes prometheus.yml with the client targets, and runs
 # `docker compose up -d --build` here.
 services:

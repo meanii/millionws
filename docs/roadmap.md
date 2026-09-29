@@ -50,7 +50,7 @@ Done, 2026-09-29:
   `file-max` → 3M, `fs.nr_open` = 2M, `nf_conntrack_max` = 1M, container
   `ulimits` 2M, 16 ports published; same block in the EC2 cloud-init.
 - CI (`.github/workflows/ci.yml`): `gofmt` clean, `go vet`, `go test`,
-  `go build`, plus `terraform fmt -check`, `init`, `validate` for
+  `go build`, plus `tofu fmt -check`, `init`, `validate` for
   `hetzner` and `aws-ec2`.
 
 ### 2. Local run
@@ -63,7 +63,7 @@ What this means for 1,000,000 connections, as an estimate from the per-connectio
 
 ### 3. Terraform for EC2
 
-Done 2026-09-29 in `infra/terraform/aws-ec2` (fmt + init + validate green,
+Done 2026-09-29 in `infra/opentofu/aws-ec2` (fmt + init + validate green,
 both cloud-init scripts `bash -n` clean and template-render tested): one VPC,
 one public subnet in a single AZ, a security group that allows SSH, Grafana
 and Prometheus only from `my_ip` with all traffic between the instances, one
@@ -129,6 +129,6 @@ EC2 in us-east-1, per hour:
 | Public IPv4 addresses and EBS | about $0.03 | about $0.03 |
 | Total | about $1.10 | about $0.40 |
 
-About 15 hours of AWS time across all runs comes to $6 to $17, inside the $200 credit. The larger risk is leaving the instances running: the full on-demand setup costs about $800 per month. Every session ends with `terraform destroy`.
+About 15 hours of AWS time across all runs comes to $6 to $17, inside the $200 credit. The larger risk is leaving the instances running: the full on-demand setup costs about $800 per month. Every session ends with `tofu destroy`.
 
 For comparison, the same setup on Hetzner (one CCX33 at €0.2227 per hour and 16 CPX51 clients at €0.3822 per hour) comes to about €6.30 per hour, and two EKS clusters under load to about $5 to $10 per hour.
