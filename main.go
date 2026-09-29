@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -66,9 +67,49 @@ func newUpgrader(keepalive time.Duration) *websocket.Upgrader {
 	return u
 }
 
+// parsePorts expands "8081,8090-8092" into [8081 8090 8091 8092].
+// Empty items are skipped; anything else is fatal, because silently
+// listening on fewer ports than planned would cap a benchmark at 64k
+// connections per missing port with no obvious error.
+func parsePorts(s string) []int {
+	var out []int
+	for _, item := range strings.Split(s, ",") {
+		item = strings.TrimSpace(item)
+		if item == "" {
+			continue
+		}
+		lo, hi, hasHi := item, 0, false
+		if i := strings.IndexByte(item, '-'); i >= 0 {
+			lo, hasHi = item[:i], true
+			var err error
+			if hi, err = strconv.Atoi(item[i+1:]); err != nil {
+				log.Fatalf("bad -ports %q: %v", s, err)
+			}
+		}
+		start, err := strconv.Atoi(lo)
+		if err != nil {
+			log.Fatalf("bad -ports %q: %v", s, err)
+		}
+		if !hasHi {
+			hi = start
+		}
+		if start < 1 || hi > 65535 || hi < start {
+			log.Fatalf("bad -ports %q: %q out of range", s, item)
+		}
+		for p := start; p <= hi; p++ {
+			out = append(out, p)
+		}
+	}
+	return out
+}
+
 func main() {
 	addr := flag.String("addr", "0.0.0.0", "network interface you want to run on")
 	port := flag.Int("port", 8080, "port number for the service")
+	// Extra ports (same handler on all), e.g. -ports=8081 or -ports=8081,8090-8095.
+	// One client IP holds ~64k connections per server port, so more ports
+	// multiply capacity without more client machines.
+	ports := flag.String("ports", "", "extra ports and ranges, e.g. 8081,8090-8095")
 	enablePprof := flag.Bool("pprof", false, "serve /debug/pprof/ on the same port")
 	// Per-connection websocket read deadline, reset on every message. Zero
 	// disables it entirely: no timers, but dead peers are never reaped.
@@ -112,16 +153,21 @@ func main() {
 		network = "tcp4"
 	}
 
+	addrs := []string{net.JoinHostPort(*addr, strconv.Itoa(*port))}
+	for _, p := range parsePorts(*ports) {
+		addrs = append(addrs, net.JoinHostPort(*addr, strconv.Itoa(p)))
+	}
+
 	engine := nbhttp.NewEngine(nbhttp.Config{
 		Network:                 network,
-		Addrs:                   []string{net.JoinHostPort(*addr, strconv.Itoa(*port))},
+		Addrs:                   addrs,
 		MaxLoad:                 1000000,
 		ReleaseWebsocketPayload: true,
 		NPoller:                 *pollers,
 		Handler:                 mux,
 	})
 
-	log.Printf("starting millionws server on ws://%s", net.JoinHostPort(*addr, strconv.Itoa(*port)))
+	log.Printf("starting millionws server on ws://%s", strings.Join(addrs, ", ws://"))
 	if err := engine.Start(); err != nil {
 		log.Fatalf("nbio.Start failed: %v", err)
 	}
