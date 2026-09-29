@@ -61,6 +61,22 @@ Each file in `bench/local/variants/` names a git commit of the server. `run.sh` 
 | `nbio-memlimit` | `9a1d737` | Go memory limit follows the cgroup limit minus kernel memory |
 | `nbio-guard` | `dadb29f` | 503 for new connections above 90% of the memory limit |
 | `nbio-tuned` | `476f773` | Go memory limit set 2 points under the guard |
+| `nbio-nokeepalive` | `bb8dfdb` | `-keepalive=0s`: no per-connection read-deadline timers |
+| `nbio-pollers1` | `bb8dfdb` | `-pollers=1` instead of the default (`NumCPU/4`) |
+| `nbio-gogc50` / `nbio-gogc200` | `476f773` | `GOGC=50` / `GOGC=200` via container env |
+| `nbio-profile` | `bb8dfdb` | tuned behavior plus `-pprof`, for heap/CPU profiles at peak |
+| `nbio-nokeepalive` | `bb8dfdb` | `-keepalive=0s`: no per-connection read-deadline timers |
+| `nbio-pollers1` | `bb8dfdb` | `-pollers=1` instead of the default (`NumCPU/4`) |
+| `nbio-profile` | `bb8dfdb` | tuned behavior plus `-pprof`, for heap/CPU profiles at peak |
+| `nbio-gogc50` / `nbio-gogc200` | `476f773` | tuned code with `GOGC=50` / `GOGC=200` |
+
+Environment overrides change the limits without a new variant: `SERVER_CPUS`,
+`SERVER_MEM`, `LOADGEN_RATE` (per replica, default 1,000/replicas total),
+`LOADGEN_INTERVAL`, `LOADGEN_PAYLOAD`, `HOLD`, `PLATEAU`, `MAX`, `KEEP`.
+The optimization night (results in
+[2026-09-29-optimization.md](../results/local/2026-09-29-optimization.md))
+used these to sweep CPUs (1/2/4), memory (512m/1g), dial rate (5,000/s
+burst), active traffic (1 KiB every 1 s), and a 600 s soak.
 
 ## Running it
 

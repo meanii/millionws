@@ -1,0 +1,77 @@
+goroutine profile: total 27
+7 @ 0x498245 0x496d1b 0x6e6b7d 0x6e6b75 0x6e6b96 0x6e6325 0x6e4f25 0x7036b3 0x70298b 0x7f49f8 0x7f335e 0x700b65 0x700505 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x498244	syscall.Syscall+0x24								/usr/local/go/src/syscall/syscall_linux.go:74
+#	0x496d1a	syscall.write+0x3a								/usr/local/go/src/syscall/zsyscall_linux_amd64.go:964
+#	0x6e6b7c	syscall.Write+0x5c								/usr/local/go/src/syscall/syscall_unix.go:211
+#	0x6e6b74	github.com/lesismal/nbio.(*Conn).writeStream+0x54				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:431
+#	0x6e6b95	github.com/lesismal/nbio.(*Conn).doWrite+0x75					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:960
+#	0x6e6324	github.com/lesismal/nbio.(*Conn).write+0x84					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:710
+#	0x6e4f24	github.com/lesismal/nbio.(*Conn).Write+0xa4					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:357
+#	0x7036b2	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).writeFrame+0x632		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:980
+#	0x70298a	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).WriteMessage+0x44a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:698
+#	0x7f49f7	main.newUpgrader.func2+0x17							/app/main.go:60
+#	0x7f335d	main.newUpgrader.(*Upgrader).OnMessage.func4+0x3d				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:246
+#	0x700b64	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleWsMessage+0x524		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:259
+#	0x700504	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage.func2+0x84	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:216
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+5 @ 0x6e2ba1 0x484001
+#	0x6e2ba0	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x0	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:29
+
+4 @ 0x47c6ee 0x4594f7 0x6e2f11 0x484001
+#	0x6e2f10	github.com/lesismal/nbio/taskpool.New.func3+0x70	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:111
+
+3 @ 0x4982d9 0x497e85 0x6ead5c 0x6ea31a 0x484001
+#	0x4982d8	syscall.Syscall6+0x38					/usr/local/go/src/syscall/syscall_linux.go:96
+#	0x497e84	syscall.EpollWait+0x44					/usr/local/go/src/syscall/zsyscall_linux_amd64.go:1591
+#	0x6ead5b	github.com/lesismal/nbio.(*poller).readWriteLoop+0x11b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:236
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+1 @ 0x416369 0x47e109 0x6797b3 0x484001
+#	0x47e108	os/signal.signal_recv+0x28	/usr/local/go/src/runtime/sigqueue.go:152
+#	0x6797b2	os/signal.loop+0x12		/usr/local/go/src/os/signal/signal_unix.go:23
+
+1 @ 0x43b571 0x47b4fd 0x65ad31 0x65ab45 0x6579ab 0x672d0a 0x6737ba 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x65ad30	runtime/pprof.writeRuntimeProfile+0xb0						/usr/local/go/src/runtime/pprof/pprof.go:788
+#	0x65ab44	runtime/pprof.writeGoroutine+0x44						/usr/local/go/src/runtime/pprof/pprof.go:747
+#	0x6579aa	runtime/pprof.(*Profile).WriteTo+0x14a						/usr/local/go/src/runtime/pprof/pprof.go:371
+#	0x672d09	net/http/pprof.handler.ServeHTTP+0x529						/usr/local/go/src/net/http/pprof/pprof.go:272
+#	0x6737b9	net/http/pprof.Index+0xd9							/usr/local/go/src/net/http/pprof/pprof.go:389
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+1 @ 0x47c6ee 0x410d13 0x410872 0x7f3b4b 0x44657d 0x484001
+#	0x7f3b4a	main.main+0x7aa		/app/main.go:131
+#	0x44657c	runtime.main+0x29c	/usr/local/go/src/runtime/proc.go:285
+
+1 @ 0x47c6ee 0x410d13 0x410892 0x7f4153 0x484001
+#	0x7f4152	main.manageMemoryLimit+0x2b2	/app/memory.go:64
+
+1 @ 0x47c6ee 0x410d13 0x410892 0x7f44ac 0x484001
+#	0x7f44ab	main.guardMemory+0xab	/app/memory.go:109
+
+1 @ 0x47c6ee 0x4594f7 0x6792e6 0x484001
+#	0x6792e5	os/signal.NotifyContext.func1+0x65	/usr/local/go/src/os/signal/signal.go:289
+
+1 @ 0x498245 0x496545 0x6e9d65 0x4e0ee2 0x530fb6 0x6e9899 0x6e6fce 0x6f131e 0x6eee7c 0x484001
+#	0x498244	syscall.Syscall+0x24							/usr/local/go/src/syscall/syscall_linux.go:74
+#	0x496544	syscall.Dup+0x24							/usr/local/go/src/syscall/zsyscall_linux_amd64.go:345
+#	0x6e9d64	github.com/lesismal/nbio.dupStdConn.func1+0x24				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/net_unix.go:42
+#	0x4e0ee1	internal/poll.(*FD).RawControl+0xe1					/usr/local/go/src/internal/poll/fd_posix.go:61
+#	0x530fb5	net.(*rawConn).Control+0x35						/usr/local/go/src/net/rawconn.go:32
+#	0x6e9898	github.com/lesismal/nbio.dupStdConn+0x138				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/net_unix.go:41
+#	0x6e6fcd	github.com/lesismal/nbio.NBConn+0x2d					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:1038
+#	0x6f131d	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x3d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:681
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+1 @ 0x6e3341 0x484001
+#	0x6e3340	github.com/lesismal/nbio/timer.(*Timer).Async.func1+0x0	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:83
+

@@ -1,0 +1,21 @@
+File: millionws-prof
+Type: inuse_space
+Showing nodes accounting for 151.03MB, 97.73% of 154.53MB total
+Dropped 17 nodes (cum <= 0.77MB)
+Showing top 15 nodes out of 45
+      flat  flat%   sum%        cum   cum%
+   37.01MB 23.95% 23.95%    37.01MB 23.95%  github.com/lesismal/nbio.dupStdConn
+   35.51MB 22.98% 46.92%    35.51MB 22.98%  github.com/lesismal/nbio/nbhttp/websocket.NewServerConn
+   21.87MB 14.15% 61.07%    21.87MB 14.15%  time.newTimer
+      15MB  9.71% 70.78%       15MB  9.71%  net.sockaddrToTCP
+      10MB  6.47% 77.25%       10MB  6.47%  syscall.anyToSockaddr
+    8.53MB  5.52% 82.77%     8.53MB  5.52%  github.com/lesismal/nbio.(*Engine).Start
+    8.04MB  5.20% 87.97%    74.41MB 48.15%  github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking
+    7.50MB  4.85% 92.83%    29.37MB 19.00%  github.com/lesismal/nbio.(*Conn).setDeadline
+       5MB  3.24% 96.06%   104.41MB 67.57%  github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1
+    1.58MB  1.02% 97.09%     1.58MB  1.02%  github.com/lesismal/nbio/taskpool.New
+    0.50MB  0.32% 97.41%        1MB  0.65%  github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete
+    0.50MB  0.32% 97.73%        1MB  0.65%  github.com/lesismal/nbio.(*Conn).Execute
+         0     0% 97.73%    36.01MB 23.30%  github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1
+         0     0% 97.73%    36.01MB 23.30%  github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1
+         0     0% 97.73%        3MB  1.94%  github.com/lesismal/nbio.(*poller).readWriteLoop

@@ -1,0 +1,7 @@
+container                                         conns   mem MiB  KiB/conn
+millionws-bench-loadgen-1                        38,150     247.4      6.64
+millionws-bench-loadgen-2                        38,222     246.7      6.61
+millionws-bench-loadgen-3                        38,250     247.7      6.63
+millionws-bench-loadgen-4                        38,165     248.1      6.66
+millionws-bench-loadgen-5                        38,103     247.3      6.65
+TOTAL                                           190,890    1237.1      6.64

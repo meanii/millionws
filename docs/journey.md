@@ -81,3 +81,20 @@ Final step. With the Go limit at 88%, two points under the guard, garbage is col
 What I did not change: each connection still has its own read-deadline timer and its own copies of its addresses. Together they were about 350 bytes per connection in the heap profile. Replacing the timers with one shared sweep is the next Go-side change to try, but with the kernel at 3.83 KiB it can win at most a few percent.
 
 For the 1M run this gives a sizing estimate: 1,000,000 × 4.91 KiB is about 4.7 GiB, so the server needs a memory limit of about 5.2 GiB with the guard at 90%.
+
+## September 2026, night: optimization round
+
+Twelve more local runs in one night (results in [results/local/2026-09-29-optimization.md](../results/local/2026-09-29-optimization.md)), each testing one idea:
+
+- Heap profile at 190k (`go tool pprof -top` via the new `-pprof` flag): `dupStdConn` 204 B/conn, `NewServerConn` struct 196 B, `time.newTimer` 120 B, addresses 138 B, `setDeadline` 41 B. Timer-related ≈ 160 B/conn.
+- `-keepalive=0s` (new flag, default 120 s preserves tuned): Go anon −299 B/conn, peak +6.7% to 203,682 (two runs ±68). Kernel byte-identical. nbio honors 0 as disabled at upgrade and per-message reset; the engine's 120 s floor applies to plain HTTP only, and the upgrader clears the accept-time deadline. Cost: no dead-peer detection.
+- CPU scaling: 2 and 4 CPUs hold the same peak and per-conn numbers — the peak is memory-bound. Total CPU burn rises with cores while p99 worsens; 1 CPU is most efficient for idle conns.
+- Memory scaling: 512 MiB holds 95,887 (2× within 0.5% of the 1 GiB peak) — linear, so the 1M projection stands.
+- GOGC: 50 gives +1.9% peak but 3.6× p99; 200 loses 3.5% (dead heap trips the guard early). Default 100 stays.
+- `-pollers=1` (new flag): no change at peak; idle fds 15 → 11 as predicted.
+- Burst: 5,000 dials/s reaches 100k in 20 s with zero errors — safe cloud ramp rate.
+- Active traffic (1 KiB/s per conn): CPU-bound at ~40k conns, socket buffers dominate (~3 KiB/conn and climbing), p99 4.2 s. Idle numbers apply to idle conns only.
+- Soak: 10 min flat at 190,890, +1.6 MiB drift (noise), no OOM. No leak. First `timeout` dial errors (SYN drops under a long storm on a loaded host).
+- Loadgen client side: 6.57–6.64 KiB/conn — a 250k-conn client needs ~1.7 GiB.
+
+Method lessons: run one bench at a time under `flock` (duplicate launchers fought over one stack); a saturated server stops answering `/metrics`, which `record.py` logs as `conns 0` (peak logic ignores those rows); `open_fds − conns` ≈ 12 pre-guard and ≈ 50 in the 503 storm (rejected handshakes briefly hold fds) — offset, not leak.
