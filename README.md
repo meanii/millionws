@@ -8,6 +8,14 @@ The server does as little as possible on purpose: it accepts connections, echoes
 
 The target of 1,000,000 concurrent connections has been reached and measured: one `m7i-flex.large` (2 vCPU, 8 GiB) held it in two AWS regions, for 75 minutes without anything touching it, and 1.42 million with a 7 GiB container. The limits found on the way are listed under [Results so far](#results-so-far).
 
+**1,420,239 connections on one server** (Mumbai, 2026-09-30, times in IST). The steps are 500k, 1M, then 1.3M and 1.42M after the fixes; the dips around 1M are the server being killed on purpose in stall tests and every client reconnecting. The plateau at 1.42M is the server's memory guard turning further clients away, not a crash. [Full dashboard](results/aws/2026-09-30-mumbai-validation/evidence/screenshots/grafana_local-bench_full-run_1300-1503IST.png), [run report](results/aws/2026-09-30-mumbai-validation/README.md).
+
+![Grafana: active connections on one server reaching 1,420,239](docs/images/mumbai-1.42m-active-connections.png)
+
+**1,000,008 connections held for 75 minutes** with nothing touching the server (Virginia, 2026-09-30, times in IST): 0 rejections, 0 crashes, memory flat. [Full dashboard](results/aws/2026-09-30-virginia-hold-75min/evidence/screenshots/grafana_local-bench_1306-1444IST.png), [run report](results/aws/2026-09-30-virginia-hold-75min/README.md).
+
+![Grafana: 1,000,008 active connections held flat from 13:10 to 14:44 IST](docs/images/virginia-1m-75min-hold-active-connections.png)
+
 | Stage | State |
 | --- | --- |
 | Echo server with Prometheus metrics | Done |
