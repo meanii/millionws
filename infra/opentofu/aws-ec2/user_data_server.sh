@@ -2,7 +2,7 @@
 # Server cloud-init (Amazon Linux 2023): Docker, kernel/file tuning for 1M+
 # connections, repo clone, Prometheus targets for every client (discovered
 # through the EC2 API, so no Terraform cross-references), compose up.
-# Template vars: server_ports ("8080-8095"), server_mem_limit, expect_clients,
+# Template vars: server_ports ("8080-8095"), server_mem_limit, server_maxload, expect_clients,
 # replicas, repo_url, git_ref, max_runtime_minutes, timezone.
 LOG=/tmp/cloud-init.log
 # Cost guard: the instance shuts itself down (and, with terminate-on-shutdown,
@@ -88,7 +88,7 @@ echo "[cloud-init] writing Prometheus targets"
 } >prometheus.yml
 
 echo "[cloud-init] starting compose stack"
-TIMEZONE="${timezone}" SERVER_PORTS="${server_ports}" SERVER_MEM_LIMIT="${server_mem_limit}" docker compose up -d --build
+TIMEZONE="${timezone}" SERVER_PORTS="${server_ports}" SERVER_MEM_LIMIT="${server_mem_limit}" SERVER_MAXLOAD="${server_maxload}" docker compose up -d --build
 
 echo "[cloud-init] starting the evidence sampler (CSV every 10 s in /home/ec2-user/evidence)"
 mkdir -p /home/ec2-user/evidence
