@@ -1,0 +1,6 @@
+13:08:08 run B start. server 3.235.93.106
+13:08:51 prometheus ready
+13:10:20 T0: 1M reached, active=1000008. Holding 75 minutes with passive polling only
+14:16:08 starting a 10 minute Grafana video (passive)
+14:25:50 hold finished after 75 minutes. Final light capture
+14:26:27 run B capture done

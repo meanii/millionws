@@ -105,6 +105,16 @@ The first canary stopped at 76,952 because the security group tracks each connec
 
 999,996 connections on the same server type in ap-south-1: 34 minutes 35 seconds at a stretch, 5.3 KiB per connection, no rejections. The server was OOM-killed three times, each within 14 seconds of a 30 second CPU profile started by my evidence collection (the third on purpose). The 1 s memory trace shows socket buffers growing by about 120 MiB per second while the read path is stalled; a 6 GiB container has about 920 MiB of headroom at 1M, so it survives about 7 to 12 seconds. Recovery took about 2 min 20 s each time. Report: [results/aws/2026-09-30-mumbai-1m](../results/aws/2026-09-30-mumbai-1m/README.md).
 
+### 4e. Validation runs, 2026-09-30
+
+Four things the earlier runs left open, run on two regions at once ([Mumbai validation](../results/aws/2026-09-30-mumbai-validation/README.md), [Virginia 75 minute hold](../results/aws/2026-09-30-virginia-hold-75min/README.md), [cost-guard test](../results/aws/2026-09-30-cost-guard-test/README.md)):
+
+- **A clean long hold: done.** 1,000,008 connections for 75 minutes with nothing touching the server: 0 rejections, 0 kills, container memory 5,168 to 5,178 MiB, flat from 13:20 to 14:20.
+- **The 500k stage: done** (500,004 connections, 5.4 KiB each).
+- **The limit above 1M: found, and not the one expected.** The kernel's connection-tracking table (1,048,576 entries) dropped new flows at about 1.05M; the earlier 1M runs were 4.6% under it. With the ports exempted and a 7 GiB container, 1,300,002 connections held and the memory guard stopped further ones at 1,420,239 without a kill.
+- **The stall margin: measured.** Five freeze tests fit (container limit minus memory in use) divided by about 130 MiB/s: 5 s survived and 9 s killed at 6 GiB, 9 s survived and 14 s killed at 6.5 GiB, 14 s killed at 7 GiB. A larger container helps by about 8 seconds per GiB, so an 8 GiB machine cannot tolerate a 30 second stall.
+- **Cost guards: tested.** The on-instance timer and the watchdog Lambda both terminated real instances.
+
 ### 5. Write-up
 
 A results table in the README comparing gorilla/websocket, nbio locally, and nbio on EC2, with the measured cost of each run.
@@ -132,17 +142,15 @@ Still to check on the first real run: the ENA `conntrack_allowance_exceeded` cou
 
 ## Open items
 
-Blocking the 1M run:
+The 1M target is reached and measured; see 4c to 4e above. What is still open:
 
-- The 1M run is done (999,999 connections, 2026-09-30, [results](../results/aws/2026-09-30-1m/README.md)). What remains open is in the list under Server below and in the results' "not measured" sections.
+- **Busy connections.** Every run used one 32-byte message per connection every 30 seconds. An earlier local test found the server CPU-bound at about 40,000 connections sending 1 KiB per second each, so "1M connections" here means 1M mostly idle ones.
+- **A bigger margin against stalls.** At 1M a 6 GiB container survives about 8 seconds of a stalled read path and 7 GiB about 13. Options not tested: a larger instance (needs the paid plan), or a way to bound the socket-buffer memory (a smaller receive buffer, or shedding load when the read path lags).
+- **Holds longer than about 94 minutes** at 1M, real (not frozen) stalls at 6.5 and 7 GiB, and the watchdog on a Spot or stopped instance.
+- **Log volume at the cap.** At `-maxload` the server prints one error line per refused connection (5,186 lines in 12 seconds in a local test); a benchmark that runs above the cap fills its log.
+- **The memory near the limit.** The GC uses much of a core near the memory limit (167% of a core at 1.42M), and each connection keeps its own read-deadline timer and two addresses; a shared idle sweep could save part of the Go memory. Not measured.
 
-Resolved 2026-09-29 to 30 (kept here so the history is visible): the Locust client cannot hold 1M connections, so `cmd/loadgen` replaced it for connection-count tests; the one-port limit of about 64,000 connections per client IP is gone with `-ports`; file descriptor limits are raised on the Hetzner host and both containers.
-
-Server:
-
-- At 1M connections the 6 GiB container has room for a 7 to 12 second stall of the read path (see the Mumbai report); a larger limit or instance, or a way to bound socket-buffer memory per container, would remove that cliff. Untested.
-- Done: `MaxLoad` is now the `-maxload` flag (default 1,000,000). Not yet used: a run above 1M to find where this server really stops. Note that at the cap the server refuses `/metrics` requests too, so a run should set it above its target.
-- Near the memory limit the GC uses a full core and echo p99 rises to about 100 ms. Each connection has its own read-deadline timer and stores its local and remote address; in the heap profile at 120,000 connections these were about 20 MB and 22.5 MB. A shared idle sweep instead of per-connection timers could save part of the 1.08 KiB of Go memory per connection. Not measured yet.
+Resolved (kept so the history is visible): the Locust client could not hold 1M connections and was replaced by `cmd/loadgen`; the 64,000 connections per client IP and server port limit is gone with `-ports`; file descriptor limits are raised; `MaxLoad` is the `-maxload` flag (at the cap the server refuses `/metrics` too, so set it above the target); a loadgen race that could count a closed connection as open is fixed; the Hetzner and EKS stacks were removed.
 
 ## Cost estimates
 

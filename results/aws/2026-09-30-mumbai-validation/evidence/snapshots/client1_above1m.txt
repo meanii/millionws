@@ -1,0 +1,92 @@
+
+### date (utc and local)
+2026-09-30T08:29:58Z
+2026-09-30T13:59:58+0530
+                Time zone: Asia/Kolkata (IST, +0530)
+
+### uname
+Linux ip-10-0-1-17.ap-south-1.compute.internal 6.18.51-120.162.amzn2023.x86_64 #2 SMP PREEMPT_DYNAMIC Wed Sep 23 18:50:41 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+### git sha
+703e1e1a6fd64197acdb401f84d09b7d398e7e83
+
+### instance type, az
+c7i-flex.large
+ap-south-1a
+
+### free -m
+               total        used        free      shared  buff/cache   available
+Mem:            3815        2247         111           1        1457        1285
+Swap:              0           0           0
+
+### meminfo (selected)
+MemTotal:        3907500 kB
+MemAvailable:    1316260 kB
+Cached:          1023536 kB
+SwapCached:            0 kB
+AnonPages:        874436 kB
+Slab:            1750396 kB
+SReclaimable:     467276 kB
+SUnreclaim:      1283120 kB
+
+### sockstat
+sockets: used 349957
+TCP: inuse 349773 orphan 0 tw 0 alloc 349782 mem 404
+UDP: inuse 2 mem 0
+UDPLITE: inuse 0
+RAW: inuse 0
+FRAG: inuse 0 memory 0
+
+### ss -s
+Total: 349957
+TCP:   349782 (estab 349573, closed 0, orphaned 0, timewait 0)
+
+Transport Total     IP        IPv6
+RAW	  1         0         1        
+UDP	  4         2         2        
+TCP	  349782    349773    9        
+INET	  349787    349775    12       
+FRAG	  0         0         0        
+
+
+### sysctl
+fs.nr_open = 2000000
+fs.file-max = 3000000
+net.core.somaxconn = 65535
+net.ipv4.ip_local_port_range = 1024	65535
+net.ipv4.tcp_max_syn_backlog = 256
+
+### docker ps
+loadgen-extra2	millionws:loadgen	Up 21 minutes
+loadgen-extra	millionws:loadgen	Up 46 minutes
+loadgen-4	millionws:loadgen	Up 54 minutes
+loadgen-3	millionws:loadgen	Up 54 minutes
+loadgen-2	millionws:loadgen	Up 54 minutes
+loadgen-1	millionws:loadgen	Up 54 minutes
+
+### docker stats
+loadgen-extra2	cpu=1.77%	mem=115.4MiB / 3.726GiB
+loadgen-extra	cpu=45.92%	mem=931.8MiB / 3.726GiB
+loadgen-4	cpu=3.41%	mem=250.3MiB / 3.726GiB
+loadgen-3	cpu=3.43%	mem=250.3MiB / 3.726GiB
+loadgen-2	cpu=3.75%	mem=251.5MiB / 3.726GiB
+loadgen-1	cpu=3.98%	mem=250.8MiB / 3.726GiB
+
+### ENA
+iface=enp39s0
+     bw_in_allowance_exceeded: 0
+     bw_out_allowance_exceeded: 0
+     pps_allowance_exceeded: 0
+     conntrack_allowance_exceeded: 0
+     linklocal_allowance_exceeded: 0
+     conntrack_allowance_available: 76957
+
+### server container cgroup
+
+### server log, lines that are not INF
+Error response from daemon: No such container: aws-server-1
+
+### sampler csv (last 3 rows)
+2026-09-30T08:29:39Z,2026-09-30T13:59:39+0530,349572,0.52,16.6,2513,1710,916,250,0,76957,0,0,0
+2026-09-30T08:29:49Z,2026-09-30T13:59:49+0530,349572,0.44,18.6,2515,1708,148,250,0,76957,0,0,0
+2026-09-30T08:29:59Z,2026-09-30T13:59:59+0530,349573,0.44,18.5,2528,1709,404,250,0,76957,0,0,0

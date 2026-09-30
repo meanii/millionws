@@ -1,0 +1,20 @@
+15:00:19 watching instances: i-0eb462d8f1dda2721 i-0982991c0066ced7c  (timer 120 min, watchdog deadline 12 min, checks every 10 min)
+15:00:21 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:01:23 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:02:24 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:03:26 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:04:28 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:05:30 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:06:32 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:07:34 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:08:35 states: i-0eb462d8f1dda2721:running i-0982991c0066ced7c:running 
+15:09:38 states: i-0eb462d8f1dda2721:terminated i-0982991c0066ced7c:terminated 
+15:09:38 WATCHDOG-FIRED: both instances are terminated
+i-0eb462d8f1dda2721	terminated	Client.UserInitiatedShutdown	Client.UserInitiatedShutdown: User initiated shutdown	2026-09-30T09:26:20+00:00
+i-0982991c0066ced7c	terminated	Client.UserInitiatedShutdown	Client.UserInitiatedShutdown: User initiated shutdown	2026-09-30T09:26:20+00:00
+2026-09-30T08:57:00.751000+00:00 2026/09/30/[$LATEST]129ad657d003475b9aa3b9668ab12b54 4 tagged instance(s), none past 165 min
+2026-09-30T09:07:00.905000+00:00 2026/09/30/[$LATEST]b8478dca89b64a51bdb80c359eb64175 4 tagged instance(s), none past 165 min
+2026-09-30T09:17:00.663000+00:00 2026/09/30/[$LATEST]a8b4073c4aa1439dbd662c122b7f8fa8 4 tagged instance(s), none past 165 min
+2026-09-30T09:28:59.702000+00:00 2026/09/30/[$LATEST]611beb91a7ca46ba9009020dc4d75dd1 2 tagged instance(s), none past 12 min
+2026-09-30T09:38:59.298000+00:00 2026/09/30/[$LATEST]cc382395218e4f609414f3b16dd097e1 terminating 2 instance(s) older than 12 min: ['i-0eb462d8f1dda2721', 'i-0982991c0066ced7c']
+15:09:44 watchdog observation done

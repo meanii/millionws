@@ -96,3 +96,15 @@ variable "timezone" {
   type        = string
   default     = "Asia/Kolkata"
 }
+
+variable "server_maxload" {
+  description = "Connection cap of the server (-maxload). It also refuses /metrics requests at the cap, so keep it above what the clients ask for; the default matches the 1M target."
+  type        = number
+  default     = 1000000
+}
+
+variable "iam_name_prefix" {
+  description = "Prefix of the IAM role and instance profile names. IAM is account-wide, so two stacks running at the same time (for example in two regions) need different prefixes."
+  type        = string
+  default     = "millionws-bench"
+}

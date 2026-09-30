@@ -11,7 +11,7 @@ data "archive_file" "guard" {
 }
 
 resource "aws_iam_role" "guard" {
-  name = "millionws-bench-guard"
+  name = "${var.iam_name_prefix}-guard"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{

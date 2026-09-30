@@ -1,0 +1,4 @@
+i-0357fccd369b2e315	millionws-server	terminated	Client.InstanceInitiatedShutdown	User initiated	2026-09-30T09:19:15+00:00
+i-027206e2d713c22fc	millionws-client-0	terminated	Client.InstanceInitiatedShutdown	User initiated	2026-09-30T09:19:15+00:00
+i-0eb462d8f1dda2721	millionws-server	terminated	Client.UserInitiatedShutdown	User initiated (2026-09-30 09:38:59 GMT)	2026-09-30T09:26:20+00:00
+i-0982991c0066ced7c	millionws-client-0	terminated	Client.UserInitiatedShutdown	User initiated (2026-09-30 09:38:59 GMT)	2026-09-30T09:26:20+00:00

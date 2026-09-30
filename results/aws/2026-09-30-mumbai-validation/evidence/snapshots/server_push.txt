@@ -1,0 +1,98 @@
+
+### date (utc and local)
+2026-09-30T09:24:00Z
+2026-09-30T14:54:00+0530
+                Time zone: Asia/Kolkata (IST, +0530)
+
+### uname
+Linux ip-10-0-1-10.ap-south-1.compute.internal 6.18.51-120.162.amzn2023.x86_64 #2 SMP PREEMPT_DYNAMIC Wed Sep 23 18:50:41 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+### git sha
+703e1e1a6fd64197acdb401f84d09b7d398e7e83
+
+### instance type, az
+m7i-flex.large
+ap-south-1a
+
+### free -m
+               total        used        free      shared  buff/cache   available
+Mem:            7779        5892         147           1        1740        1588
+Swap:              0           0           0
+
+### meminfo (selected)
+MemTotal:        7966636 kB
+MemAvailable:    1626868 kB
+Cached:           219520 kB
+SwapCached:            0 kB
+AnonPages:       1431112 kB
+Slab:            6014964 kB
+SReclaimable:    1562712 kB
+SUnreclaim:      4452252 kB
+
+### sockstat
+sockets: used 1421109
+TCP: inuse 1420932 orphan 9 tw 0 alloc 1420952 mem 6685
+UDP: inuse 2 mem 256
+UDPLITE: inuse 0
+RAW: inuse 0
+FRAG: inuse 0 memory 0
+
+### ss -s
+Total: 1421119
+TCP:   1420962 (estab 1420913, closed 17, orphaned 9, timewait 0)
+
+Transport Total     IP        IPv6
+RAW	  1         0         1        
+UDP	  4         2         2        
+TCP	  1420945   1420942   3        
+INET	  1420950   1420944   6        
+FRAG	  0         0         0        
+
+
+### sysctl
+fs.nr_open = 2000000
+fs.file-max = 3000000
+net.core.somaxconn = 65535
+net.ipv4.ip_local_port_range = 1024	65535
+net.ipv4.tcp_max_syn_backlog = 65535
+
+### docker ps
+aws-server-1	millionws:server	Up 41 minutes
+aws-grafana-1	grafana/grafana:12.1.1	Up 2 hours
+aws-prometheus-1	prom/prometheus:v3.5.0	Up 2 hours
+
+### docker stats
+aws-server-1	cpu=167.10%	mem=6.325GiB / 7GiB
+aws-grafana-1	cpu=0.61%	mem=127.2MiB / 7.598GiB
+aws-prometheus-1	cpu=0.52%	mem=41.76MiB / 7.598GiB
+
+### ENA
+iface=enp39s0
+     bw_in_allowance_exceeded: 0
+     bw_out_allowance_exceeded: 0
+     pps_allowance_exceeded: 45232
+     conntrack_allowance_exceeded: 0
+     linklocal_allowance_exceeded: 0
+     conntrack_allowance_available: 76957
+
+### server container cgroup
+memory.current=6793515008
+memory.max=7516192768
+anon 1205497856
+file 2072576
+kernel 5579141120
+kernel_stack 393216
+sock 7237632
+slab_reclaimable 1477639680
+slab_unreclaimable 4081261488
+slab 5558901168
+
+### server log, lines that are not INF
+2026/09/30 14:12:30 memory limit: cgroup limit 7168 MiB, adjusting the Go memory limit every second
+2026/09/30 14:12:30 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws
+2026/09/30 14:47:42 memory guard: 6454 MiB of 7168 MiB used, rejecting new connections
+
+### sampler csv (last 3 rows)
+2026-09-30T09:23:40Z,2026-09-30T14:53:40+0530,1420359,4.06,95.0,6171,5864,285,6476,0,76957,45232,0,0
+2026-09-30T09:23:51Z,2026-09-30T14:53:51+0530,1420361,4.13,95.8,6175,5866,1053,6469,0,76957,45232,0,0
+2026-09-30T09:24:01Z,2026-09-30T14:54:01+0530,1420799,3.87,95.0,6172,5879,3357,6483,0,76957,45232,0,0

@@ -1,0 +1,88 @@
+
+### date (utc and local)
+2026-09-30T08:55:54Z
+2026-09-30T14:25:54+0530
+                Time zone: Asia/Kolkata (IST, +0530)
+
+### uname
+Linux ip-10-0-1-33.ec2.internal 6.12.110-135.201.amzn2023.x86_64 #1 SMP PREEMPT_DYNAMIC Wed Sep 23 18:51:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+### git sha
+73a50a48dfac9443d13e2a0c531f154d1b73d425
+
+### instance type, az
+c7i-flex.large
+us-east-1a
+
+### free -m
+               total        used        free      shared  buff/cache   available
+Mem:            3814        2062         108           0        1643        1468
+Swap:              0           0           0
+
+### meminfo (selected)
+MemTotal:        3906056 kB
+MemAvailable:    1503760 kB
+Cached:          1231052 kB
+SwapCached:            0 kB
+AnonPages:        785804 kB
+Slab:            1679416 kB
+SReclaimable:     450168 kB
+SUnreclaim:      1229248 kB
+
+### sockstat
+sockets: used 333511
+TCP: inuse 333339 orphan 0 tw 0 alloc 333348 mem 645
+UDP: inuse 2 mem 0
+UDPLITE: inuse 0
+RAW: inuse 0
+FRAG: inuse 0 memory 0
+
+### ss -s
+Total: 333511
+TCP:   333348 (estab 333341, closed 0, orphaned 0, timewait 0)
+
+Transport Total     IP        IPv6
+RAW	  1         0         1        
+UDP	  4         2         2        
+TCP	  333348    333339    9        
+INET	  333353    333341    12       
+FRAG	  0         0         0        
+
+
+### sysctl
+fs.nr_open = 2000000
+fs.file-max = 3000000
+net.core.somaxconn = 65535
+net.ipv4.ip_local_port_range = 1024	65535
+net.ipv4.tcp_max_syn_backlog = 256
+
+### docker ps
+loadgen-4	millionws:loadgen	Up About an hour
+loadgen-3	millionws:loadgen	Up About an hour
+loadgen-2	millionws:loadgen	Up About an hour
+loadgen-1	millionws:loadgen	Up About an hour
+
+### docker stats
+loadgen-4	cpu=6.32%	mem=478.6MiB / 3.725GiB
+loadgen-3	cpu=7.34%	mem=478.7MiB / 3.725GiB
+loadgen-2	cpu=6.08%	mem=478.8MiB / 3.725GiB
+loadgen-1	cpu=6.37%	mem=478.4MiB / 3.725GiB
+
+### ENA
+iface=enp39s0
+     bw_in_allowance_exceeded: 0
+     bw_out_allowance_exceeded: 0
+     pps_allowance_exceeded: 0
+     conntrack_allowance_exceeded: 0
+     linklocal_allowance_exceeded: 0
+     conntrack_allowance_available: 76957
+
+### server container cgroup
+
+### server log, lines that are not INF
+Error response from daemon: No such container: aws-server-1
+
+### sampler csv (last 3 rows)
+2026-09-30T08:55:35Z,2026-09-30T14:25:35+0530,333340,0.63,22.6,2338,1638,133,477,0,76957,0,0,0
+2026-09-30T08:55:45Z,2026-09-30T14:25:45+0530,333340,0.68,24.4,2333,1638,389,478,0,76957,0,0,0
+2026-09-30T08:55:55Z,2026-09-30T14:25:55+0530,333341,0.57,26.7,2354,1639,133,477,0,76957,0,0,0

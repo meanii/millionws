@@ -1,0 +1,19 @@
+== cloud-init log around the step
+500:[cloud-init] exempting the server ports from connection tracking
+501--P OUTPUT ACCEPT
+502--A PREROUTING -p tcp -m tcp --dport 8080:8095 -j CT --notrack
+503--A OUTPUT -p tcp -m tcp --sport 8080:8095 -j CT --notrack
+504-[cloud-init] cloning repository
+505-Cloning into '/home/ec2-user/millionws'...
+506-Note: switching to '73a50a48dfac9443d13e2a0c531f154d1b73d425'.
+== iptables raw table
+-P PREROUTING ACCEPT
+-P OUTPUT ACCEPT
+-A PREROUTING -p tcp -m tcp --dport 8080:8095 -j CT --notrack
+-A OUTPUT -p tcp -m tcp --sport 8080:8095 -j CT --notrack
+== conntrack
+count=17 max=1048576
+== shutdown timer
+Wed Sep 30 15:17:29 IST 2026
+USEC=1790762778921864
+WARN_WALL=1

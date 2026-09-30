@@ -68,7 +68,25 @@ The Mumbai 1M run, with video, terminal recording, screenshots and raw data: [re
 
 At 1M connections the server's container was at 5.2 of 6 GiB (84%). If the server stops reading its sockets for a few seconds, the kernel keeps accepting the clients' 33,000 messages per second into socket buffers, charged to the container at about 3.7 KiB each, so memory grows by about 120 MiB per second. The 920 MiB of headroom lasts about 7 seconds (about 12 with the Go heap shrinking). Past the limit the kernel OOM-kills the server, all 1M connections drop, and they take about 2 min 20 s to come back. The memory guard cannot prevent this: it only refuses new connections.
 
-In the Mumbai run a **30 second CPU profile** (`/debug/pprof/profile?seconds=30`) killed the server three times; a 10 second one stalled it for about 10 seconds without a kill; heap and goroutine profiles were harmless. So `deploy/aws/compose.yml` no longer passes `-pprof`, and profiles at this scale should be heap only. If you need more margin: a container limit above 6 GiB (the host has 8 GiB, shared with Prometheus and Grafana) or a larger instance; I did not test either.
+The tolerance can be estimated: socket buffers grew 130 to 132 MiB per second in five freeze tests (`scripts/evidence/stall.sh`, `SIGSTOP` for N seconds at about 1M connections), and the server survived exactly when (container limit minus memory in use) divided by 130 was longer than the freeze:
+
+| Container limit | Freeze | Headroom | Predicted | Result |
+| --- | --- | --- | --- | --- |
+| 6,144 MiB | 5 s / 9 s | 1,028 MiB | 7.9 s | survived / killed |
+| 6,500 MiB | 9 s / 14 s | 1,335 to 1,412 MiB | 10 to 11 s | survived / killed |
+| 7,168 MiB | 14 s | 1,727 MiB | 13.3 s | killed |
+
+So a 6 GiB container tolerates about 8 seconds and a 7 GiB one about 13, and each further GiB buys about 8 seconds; an 8 GiB machine cannot reach the 9 GiB a 30 second stall would need. A larger container is also partly used up by the Go heap (about 1.4 GiB at a 6 GiB limit, 1.7 GiB at 7 GiB). `-var server_mem_limit=7g` worked on the 8 GiB instance: it held 1.3M connections and, at 1.42M, the memory guard (90% of the container) refused further connections without a crash; the host, Prometheus and Grafana had about 0.8 GiB. The default is still 6g, which held 1,000,008 for 75 minutes. Results: [Mumbai validation](../results/aws/2026-09-30-mumbai-validation/README.md).
+
+In the first Mumbai run a **30 second CPU profile** (`/debug/pprof/profile?seconds=30`) killed the server three times; a 10 second one stalled it for about 10 seconds without a kill; heap and goroutine profiles were harmless. So `deploy/aws/compose.yml` no longer passes `-pprof`, and profiles at this scale should be heap only. If you need more margin: a container limit above 6 GiB (the host has 8 GiB, shared with Prometheus and Grafana) or a larger instance; I did not test either.
+
+## The kernel's own connection tracking (a second, separate limit)
+
+Even with the security group open, Linux's netfilter connection tracking (loaded by Docker) keeps a 256-byte entry per flow and drops **new** flows once `nf_conntrack_max` is full. The stack sets it to 1,048,576. A run that asked for 1.3M connections reached that at 1,048,576 tracked flows, and from then on the server dropped SSH, Prometheus scrapes and new client connections (`nf_conntrack: table full, dropping packet` in `dmesg` and in the instance's console output). The earlier 1M runs were only 4.6% below it (1,000,030 entries of 1,048,576 at the end of the 75 minute hold).
+
+The server's cloud-init now exempts the service ports (the 1.42M run applied the same two rules by hand; a later small stack confirmed that cloud-init creates them at boot, `results/aws/2026-09-30-mumbai-validation/evidence/conntrack/cloud-init_notrack_check_1517IST.txt`): `iptables -t raw -I PREROUTING -p tcp --dport 8080:8095 -j CT --notrack` and the matching `OUTPUT --sport` rule. With 1,000,003 connections held, the table then had 47 entries. Clients are not exempted (they hold at most about 500k). Check it on a server with `cat /proc/sys/net/netfilter/nf_conntrack_count`. This is not the security group's tracking described above; it is a different limit with the same symptom (new flows time out while existing ones continue), so `conntrack_allowance_available` staying at its full value while SSH times out points here.
+
+Findings are in [results/aws/2026-09-30-mumbai-validation](../results/aws/2026-09-30-mumbai-validation/README.md).
 
 ## What the stack builds
 
@@ -123,6 +141,12 @@ The guards terminate instances only. Root volumes are deleted with their instanc
 
 Spot requests are `one-time`, so an interruption ends the instance instead of relaunching a replacement that keeps billing.
 
+Both the on-instance timer and the watchdog Lambda have terminated real instances: the timer about 5 minutes after launch (AWS state reason `Client.InstanceInitiatedShutdown`), the Lambda at its first check after a 12 minute deadline (a `TerminateInstances` call by its role, 12 min 39 s after launch). See [results/aws/2026-09-30-cost-guard-test](../results/aws/2026-09-30-cost-guard-test/README.md).
+
+**The watchdog terminates every `Project=millionws-bench` instance in its region that is older than its deadline.** Do not run a second stack in the same region with a shorter `max_runtime_minutes` than the first one needs, and do not test the guards in a region that has a run in progress.
+
+**Two stacks at once.** IAM role and instance profile names are account-wide, so a second stack needs its own prefix (`-var iam_name_prefix=millionws-bench-b`), and each stack needs its own working directory and state (copy `infra/opentofu/aws-ec2`). Each region also has its own vCPU quota: a full fleet is 8 vCPU.
+
 Also worth doing in the console: a budget alert at $25 (a $100 monthly budget already exists).
 
 ## Troubleshooting
@@ -136,13 +160,14 @@ Also worth doing in the console: a budget alert at $25 (a $100 monthly budget al
 | Cloud-init fails at `cd .../deploy/aws` | `git_ref` points at a commit without the AWS stack, or was not pushed. |
 | Server container missing, cloud-init log ends with `error setting rlimit type 7: operation not permitted` | The container `nofile` limit is above the host `fs.nr_open` (2000000 in cloud-init). Fixed: both compose files use 2000000. |
 | New SSH, Prometheus or Grafana connections time out while existing traffic continues; dials `timeout` | Connection-tracking exhaustion: `conntrack_allowance_available` is 0. The security group must be open both ways with the filtering in the network ACL (see above). |
+| New SSH, Prometheus or Grafana connections time out, `dmesg` (or the instance's console output) shows `nf_conntrack: table full, dropping packet` | The kernel's connection-tracking table reached `nf_conntrack_max`. Exempt the server ports (done by cloud-init now) or raise the limit; `conntrack -F` empties the table (needs the `conntrack-tools` package). See above. |
+| `EntityAlreadyExists` for an IAM role when a second stack is applied | IAM names are account-wide: use `-var iam_name_prefix=<another prefix>`. |
 | `docker compose` not found | Amazon Linux 2023 does not package the compose plugin; cloud-init installs v2.29.7. |
 | `tofu apply` says `No valid credential sources found` | Credentials are not in the shell. With `aws login`, run `eval "$(aws configure export-credentials --format env)"` in the same shell. |
 
 ## Not yet verified on real instances
 
-- The watchdog terminating an instance, and the on-instance shutdown timer: the canary stack was destroyed before either fired. (Lambda, EventBridge and IAM creation on the free plan worked.)
-- The whole cloud-init path (compose plugin download, image builds, discovery).
-- The watchdog terminating a real instance (unit-tested against a stub only).
-- The stack above 1,000,000 connections. The server's cap is now the `-maxload` flag (default 1,000,000), but no run has used a higher value.
-- (Fixed after the runs) A loadgen race: a connection that closed before it was registered was counted as active forever. The runs above used the old code; nothing in their data shows the race happened.
+- Above about 1.42M connections, or with a container above 7 GiB (an 8 GiB instance cannot go much further; a bigger instance needs the paid plan).
+- Busy connections: every run used one 32-byte message per connection every 30 seconds.
+- Holds longer than about 94 minutes at 1M, and any real (not frozen) stall at 6.5 or 7 GiB.
+- The watchdog on a stopped or Spot instance; `scripts/kill-bench.sh`.

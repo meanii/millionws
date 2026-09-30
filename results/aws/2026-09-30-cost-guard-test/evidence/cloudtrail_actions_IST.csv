@@ -1,0 +1,10 @@
+time_ist,event,instance_type,instance_ids,actor
+2026-09-30T14:47:19+0530,TerminateInstances,,i-019d65da9c507aa01,anil
+2026-09-30T14:47:19+0530,TerminateInstances,,i-0a7b0efda432af9e2,anil
+2026-09-30T14:47:19+0530,TerminateInstances,,i-0c10965d708993e80,anil
+2026-09-30T14:47:19+0530,TerminateInstances,,i-0d458bdd68ccfa093,anil
+2026-09-30T14:49:15+0530,RunInstances,t3.small,i-027206e2d713c22fc,anil
+2026-09-30T14:49:15+0530,RunInstances,t3.small,i-0357fccd369b2e315,anil
+2026-09-30T14:56:21+0530,RunInstances,t3.small,i-0982991c0066ced7c,anil
+2026-09-30T14:56:21+0530,RunInstances,t3.small,i-0eb462d8f1dda2721,anil
+2026-09-30T15:08:59+0530,TerminateInstances,,i-0eb462d8f1dda2721 i-0982991c0066ced7c,millionws-bench-c-guard

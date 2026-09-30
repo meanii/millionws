@@ -1,0 +1,3 @@
+started=2026-09-30T07:38:48.787669548Z restarts=0 oomkilled=false
+2026/09/30 13:08:48 memory limit: cgroup limit 6144 MiB, adjusting the Go memory limit every second
+2026/09/30 13:08:48 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws
