@@ -9,6 +9,10 @@
 #   # ... run the benchmark, watch Grafana ...
 #   terraform destroy   # every session ends here; idle setup costs ~$800/mo
 #
+# Runbook, costs and cost guards: docs/aws-runbook.md. Every instance also
+# terminates itself after max_runtime_minutes, and watchdog.tf terminates any
+# stragglers.
+#
 # Design (see docs/roadmap.md): one AZ, private-IP traffic (no NAT, no data
 # charges), 1 server × 16 ports, N clients. 4 clients × 16 ports × 64k
 # ephemeral ports each ≈ 4M capacity for the 1M target.

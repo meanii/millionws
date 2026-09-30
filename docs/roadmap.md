@@ -13,7 +13,7 @@ flowchart LR
   S[server, ports 8080-8095<br/>Prometheus and Grafana]
 ```
 
-All machines are EC2 instances in one availability zone. Traffic stays on private IPs, so there is no NAT gateway, no load balancer, and no data transfer charge between instances in the same zone.
+All machines are EC2 instances in one availability zone. The current defaults are one `r6a.large` server and three `m6a.large` clients (8 vCPU in total, the size of the account quota); see [aws-runbook.md](aws-runbook.md). Traffic stays on private IPs, so there is no NAT gateway, no load balancer, and no data transfer charge between instances in the same zone.
 
 Each (client IP, server port) pair can hold about 64,000 connections. Four clients and 16 server ports allow about 4,000,000, which leaves room above the target of 1,000,000 without needing 16 client machines.
 
@@ -21,8 +21,8 @@ Each (client IP, server port) pair can hold about 64,000 connections. Four clien
 
 ### 0. AWS account
 
-- Upgrade the account from the free plan to the paid plan so EC2 instances of this size can be launched. The $200 credit stays.
-- Request vCPU quotas of 32 for on-demand and 32 for Spot standard instances.
+- Upgrade the account from the free plan to the paid plan so EC2 instances of this size can be launched. The $200 credit stays. **Still open: both apply attempts on 2026-09-30 were refused by `RunInstances` until this is done.**
+- vCPU quotas are 8 for on-demand and 8 for Spot standard instances (checked 2026-09-30). The default fleet fits exactly; request more only for a larger fleet.
 - Budget alerts at $10, $25, $50, and $100.
 - A separate IAM identity for Terraform, and one region for everything.
 
@@ -83,6 +83,8 @@ local-bench dashboard (the EC2 scrape config sets the same
 
 ### 4. AWS runs
 
+Commands, sizing and cost per stage are in [aws-runbook.md](aws-runbook.md). The times below are budgets; the stack ends every instance after `max_runtime_minutes` regardless.
+
 | Run | Connections | Clients | Time budget |
 | --- | --- | --- | --- |
 | 1 | 100,000 | 1 | 1 h |
@@ -108,18 +110,26 @@ A review of the stack before the retry found and fixed:
 - `go test` had no tests. `main_test.go` covers port parsing, the duplicate-port case, the listening check, the cgroup reader, and an end-to-end echo on two ports plus the 503 guard.
 - `nf_conntrack` is loaded before `sysctl` so `nf_conntrack_max` applies; `conns_per_client / client_replicas` is floored.
 
-Not done, worth checking on the first real run: Docker NAT and conntrack on the load path (`--network host` for loadgen and server), and the ENA `conntrack_allowance_exceeded` counter, since the security group's self-referencing rule is tracked.
+Later the same day:
+
+- Server and loadgen run on the host network, so 1M connections do not each take a Docker NAT conntrack entry.
+- Cloud-init installs the Docker compose plugin, which Amazon Linux 2023 does not package.
+- Defaults were resized to the 8 vCPU quota (`r6a.large` server, 3 `m6a.large` clients, 334,000 connections per client).
+- Cost guards: an on-instance shutdown timer, a watchdog Lambda that terminates any tagged instance past its deadline, and `scripts/kill-bench.sh`. Details, costs and the stage-by-stage commands are in [aws-runbook.md](aws-runbook.md).
+
+Still to check on the first real run: the ENA `conntrack_allowance_exceeded` counter, since the security group's self-referencing rule is tracked, and the watchdog terminating a real instance (unit-tested against a stub only).
 
 ## Open items
 
 Blocking the 1M run:
 
+- The AWS account is still on the free plan, so no instance can launch ([aws-runbook.md](aws-runbook.md)).
 - The Hetzner stack has no load generator. `cmd/loadgen` can fill that role now.
-- The Locust client cannot hold 1M connections (see [journey.md](journey.md), September 2026). `cmd/loadgen` replaces it for connection-count tests.
-- Only one server port, so one client IP is limited to about 64,000 connections.
-- File descriptor limit is 200,000 on the Hetzner host and not set on its container.
-- The Hetzner Terraform uses `cx23` (2 vCPU, 4 GB); a 1M run needs about 5.2 GiB for the server alone (estimate above).
-- `locustfile.py` defaults to `ws://localhost:4001`, while the server listens on 8080 (8002 on the Hetzner host).
+- The Hetzner OpenTofu uses `cx23` (2 vCPU, 4 GB); a 1M run needs about 5.2 GiB for the server alone (estimate above). The AWS stack uses a 16 GiB server instead.
+
+Resolved 2026-09-29 to 30 (kept here so the history is visible): the Locust client cannot hold 1M connections, so `cmd/loadgen` replaced it for connection-count tests; the one-port limit of about 64,000 connections per client IP is gone with `-ports`; file descriptor limits are raised on the Hetzner host and both containers.
+
+Minor: `locustfile.py` defaults to `ws://localhost:4001`, while the server listens on 8080 (8002 on the Hetzner host).
 
 Server:
 
@@ -132,17 +142,15 @@ Security, since the Hetzner server has a public IP:
 
 ## Cost estimates
 
-These are estimates from listed prices checked in September 2026, not measured bills.
+These are estimates from prices checked on 2026-09-30, not measured bills. The table and the per-stage figures are in [aws-runbook.md](aws-runbook.md#cost).
 
-EC2 in us-east-1, per hour:
+Summary for the current defaults (1 `r6a.large` server + 3 `m6a.large` clients, us-east-1):
 
-| Item | On-demand | Spot |
+| | Per hour | Whole staged plan (canary, 500k, 1M twice) |
 | --- | --- | --- |
-| Server, m6a.2xlarge (8 vCPU, 32 GB) | about $0.35 | about $0.12 |
-| 4 clients, m6a.xlarge | about $0.70 | about $0.25 |
-| Public IPv4 addresses and EBS | about $0.03 | about $0.03 |
-| Total | about $1.10 | about $0.40 |
+| On-demand | about $0.41 | about $3.50 |
+| Spot | about $0.19 | about $1.74 |
 
-About 15 hours of AWS time across all runs comes to $6 to $17, inside the $200 credit. The larger risk is leaving the instances running: the full on-demand setup costs about $800 per month. Every session ends with `tofu destroy`.
+The target is to stay under $30 of the $200 credit. The larger risk is leaving the instances running: the on-demand fleet costs about $296 per month. The cost guards in the runbook exist for that, and every session still ends with `tofu destroy`.
 
 For comparison, the same setup on Hetzner (one CCX33 at €0.2227 per hour and 16 CPX51 clients at €0.3822 per hour) comes to about €6.30 per hour, and two EKS clusters under load to about $5 to $10 per hour.

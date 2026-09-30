@@ -98,3 +98,22 @@ Twelve more local runs in one night (results in [results/local/2026-09-29-optimi
 - Loadgen client side: 6.57–6.64 KiB/conn — a 250k-conn client needs ~1.7 GiB.
 
 Method lessons: run one bench at a time under `flock` (duplicate launchers fought over one stack); a saturated server stops answering `/metrics`, which `record.py` logs as `conns 0` (peak logic ignores those rows); `open_fds − conns` ≈ 12 pre-guard and ≈ 50 in the 503 storm (rejected handshakes briefly hold fds) — offset, not leak.
+
+## September 2026, 30th: first AWS attempt and review
+
+The first `tofu apply` on EC2 (`infra/opentofu/aws-ec2`) launched nothing. All four Spot requests were cancelled with `InvalidParameterCombination: instance type is not eligible for Free Tier`: the account was still on the AWS free plan. A second attempt, after rewriting the stack to `aws_instance` with Spot market options, failed the same way at `RunInstances`, so the cause is the account and not the resource type. A `run-instances --dry-run` succeeds regardless and had made me think the plan was upgraded; it was not. Nothing ever ran, and both partial stacks were destroyed.
+
+Since the stack had never run, I reviewed it before spending anything. The review found problems that would each have broken the run after the plan upgrade:
+
+- The compose file passed `-ports=8080-8095` next to the default `-port=8080`. nbio bound 8080 twice; the second bind failed and the server stayed up listening on nothing, logging `Accept failed` thousands of times a second. I reproduced it in Docker. The server now drops repeated ports and exits if a port is not accepting after start.
+- Cloud-init cloned `main`, which does not contain the AWS stack, the load generator or `-ports`. `git_ref` is now required and the built SHA is written to `~/GIT_SHA`.
+- Tags on `aws_spot_instance_request` do not reach the launched instance (the provider documents this), so peer discovery by tag would have found nothing. The stack now uses `aws_instance` with `instance_market_options`.
+- Amazon Linux 2023 has no docker compose plugin. Cloud-init now installs it.
+- With Docker's bridge and published ports, every connection would also take a NAT conntrack entry, and 1M would reach `nf_conntrack_max`. Server and loadgen use host networking.
+- The default fleet (4 + 4 x 2 = 12 vCPU) exceeded the quota of 8. Defaults are now 1 `r6a.large` + 3 `m6a.large`.
+- `go test` ran no tests. `main_test.go` now covers port parsing, the duplicate-port case, the listening check, the cgroup reader, and echo on two ports plus the 503 guard, run with `-race`.
+
+Because the credit is limited ($200, target under $30), cost guards were added: an on-instance shutdown timer, a watchdog Lambda that terminates any `Project=millionws-bench` instance past its deadline (checked every 10 minutes, IAM limited to that tag), and `scripts/kill-bench.sh`. The runbook with the staged plan and per-stage costs is [aws-runbook.md](aws-runbook.md). The whole setup is estimated at about $3.50 on-demand for every stage including a second 1M attempt, versus the $296 per month the full on-demand fleet would cost if forgotten.
+
+What this taught: a dry run does not exercise account-level restrictions, and a stack that only passes `validate` can still be broken in every deployment detail. Local Docker reproductions of the cloud-init logic found bugs that no static check did.
+

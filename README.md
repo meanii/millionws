@@ -16,9 +16,10 @@ Work in progress. The target of 1,000,000 connections has not been reached yet.
 | Single-server deployment on Hetzner Cloud | Done |
 | Go load generator (`cmd/loadgen`) | Done |
 | Local benchmark with the server capped at 1 CPU and 1 GiB | Done |
+| EC2 stack (OpenTofu), cost guards, tests | Done, not yet run: blocked on the AWS free plan ([runbook](docs/aws-runbook.md)) |
 | AWS EC2 runs from 100k up to 1M connections | Not started |
 
-The plan, the open items, and the cost estimates are in [docs/roadmap.md](docs/roadmap.md). A dated log of decisions and mistakes is in [docs/journey.md](docs/journey.md).
+The plan, the open items, and the cost estimates are in [docs/roadmap.md](docs/roadmap.md). How to run and pay for the AWS test, and how it is kept from overspending: [docs/aws-runbook.md](docs/aws-runbook.md). A dated log of decisions and mistakes is in [docs/journey.md](docs/journey.md).
 
 ## Results so far
 
@@ -102,6 +103,17 @@ make start              # tofu apply; cloud-init installs Docker and starts the 
 make stop               # tofu destroy
 ```
 
+On AWS EC2 (one server and N clients on Spot or on-demand; needs a paid AWS account, see [docs/aws-runbook.md](docs/aws-runbook.md)):
+
+```sh
+cd infra/opentofu/aws-ec2
+tofu apply -var my_ip=<ip>/32 -var key_name=<key pair> -var git_ref=<pushed branch or SHA>
+tofu destroy ...        # same variables; every session ends here
+scripts/kill-bench.sh   # emergency: terminate every tagged instance now
+```
+
+Instances terminate themselves after 4 hours and a watchdog Lambda terminates any that outlive that, so a forgotten stack cannot bill for long.
+
 The Hetzner stack exposes Grafana with the default `admin/admin` login on a public IP. Change the password or restrict the firewall before leaving it running.
 
 ## Repository layout
@@ -114,13 +126,15 @@ The Hetzner stack exposes Grafana with the default `admin/admin` login on a publ
 | `results/local` | Benchmark output, one directory per run |
 | `deploy/local` | Docker Compose for local Prometheus and Grafana |
 | `deploy/hetzner` | Docker Compose for the single-server Hetzner stack |
+| `deploy/aws` | Docker Compose for the server side of the EC2 stack |
 | `deploy/grafana` | Grafana datasource and dashboard provisioning |
 | `deploy/millionws` | Kubernetes manifests (EKS approach) |
 | `infra/opentofu/hetzner` | OpenTofu for one Hetzner Cloud server |
-| `infra/opentofu/aws-ec2` | OpenTofu for the EC2 load-test stack (server + clients) |
+| `infra/opentofu/aws-ec2` | OpenTofu for the EC2 load-test stack (server + clients) and the cost watchdog Lambda (`watchdog.tf`, `guard/`) |
+| `scripts` | `kill-bench.sh`, the emergency terminate |
 | `infra/opentofu/clusters`, `modules` | OpenTofu for two EKS clusters (earlier approach, see journey) |
 | `locust` | Locust test and Locust Operator manifests |
-| `docs` | Roadmap, journey, and benchmark method |
+| `docs` | Roadmap, journey, benchmark method, and the AWS runbook |
 
 ## References
 
