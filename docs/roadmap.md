@@ -13,7 +13,7 @@ flowchart LR
   S[server, ports 8080-8095<br/>Prometheus and Grafana]
 ```
 
-All machines are EC2 instances in one availability zone. The current defaults are one `r6a.large` server and three `m6a.large` clients (8 vCPU in total, the size of the account quota); see [aws-runbook.md](aws-runbook.md). Traffic stays on private IPs, so there is no NAT gateway, no load balancer, and no data transfer charge between instances in the same zone.
+All machines are EC2 instances in one availability zone. The current defaults are one `m7i-flex.large` server and three `c7i-flex.large` clients (8 vCPU in total, the size of the account quota, and all types the AWS free plan allows); see [aws-runbook.md](aws-runbook.md). Traffic stays on private IPs, so there is no NAT gateway, no load balancer, and no data transfer charge between instances in the same zone.
 
 Each (client IP, server port) pair can hold about 64,000 connections. Four clients and 16 server ports allow about 4,000,000, which leaves room above the target of 1,000,000 without needing 16 client machines.
 
@@ -21,7 +21,7 @@ Each (client IP, server port) pair can hold about 64,000 connections. Four clien
 
 ### 0. AWS account
 
-- Upgrade the account from the free plan to the paid plan so EC2 instances of this size can be launched. The $200 credit stays. **Still open: both apply attempts on 2026-09-30 were refused by `RunInstances` until this is done.**
+- Upgrade the account from the free plan to the paid plan so EC2 instances of this size can be launched. The $200 credit stays. **Not needed after all:** the first two apply attempts on 2026-09-30 were refused because of the instance types, not the plan; the free plan allows `m7i-flex.large` and `c7i-flex.large`.
 - vCPU quotas are 8 for on-demand and 8 for Spot standard instances (checked 2026-09-30). The default fleet fits exactly; request more only for a larger fleet.
 - Budget alerts at $10, $25, $50, and $100.
 - A separate IAM identity for Terraform, and one region for everything.
@@ -114,7 +114,7 @@ Later the same day:
 
 - Server and loadgen run on the host network, so 1M connections do not each take a Docker NAT conntrack entry.
 - Cloud-init installs the Docker compose plugin, which Amazon Linux 2023 does not package.
-- Defaults were resized to the 8 vCPU quota (`r6a.large` server, 3 `m6a.large` clients, 334,000 connections per client).
+- Defaults were resized to the 8 vCPU quota, then to the types the free plan allows (`m7i-flex.large` server, 3 `c7i-flex.large` clients, 334,000 connections per client, server container limited to 6 GiB by `server_mem_limit`).
 - Cost guards: an on-instance shutdown timer, a watchdog Lambda that terminates any tagged instance past its deadline, and `scripts/kill-bench.sh`. Details, costs and the stage-by-stage commands are in [aws-runbook.md](aws-runbook.md).
 
 Still to check on the first real run: the ENA `conntrack_allowance_exceeded` counter, since the security group's self-referencing rule is tracked, and the watchdog terminating a real instance (unit-tested against a stub only).
@@ -123,7 +123,7 @@ Still to check on the first real run: the ENA `conntrack_allowance_exceeded` cou
 
 Blocking the 1M run:
 
-- The AWS account is still on the free plan, so no instance can launch ([aws-runbook.md](aws-runbook.md)).
+- Nothing has run on AWS yet. The free plan limits which instance types can launch; the defaults now use allowed types ([aws-runbook.md](aws-runbook.md)).
 - The Hetzner stack has no load generator. `cmd/loadgen` can fill that role now.
 - The Hetzner OpenTofu uses `cx23` (2 vCPU, 4 GB); a 1M run needs about 5.2 GiB for the server alone (estimate above). The AWS stack uses a 16 GiB server instead.
 
@@ -144,13 +144,13 @@ Security, since the Hetzner server has a public IP:
 
 These are estimates from prices checked on 2026-09-30, not measured bills. The table and the per-stage figures are in [aws-runbook.md](aws-runbook.md#cost).
 
-Summary for the current defaults (1 `r6a.large` server + 3 `m6a.large` clients, us-east-1):
+Summary for the current defaults (1 `m7i-flex.large` server + 3 `c7i-flex.large` clients, us-east-1):
 
 | | Per hour | Whole staged plan (canary, 500k, 1M twice) |
 | --- | --- | --- |
-| On-demand | about $0.41 | about $3.50 |
-| Spot | about $0.19 | about $1.74 |
+| On-demand | about $0.39 | about $3.28 |
+| Spot | about $0.17 | about $1.40 |
 
-The target is to stay under $30 of the $200 credit. The larger risk is leaving the instances running: the on-demand fleet costs about $296 per month. The cost guards in the runbook exist for that, and every session still ends with `tofu destroy`.
+The target is to stay under $30 of the $200 credit. The larger risk is leaving the instances running: the on-demand fleet costs about $281 per month. The cost guards in the runbook exist for that, and every session still ends with `tofu destroy`.
 
 For comparison, the same setup on Hetzner (one CCX33 at €0.2227 per hour and 16 CPX51 clients at €0.3822 per hour) comes to about €6.30 per hour, and two EKS clusters under load to about $5 to $10 per hour.

@@ -190,6 +190,7 @@ resource "aws_instance" "server" {
   instance_initiated_shutdown_behavior = "terminate"
   user_data = templatefile("${path.module}/user_data_server.sh", {
     server_ports        = "${var.server_port_first}-${var.server_port_first + var.server_port_count - 1}"
+    server_mem_limit    = var.server_mem_limit
     expect_clients      = var.client_count
     replicas            = var.client_replicas
     repo_url            = var.repo_url

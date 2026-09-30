@@ -2,12 +2,12 @@
 
 How to run the EC2 load test, what it costs, and how it is kept from running up a bill. The stack is `infra/opentofu/aws-ec2`. The plan and the reasoning behind it are in [roadmap.md](roadmap.md).
 
-Status on 2026-09-30: nothing has run on AWS yet. Both apply attempts were refused by `RunInstances` because the account is on the free plan (see [Troubleshooting](#troubleshooting)). Everything below is validated (`tofu validate`, `tofu plan`, unit and end-to-end tests, local Docker runs) but not yet exercised on real instances.
+Status on 2026-09-30: the first two apply attempts were refused by `RunInstances` because they asked for instance types the free plan does not allow (see [Troubleshooting](#troubleshooting)). The defaults were then changed to free-plan types, and single-instance launch probes of `m7i-flex.large` (on-demand and Spot) and `c7i-flex.large` succeeded. The stack itself is validated (`tofu validate`, `tofu plan`, unit and end-to-end tests, local Docker runs).
 
 ## Before the first apply
 
-1. **Upgrade the AWS account** from the free plan to the paid plan (Billing console). The $200 credit stays. Until then every launch fails with `InvalidParameterCombination: The specified instance type is not eligible for Free Tier`. This cannot be done from the CLI.
-2. **vCPU quota.** The account has 8 for Spot standard and 8 for on-demand standard instances. The default fleet is exactly 8 vCPU (1 server + 3 clients, 2 vCPU each). Any bigger fleet needs a quota increase first.
+1. **Instance types.** On the AWS free plan `RunInstances` only accepts a short list of types (`t3/t4g/t8i` micro and small, `c7i-flex.large`, `m7i-flex.large`; list them with `aws ec2 describe-instance-types --filters Name=free-tier-eligible,Values=true`). Any other type fails with `InvalidParameterCombination: The specified instance type is not eligible for Free Tier`. The defaults are now free-plan eligible, so **no plan upgrade is needed**. Upgrading to the paid plan (Billing console, credit stays) would allow larger types such as `r6a.large` for more memory headroom.
+2. **vCPU quota.** The account has 8 for Spot standard and 8 for on-demand standard instances. The default fleet is exactly 8 vCPU (1 server + 3 clients, 2 vCPU each; all the free-plan `*-flex.large` types have 2 vCPU). Any bigger fleet needs a quota increase first.
 3. **An EC2 key pair** in the region (`millionws-bench` exists in `us-east-1`; the private key is `~/.ssh/millionws-bench.pem`).
 4. **Push the commit you want to test.** Cloud-init clones `repo_url` and checks out `git_ref`. The default branch `main` has neither the AWS stack nor the load generator, so `git_ref` is a required variable with no default.
 5. **Your public IP** for `my_ip`: `curl -s https://checkip.amazonaws.com`.
@@ -38,7 +38,8 @@ tofu destroy -var my_ip=... -var key_name=millionws-bench -var git_ref=<sha>
 ## What the stack builds
 
 - One VPC, one public subnet, one availability zone. Traffic between instances uses private IPs, so there is no NAT gateway, no load balancer and no data transfer charge.
-- One server (`r6a.large`, 2 vCPU, 16 GiB) listening on 16 ports (8080-8095), and N clients (`m6a.large`, 2 vCPU, 8 GiB) each running 4 loadgen containers that spread over all 16 ports. One client IP holds about 64,000 connections per server port, so 3 clients allow about 3,000,000.
+- One server (`m7i-flex.large`, 2 vCPU, 8 GiB) listening on 16 ports (8080-8095), and N clients (`c7i-flex.large`, 2 vCPU, 4 GiB) each running 4 loadgen containers that spread over all 16 ports. One client IP holds about 64,000 connections per server port, so 3 clients allow about 3,000,000.
+- The server container is limited to `server_mem_limit` (default `6g` of the 8 GiB, leaving room for the OS, Prometheus and Grafana on the same machine). The server sizes its Go memory limit and the 90% admission guard from that cgroup limit. 1M connections need about 4.7 GiB at the measured 4.91 KiB each, so 1M fits with about 1.3 GiB to spare, the tightest case in the plan; if it does not fit, the 503 guard turns clients away instead of the process being killed, and that count is the result. A 4 GiB client holds about 334,000 connections (about 2.2 GiB at 6.6 KiB each).
 - Server and loadgens use Docker host networking, so connections do not each take a Docker NAT conntrack entry (1M would hit `nf_conntrack_max` of 1,048,576).
 - Prometheus and Grafana run on the server. Grafana is on port 3000 and Prometheus on 9090, reachable only from `my_ip`. Grafana has anonymous admin access enabled, so the security group is the only protection: keep `my_ip` at a /32.
 - Server and clients find each other through the EC2 API (instances tagged `Name=millionws-server` and `millionws-client-N`), so there are no Terraform cross-references. Each waits up to 20 minutes for the other.
@@ -60,20 +61,20 @@ Prices are us-east-1 as of 2026-09-30. On-demand comes from the AWS pricing API,
 
 | Instance | On-demand per hour | Spot per hour |
 | --- | --- | --- |
-| `r6a.large` (server) | $0.1134 | about $0.04 to 0.057 |
-| `m6a.large` (client) | $0.0864 | about $0.033 to 0.042 |
+| `m7i-flex.large` (server) | $0.0958 | about $0.037 to 0.042 |
+| `c7i-flex.large` (client) | $0.0848 | about $0.026 to 0.035 |
 
 Estimated cost of the staged plan (estimates, not measured bills; Spot uses the midpoint of the price ranges above):
 
 | Stage | On-demand | Spot |
 | --- | --- | --- |
-| Canary, 100k, 2 h | $0.43 | about $0.21 |
-| 500k, 2 h | $0.62 | about $0.31 |
-| 1M, 3 h | $1.22 | about $0.61 |
-| 1M second attempt, 3 h | $1.22 | about $0.61 |
-| Total | about $3.50 | about $1.74 |
+| Canary, 100k, 2 h | $0.40 | about $0.17 |
+| 500k, 2 h | $0.58 | about $0.25 |
+| 1M, 3 h | $1.15 | about $0.49 |
+| 1M second attempt, 3 h | $1.15 | about $0.49 |
+| Total | about $3.28 | about $1.40 |
 
-Target budget: stay under $30 of the $200 credit. Even every stage twice on-demand stays far below that. The risk is a forgotten stack: the full on-demand fleet costs about $9.74 per day and about $296 per month.
+Target budget: stay under $30 of the $200 credit. Even every stage twice on-demand stays far below that. The risk is a forgotten stack: the full on-demand fleet costs about $9.24 per day and about $281 per month.
 
 ## Cost guards
 
@@ -93,7 +94,7 @@ Also worth doing in the console: a budget alert at $25 (a $100 monthly budget al
 
 | Symptom | Cause and fix |
 | --- | --- |
-| `InvalidParameterCombination: ... not eligible for Free Tier` | The account is still on the free plan. Upgrade it (Before the first apply, step 1). A `run-instances --dry-run` succeeds anyway and does not prove the plan is upgraded. |
+| `InvalidParameterCombination: ... not eligible for Free Tier` | The account is on the free plan and the instance type is not on its list. Use a free-plan type (Before the first apply, step 1) or upgrade the plan. A `run-instances --dry-run` succeeds regardless, so it proves nothing; probe with a real launch and terminate it at once. |
 | `VcpuLimitExceeded` | The fleet needs more vCPU than the quota. Reduce `client_count` or request a higher quota. |
 | Server container is up but every port is closed, log full of `Accept failed` | The same port listed twice (for example `-port=8080` default plus `-ports=8080-8095`). Fixed in the server: repeats are dropped and the server exits if a port is not accepting after start. |
 | Server waits 20 minutes and Prometheus has no client targets | Instances were not found by tag. Spot instances launched through `aws_spot_instance_request` do not get the request's tags; the stack uses `aws_instance` with `instance_market_options` for that reason. |
@@ -103,6 +104,7 @@ Also worth doing in the console: a budget alert at $25 (a $100 monthly budget al
 
 ## Not yet verified on real instances
 
+- Lambda, EventBridge and IAM creation on the free plan (the launch probes covered EC2 only).
 - The whole cloud-init path (compose plugin download, image builds, discovery).
 - The watchdog terminating a real instance (unit-tested against a stub only).
 - ENA connection-tracking limits under 1M connections.

@@ -110,10 +110,12 @@ Since the stack had never run, I reviewed it before spending anything. The revie
 - Tags on `aws_spot_instance_request` do not reach the launched instance (the provider documents this), so peer discovery by tag would have found nothing. The stack now uses `aws_instance` with `instance_market_options`.
 - Amazon Linux 2023 has no docker compose plugin. Cloud-init now installs it.
 - With Docker's bridge and published ports, every connection would also take a NAT conntrack entry, and 1M would reach `nf_conntrack_max`. Server and loadgen use host networking.
-- The default fleet (4 + 4 x 2 = 12 vCPU) exceeded the quota of 8. Defaults are now 1 `r6a.large` + 3 `m6a.large`.
+- The default fleet (4 + 4 x 2 = 12 vCPU) exceeded the quota of 8. Defaults were then set to 1 `r6a.large` + 3 `m6a.large`, and later changed to free-plan types (see the correction below).
 - `go test` ran no tests. `main_test.go` now covers port parsing, the duplicate-port case, the listening check, the cgroup reader, and echo on two ports plus the 503 guard, run with `-race`.
 
 Because the credit is limited ($200, target under $30), cost guards were added: an on-instance shutdown timer, a watchdog Lambda that terminates any `Project=millionws-bench` instance past its deadline (checked every 10 minutes, IAM limited to that tag), and `scripts/kill-bench.sh`. The runbook with the staged plan and per-stage costs is [aws-runbook.md](aws-runbook.md). The whole setup is estimated at about $3.50 on-demand for every stage including a second 1M attempt, versus the $296 per month the full on-demand fleet would cost if forgotten.
 
 What this taught: a dry run does not exercise account-level restrictions, and a stack that only passes `validate` can still be broken in every deployment detail. Local Docker reproductions of the cloud-init logic found bugs that no static check did.
+
+Correction, later the same day: I first concluded the free plan itself blocked the launch and asked for an upgrade. That was wrong. The free plan only accepts certain instance types (`aws ec2 describe-instance-types --filters Name=free-tier-eligible,Values=true` lists them, and the error message says so). Real launch probes of `m7i-flex.large` (on-demand and Spot) and `c7i-flex.large` succeeded and were terminated within seconds. The defaults are now those types: 1 `m7i-flex.large` server (8 GiB, container limited to 6 GiB with the new `server_mem_limit`) and 3 `c7i-flex.large` clients (4 GiB), still 8 vCPU. The estimate for every stage twice on-demand is about $3.28.
 

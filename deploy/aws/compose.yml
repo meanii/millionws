@@ -18,8 +18,9 @@ services:
     # nf_conntrack_max. The host's sysctls (cloud-init) apply directly.
     network_mode: host
     cpus: 2
-    mem_limit: 8g
-    memswap_limit: 8g
+    # SERVER_MEM_LIMIT comes from cloud-init (Terraform server_mem_limit).
+    mem_limit: ${SERVER_MEM_LIMIT:-6g}
+    memswap_limit: ${SERVER_MEM_LIMIT:-6g}
     ulimits:
       nofile:
         soft: 2097152

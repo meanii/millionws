@@ -23,7 +23,7 @@ variable "use_spot" {
 variable "server_type" {
   description = "Server instance type. Measured need: ~5 GiB RAM for 1M conns, 2 vCPU for margin."
   type        = string
-  default     = "r6a.large" # 2 vCPU, 16 GiB: memory-heavy, and 2 vCPU keeps the fleet inside an 8-vCPU quota
+  default     = "m7i-flex.large" # 2 vCPU, 8 GiB: the largest type the AWS free plan may launch; 2 vCPU keeps the fleet inside an 8-vCPU quota
 }
 
 variable "client_count" {
@@ -35,7 +35,7 @@ variable "client_count" {
 variable "client_type" {
   description = "Client instance type. Measured loadgen cost: ~6.6 KiB/conn, so 250k needs ~1.7 GiB plus dialing CPU."
   type        = string
-  default     = "m6a.large" # 2 vCPU, 8 GiB
+  default     = "c7i-flex.large" # 2 vCPU, 4 GiB: free-plan eligible; holds ~334k conns at ~6.6 KiB each (~2.2 GiB)
 }
 
 variable "conns_per_client" {
@@ -83,4 +83,10 @@ variable "guard_grace_minutes" {
   description = "Extra time the cost watchdog Lambda allows past max_runtime_minutes before it terminates an instance."
   type        = number
   default     = 15
+}
+
+variable "server_mem_limit" {
+  description = "Memory limit of the server container (docker syntax). The server keeps the Go heap and the 503 admission guard relative to this, so leave room for the OS, Prometheus and Grafana on the same machine: 6g on an 8 GiB instance. 1M connections need about 4.7 GiB at 4.91 KiB each."
+  type        = string
+  default     = "6g"
 }

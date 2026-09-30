@@ -16,7 +16,7 @@ Work in progress. The target of 1,000,000 connections has not been reached yet.
 | Single-server deployment on Hetzner Cloud | Done |
 | Go load generator (`cmd/loadgen`) | Done |
 | Local benchmark with the server capped at 1 CPU and 1 GiB | Done |
-| EC2 stack (OpenTofu), cost guards, tests | Done, not yet run: blocked on the AWS free plan ([runbook](docs/aws-runbook.md)) |
+| EC2 stack (OpenTofu), cost guards, tests | Done, not yet run ([runbook](docs/aws-runbook.md)); defaults use free-plan instance types |
 | AWS EC2 runs from 100k up to 1M connections | Not started |
 
 The plan, the open items, and the cost estimates are in [docs/roadmap.md](docs/roadmap.md). How to run and pay for the AWS test, and how it is kept from overspending: [docs/aws-runbook.md](docs/aws-runbook.md). A dated log of decisions and mistakes is in [docs/journey.md](docs/journey.md).
@@ -103,7 +103,7 @@ make start              # tofu apply; cloud-init installs Docker and starts the 
 make stop               # tofu destroy
 ```
 
-On AWS EC2 (one server and N clients on Spot or on-demand; needs a paid AWS account, see [docs/aws-runbook.md](docs/aws-runbook.md)):
+On AWS EC2 (one server and N clients on Spot or on-demand; default instance types work on the AWS free plan, see [docs/aws-runbook.md](docs/aws-runbook.md)):
 
 ```sh
 cd infra/opentofu/aws-ec2
