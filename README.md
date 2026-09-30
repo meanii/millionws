@@ -16,8 +16,8 @@ Work in progress. The target of 1,000,000 connections has not been reached yet.
 | Single-server deployment on Hetzner Cloud | Done |
 | Go load generator (`cmd/loadgen`) | Done |
 | Local benchmark with the server capped at 1 CPU and 1 GiB | Done |
-| EC2 stack (OpenTofu), cost guards, tests | Done, not yet run ([runbook](docs/aws-runbook.md)); defaults use free-plan instance types |
-| AWS EC2 runs from 100k up to 1M connections | Not started |
+| EC2 stack (OpenTofu), cost guards, tests | Done; first canary ran on 2026-09-30 ([runbook](docs/aws-runbook.md)) |
+| AWS EC2 runs from 100k up to 1M connections | Canary stopped at 76,952 by security-group connection tracking; see [results](results/aws/2026-09-30-canary/README.md) |
 
 The plan, the open items, and the cost estimates are in [docs/roadmap.md](docs/roadmap.md). How to run and pay for the AWS test, and how it is kept from overspending: [docs/aws-runbook.md](docs/aws-runbook.md). A dated log of decisions and mistakes is in [docs/journey.md](docs/journey.md).
 

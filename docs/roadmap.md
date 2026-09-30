@@ -94,6 +94,10 @@ Commands, sizing and cost per stage are in [aws-runbook.md](aws-runbook.md). The
 
 Every run records instance types, region, kernel version, Go version, commit SHA, and the exact command. Memory per connection is reported as (RSS at N connections minus RSS with none) divided by N, with kernel socket memory reported separately. Results go in `results/<date>-<connections>/` with Grafana screenshots and the raw numbers.
 
+### 4b. Canary result, 2026-09-30
+
+The 100k canary held 76,952 connections and was stopped by the security group's connection tracking, not by memory or CPU (417 MiB of the 6 GiB limit, 3 to 5% CPU). Memory per connection was about 5.3 to 5.5 KiB all-in on EC2 against 4.91 KiB locally. Details, the bugs the run found and what worked: [results/aws/2026-09-30-canary](../results/aws/2026-09-30-canary/README.md).
+
 ### 5. Write-up
 
 A results table in the README comparing gorilla/websocket, nbio locally, and nbio on EC2, with the measured cost of each run.
@@ -123,7 +127,7 @@ Still to check on the first real run: the ENA `conntrack_allowance_exceeded` cou
 
 Blocking the 1M run:
 
-- Nothing has run on AWS yet. The free plan limits which instance types can launch; the defaults now use allowed types ([aws-runbook.md](aws-runbook.md)).
+- The security group tracks every connection and an instance can track only about 77,000 of them (`m7i-flex.large`): the 100k canary on 2026-09-30 stopped at 76,952 ([results](../results/aws/2026-09-30-canary/README.md)). Untracked flows need `0.0.0.0/0` rules in both directions, so the network filtering has to move somewhere else (a subnet network ACL is AWS's own recommendation) before any larger stage can run. Undecided.
 - The Hetzner stack has no load generator. `cmd/loadgen` can fill that role now.
 - The Hetzner OpenTofu uses `cx23` (2 vCPU, 4 GB); a 1M run needs about 5.2 GiB for the server alone (estimate above). The AWS stack uses a 16 GiB server instead.
 

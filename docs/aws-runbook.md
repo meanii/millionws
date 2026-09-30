@@ -2,7 +2,7 @@
 
 How to run the EC2 load test, what it costs, and how it is kept from running up a bill. The stack is `infra/opentofu/aws-ec2`. The plan and the reasoning behind it are in [roadmap.md](roadmap.md).
 
-Status on 2026-09-30: the first two apply attempts were refused by `RunInstances` because they asked for instance types the free plan does not allow (see [Troubleshooting](#troubleshooting)). The defaults were then changed to free-plan types, and single-instance launch probes of `m7i-flex.large` (on-demand and Spot) and `c7i-flex.large` succeeded. The stack itself is validated (`tofu validate`, `tofu plan`, unit and end-to-end tests, local Docker runs).
+Status on 2026-09-30 (later: the 100k canary ran and hit the connection-tracking limit below, see the results directory): the first two apply attempts were refused by `RunInstances` because they asked for instance types the free plan does not allow (see [Troubleshooting](#troubleshooting)). The defaults were then changed to free-plan types, and single-instance launch probes of `m7i-flex.large` (on-demand and Spot) and `c7i-flex.large` succeeded. The stack itself is validated (`tofu validate`, `tofu plan`, unit and end-to-end tests, local Docker runs).
 
 ## Before the first apply
 
@@ -35,6 +35,12 @@ tofu destroy -var my_ip=... -var key_name=millionws-bench -var git_ref=<sha>
 
 `conns_per_client` is split across `client_replicas` (default 4) loadgen containers and rounded down, so pick a multiple of 4. Each replica dials 1,000 connections per second by default, so 1M is reached in a few minutes; the local benchmark showed 5,000 dials per second is safe.
 
+## Known limit: security-group connection tracking
+
+The canary of 2026-09-30 ([results/aws/2026-09-30-canary](../results/aws/2026-09-30-canary/README.md)) stopped at 76,952 connections on `m7i-flex.large` because the security group tracks every connection and an instance can track only so many (`conntrack_allowance_available` reached 0, packets dropped). The current security group, with its self-referencing rule and single-IP rules, tracks everything, so **the stack as written cannot go beyond about 77,000 connections per instance on these types**. Connections are untracked only when the group has `0.0.0.0/0` rules in both directions ([AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-connection-tracking.html#untracked-connections)). Do not run the 500k or 1M stages until that is resolved.
+
+Check it on any instance: `sudo dnf install -y ethtool; sudo ethtool -S $(ip -o -4 route show to default | awk '{print $5}') | grep conntrack`.
+
 ## What the stack builds
 
 - One VPC, one public subnet, one availability zone. Traffic between instances uses private IPs, so there is no NAT gateway, no load balancer and no data transfer charge.
@@ -53,7 +59,7 @@ The roadmap requires each run to record instance types, region, kernel version, 
 - Kernel: `uname -r`. Go version: from the Dockerfile's `golang:1.25-alpine` image.
 - Server progress: Grafana `http://<server_public_ip>:3000`, or `curl localhost:8080/metrics | grep millionws_` on the server. Loadgen progress: `docker logs loadgen-1` on a client (a line every 10 seconds).
 - Memory per connection: (server RSS at N connections minus RSS with none) divided by N, with kernel socket memory reported separately, as in the local benchmark.
-- Watch `conntrack_allowance_exceeded` on each instance: `ethtool -S eth0 | grep conntrack`. The security group's self-referencing rule is tracked, and AWS drops packets once an instance reaches its per-type tracked-connection limit. The limit for these instance types was not found in the AWS documentation, so this needs checking on the first run.
+- Watch `conntrack_allowance_exceeded` and `conntrack_allowance_available` on each instance (see the known limit above; `ethtool` is not installed by default and the interface is not `eth0` or `ens5` by name, use the command above).
 
 ## Cost
 
@@ -99,13 +105,15 @@ Also worth doing in the console: a budget alert at $25 (a $100 monthly budget al
 | Server container is up but every port is closed, log full of `Accept failed` | The same port listed twice (for example `-port=8080` default plus `-ports=8080-8095`). Fixed in the server: repeats are dropped and the server exits if a port is not accepting after start. |
 | Server waits 20 minutes and Prometheus has no client targets | Instances were not found by tag. Spot instances launched through `aws_spot_instance_request` do not get the request's tags; the stack uses `aws_instance` with `instance_market_options` for that reason. |
 | Cloud-init fails at `cd .../deploy/aws` | `git_ref` points at a commit without the AWS stack, or was not pushed. |
+| Server container missing, cloud-init log ends with `error setting rlimit type 7: operation not permitted` | The container `nofile` limit is above the host `fs.nr_open` (2000000 in cloud-init). Fixed: both compose files use 2000000. |
+| New SSH, Prometheus or Grafana connections time out while existing traffic continues; dials `timeout` | Connection-tracking exhaustion, see the known limit. |
 | `docker compose` not found | Amazon Linux 2023 does not package the compose plugin; cloud-init installs v2.29.7. |
 | `tofu apply` says `No valid credential sources found` | Credentials are not in the shell. With `aws login`, run `eval "$(aws configure export-credentials --format env)"` in the same shell. |
 
 ## Not yet verified on real instances
 
-- Lambda, EventBridge and IAM creation on the free plan (the launch probes covered EC2 only).
+- The watchdog terminating an instance, and the on-instance shutdown timer: the canary stack was destroyed before either fired. (Lambda, EventBridge and IAM creation on the free plan worked.)
 - The whole cloud-init path (compose plugin download, image builds, discovery).
 - The watchdog terminating a real instance (unit-tested against a stub only).
-- ENA connection-tracking limits under 1M connections.
+- Anything beyond about 77,000 connections per instance (see the known limit).
 - A loadgen race: a connection that closes before it is registered stays counted as active.

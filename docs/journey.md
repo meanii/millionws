@@ -119,3 +119,14 @@ What this taught: a dry run does not exercise account-level restrictions, and a 
 
 Correction, later the same day: I first concluded the free plan itself blocked the launch and asked for an upgrade. That was wrong. The free plan only accepts certain instance types (`aws ec2 describe-instance-types --filters Name=free-tier-eligible,Values=true` lists them, and the error message says so). Real launch probes of `m7i-flex.large` (on-demand and Spot) and `c7i-flex.large` succeeded and were terminated within seconds. The defaults are now those types: 1 `m7i-flex.large` server (8 GiB, container limited to 6 GiB with the new `server_mem_limit`) and 3 `c7i-flex.large` clients (4 GiB), still 8 vCPU. The estimate for every stage twice on-demand is about $3.28.
 
+## September 2026, 30th: canary on EC2 stops at 76,952 connections
+
+First run on real instances ([results/aws/2026-09-30-canary](../results/aws/2026-09-30-canary/README.md)): 1 `m7i-flex.large` server and 1 `c7i-flex.large` client, target 100,000.
+
+- The stack applied cleanly, discovery and the git checkout worked, and the ramp started. But the server container had not started at all: compose asked for `nofile` 2,097,152 and cloud-init set `fs.nr_open` to 2,000,000, so runc refused. The Hetzner stack had the same mismatch. Both compose files now use 2,000,000.
+- The server then held 76,952 connections and no more. Memory (417 MiB of 6 GiB), CPU (3 to 5%) and every bandwidth and packet-rate allowance were fine. SSH, Prometheus and Grafana on the same instance started timing out intermittently. ENA counters showed `conntrack_allowance_available: 0` and `conntrack_allowance_exceeded` around 18,000.
+- Cause: the security group tracks each connection and an instance can track only so many. The limit was about 77,000 here. Connections are untracked only when the security group allows `0.0.0.0/0` in both directions, which the stack did not (a self-referencing rule and single-IP rules are tracked). So the risk written down in the roadmap earlier the same day ("watch `conntrack_allowance_exceeded`") turned out to be the binding limit, and it binds at 8% of the target.
+- Two of my own diagnostic mistakes cost time: the first `ethtool` calls printed nothing because `ethtool` is not installed on Amazon Linux 2023 and my ssh wrapper discarded stderr, and I briefly wrote the interface name as `ens5`. I only had the real counters once I installed `ethtool` and looked the interface up. Before that the conntrack cause was a hypothesis, not a finding.
+
+Memory per connection on EC2 was about 5.3 to 5.5 KiB all-in, close to the local 4.91 KiB. Stack destroyed afterwards, cost about $0.15.
+

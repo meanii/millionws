@@ -23,8 +23,10 @@ services:
     memswap_limit: ${SERVER_MEM_LIMIT:-6g}
     ulimits:
       nofile:
-        soft: 2097152
-        hard: 2097152
+        # Must not exceed the host fs.nr_open (2000000 in cloud-init), or
+        # runc fails with "error setting rlimit type 7: operation not permitted".
+        soft: 2000000
+        hard: 2000000
     restart: unless-stopped
 
   prometheus:

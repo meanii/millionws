@@ -8,8 +8,10 @@ services:
     command: ["-ports=8081-8095", "-keepalive=0s"]
     ulimits:
       nofile:
-        soft: 2097152
-        hard: 2097152
+        # Must not exceed the host fs.nr_open (2000000 in cloud-init), or
+        # runc fails with "error setting rlimit type 7: operation not permitted".
+        soft: 2000000
+        hard: 2000000
     ports:
       - "8002-8017:8080-8095"
     restart: always
