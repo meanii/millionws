@@ -78,3 +78,9 @@ variable "max_runtime_minutes" {
   type        = number
   default     = 240
 }
+
+variable "guard_grace_minutes" {
+  description = "Extra time the cost watchdog Lambda allows past max_runtime_minutes before it terminates an instance."
+  type        = number
+  default     = 15
+}

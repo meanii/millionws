@@ -22,3 +22,7 @@ output "target" {
 output "git_ref" {
   value = "building ${var.repo_url} at ${var.git_ref}"
 }
+
+output "cost_guard" {
+  value = "instances self-terminate after ${var.max_runtime_minutes} min; watchdog Lambda terminates any tagged instance older than ${var.max_runtime_minutes + var.guard_grace_minutes} min (checks every 10 min)"
+}

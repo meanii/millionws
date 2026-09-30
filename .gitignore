@@ -342,3 +342,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# built by the archive provider for the cost watchdog Lambda
+infra/opentofu/aws-ec2/guard/guard.zip
