@@ -45,7 +45,7 @@ Before the run, Mumbai needed two things the other region already had: the EC2 k
 
 Continuous periods at 999,000+ connections: 10:26:35 to 10:31:35 (5 min), **10:33:35 to 11:08:10 (34 min 35 s)**, 11:10:10 to 11:34:10 (24 min), 11:36:10 to the end (4 min 25 s). Prometheus samples at 5 s, so the edges are only accurate to that.
 
-Charts: [overview](evidence/charts/timeline_overview_IST.png) and [the third kill at 1 s resolution](evidence/charts/third_kill_1hz_IST.png). Video: [evidence/video](evidence/video/) (Grafana, 10:25 to 10:37, covering the ramp, kill 1 and the recovery). Terminal recording: [evidence/terminal](evidence/terminal/) (`.cast` for `asciinema play`, plus a GIF at 8x).
+Charts: [overview](evidence/charts/timeline_overview_IST.png) and [the third kill at 1 s resolution](evidence/charts/third_kill_1hz_IST.png). Video: [evidence/video](evidence/video/README.md) (Grafana, 10:25 to 10:37, covering the ramp, kill 1 and the recovery; the MP4 is in the [release](https://github.com/meanii/millionws/releases/tag/evidence-mumbai-2026-09-30)). Terminal recording: [evidence/terminal](evidence/terminal/) (`.cast` for `asciinema play`, plus a GIF at 8x).
 
 ## Results while holding 1M
 

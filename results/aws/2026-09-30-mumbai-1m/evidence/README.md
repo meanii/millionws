@@ -4,7 +4,7 @@ What each file is and how it was made. The analysis and the numbers are in [../R
 
 | Path | What it is |
 | --- | --- |
-| `video/grafana-1m-ramp-crash-recovery_2026-09-30_1025-1037IST.mp4` | 11 minutes, 1280x890, of the live Grafana dashboard `MillionWS local bench` (5 s refresh) recorded with Playwright. It starts mid-ramp, shows 1M connections, the first OOM kill at 10:31:18 and the recovery. Re-encoded from the original WebM (33 MB) to H.264. |
+| `video/grafana-1m-ramp-crash-recovery_2026-09-30_1025-1037IST.mp4` (**in the [release](https://github.com/meanii/millionws/releases/tag/evidence-mumbai-2026-09-30), not in git**, see `video/README.md`) | 11 minutes, 1280x890, of the live Grafana dashboard `MillionWS local bench` (5 s refresh) recorded with Playwright. It starts mid-ramp, shows 1M connections, the first OOM kill at 10:31:18 and the recovery. Re-encoded from the original WebM (33 MB) to H.264. |
 | `video/frame_*.png` | still frames from the video at 60 s, 300 s, 335 s, 420 s and 560 s after its start (start about 10:25:45) |
 | `terminal/live-view_1025-1036IST.cast` | asciinema recording (`asciinema play <file>`) of the server's live view: connections, sockets, memory, ENA counters, container stats. It includes the ramp from 104,597 connections and the first kill (999,996 to 55,977 at second 386). The header was redacted. |
 | `terminal/terminal-live-view_1025-1036IST_8x.gif` | the same recording rendered as a GIF at 8x with `agg` |
@@ -12,7 +12,7 @@ What each file is and how it was made. The analysis and the numbers are in [../R
 | `screenshots/scheduled_shot-*.png` | screenshots every 90 s during the video recording (file names are the IST time) |
 | `charts/timeline_overview_IST.png`, `charts/third_kill_1hz_IST.png` | drawn from the raw data by `scripts/evidence/plot_run.py`: connections, container memory against the limit and the guard, echo p99; and the 1 s trace of the third kill |
 | `prometheus/prometheus_range_1022-1139IST_5s.json` | 20 queries exported at 5 s steps over the whole run (connections per replica, dial errors by reason, rates, latency quantiles, process memory, goroutines, file descriptors, scrape health) |
-| `prometheus/prometheus_tsdb_data_copy.tgz` | copy of the server's Prometheus data directory (4.5 MB) taken after stopping the Prometheus container; load it into a Prometheus of the same major version to query anything else |
+| `prometheus/prometheus_tsdb_data_copy.tgz` (**in the [release](https://github.com/meanii/millionws/releases/tag/evidence-mumbai-2026-09-30), not in git**, see `prometheus/README.md`) | copy of the server's Prometheus data directory (4.5 MB) taken after stopping the Prometheus container; load it into a Prometheus of the same major version to query anything else |
 | `prometheus/server_metrics_scrape_1139IST.prom` | one raw scrape of the server's `/metrics` |
 | `hosts/*_sampler_10s.csv` | per-host CSV written by `scripts/evidence/sampler.sh` every 10 s from boot: established sockets, memory, kernel slab, container memory, ENA counters. **The `cpu_pct` column is wrong** (it ignores softirq and steal time; fixed in the script after the run). |
 | `hosts/*_snapshot_*.txt` | `scripts/evidence/host_snapshot.sh` output for the server and each client at 10:31 (`at-crash1`, taken at the moment of the first kill), 11:09 (`steady`), 11:25 (`replay-WITHOUT-pprof`) and 11:39 (`final`) |
