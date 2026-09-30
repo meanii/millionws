@@ -1,0 +1,17 @@
+== conntrack now
+count=1047945 max=1048576
+== dmesg: table full lines and first/last time
+3843
+[Wed Sep 30 13:38:37 2026] nf_conntrack: nf_conntrack: table full, dro
+[Wed Sep 30 14:11:03 2026] nf_conntrack: nf_conntrack: table full, dro
+== iptables backend and raw table
+iptables v1.8.8 (nf_tables)
+-P PREROUTING ACCEPT
+-P OUTPUT ACCEPT
+== tools
+conntrack tool not installed
+== memory of conntrack entries
+nf_conntrack objs=1047960 objsize=256B total=256 MiB
+== sysctl
+net.netfilter.nf_conntrack_max = 1048576
+net.netfilter.nf_conntrack_tcp_timeout_established = 432000

@@ -1,0 +1,27 @@
+[Wed Sep 30 13:23:54 2026] millionws invoked oom-killer: gfp_mask=0x400cc0(GFP_KERNEL_ACCOUNT), order=1, oom_score_adj=0
+[Wed Sep 30 13:23:54 2026] memory: usage 6442560kB, limit 6291456kB, failcnt 37794
+[Wed Sep 30 13:23:54 2026] anon 1438392320
+[Wed Sep 30 13:23:54 2026] kernel 3924860928
+[Wed Sep 30 13:23:54 2026] sock 1228075008
+[Wed Sep 30 13:23:54 2026] slab 3913072640
+[Wed Sep 30 13:23:54 2026] Memory cgroup out of memory: Killed process 16800 (millionws) total-vm:2612276kB, anon-rss:1404624kB, file-rss:8752kB, shmem-rss:0kB, UID:65532 pgtables:2892kB oom_score_adj
+[Wed Sep 30 13:33:17 2026] millionws invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+[Wed Sep 30 13:33:17 2026] memory: usage 7166368kB, limit 6656000kB, failcnt 127628
+[Wed Sep 30 13:33:17 2026] anon 1491165184
+[Wed Sep 30 13:33:17 2026] kernel 3924918272
+[Wed Sep 30 13:33:17 2026] sock 1910456320
+[Wed Sep 30 13:33:17 2026] slab 3913066864
+[Wed Sep 30 13:33:17 2026] Memory cgroup out of memory: Killed process 22442 (millionws) total-vm:2672892kB, anon-rss:1456184kB, file-rss:8752kB, shmem-rss:0kB, UID:65532 pgtables:2972kB oom_score_adj
+[Wed Sep 30 13:38:37 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+[Wed Sep 30 13:38:37 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+[Wed Sep 30 13:46:57 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+[Wed Sep 30 13:55:23 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+[Wed Sep 30 14:03:48 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+[Wed Sep 30 14:57:44 2026] millionws invoked oom-killer: gfp_mask=0x400cc0(GFP_KERNEL_ACCOUNT), order=1, oom_score_adj=0
+[Wed Sep 30 14:57:44 2026] memory: usage 7436548kB, limit 7340032kB, failcnt 24575
+[Wed Sep 30 14:57:44 2026] anon 1768071168
+[Wed Sep 30 14:57:44 2026] kernel 3933839360
+[Wed Sep 30 14:57:44 2026] sock 1917661184
+[Wed Sep 30 14:57:44 2026] slab 3913055904
+[Wed Sep 30 14:57:44 2026] Memory cgroup out of memory: Killed process 62416 (millionws) total-vm:2942364kB, anon-rss:1726528kB, file-rss:5264kB, shmem-rss:0kB, UID:65532 pgtables:3504kB oom_score_adj
+table-full total: 3843

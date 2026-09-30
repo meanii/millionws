@@ -1,0 +1,14 @@
+started=2026-09-30T09:27:51.729909642Z restarts=1 oomkilled=false memlimit=7516192768
+2026/09/30 14:12:30 memory limit: cgroup limit 7168 MiB, adjusting the Go memory limit every second
+2026/09/30 14:12:30 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, w
+2026/09/30 14:47:42 memory guard: 6454 MiB of 7168 MiB used, rejecting new connections
+2026/09/30 14:54:11 memory guard: 6057 MiB of 7168 MiB used, accepting new connections
+2026/09/30 14:57:51 memory limit: cgroup limit 7168 MiB, adjusting the Go memory limit every second
+2026/09/30 14:57:51 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, w
+
+iptables raw:
+-P PREROUTING ACCEPT
+-P OUTPUT ACCEPT
+-A PREROUTING -p tcp -m tcp --dport 8080:8095 -j CT --notrack
+-A OUTPUT -p tcp -m tcp --sport 8080:8095 -j CT --notrack
+conntrack: count=120 max=2097152

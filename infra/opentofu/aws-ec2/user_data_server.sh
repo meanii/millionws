@@ -37,7 +37,10 @@ net.ipv4.tcp_max_syn_backlog = 65535
 net.ipv4.ip_local_port_range = 1024 65535
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 15
-# Security groups are stateful: every connection takes a conntrack entry.
+# The kernel's own connection tracking (netfilter, loaded by Docker) keeps a
+# 256-byte entry per flow and drops new flows above this limit. It is not the
+# security group's tracking. On the server the service ports are exempted
+# below, so this only limits the other flows.
 net.netfilter.nf_conntrack_max = 1048576
 SYSCTL
 sysctl --system
@@ -45,6 +48,18 @@ cat >/etc/security/limits.d/99-millionws.conf <<'LIMITS'
 * soft nofile 2000000
 * hard nofile 2000000
 LIMITS
+
+echo "[cloud-init] exempting the server ports from connection tracking"
+# A tracked flow costs a 256-byte entry (about 244 MiB of host memory for 1M
+# connections, outside the server container) and new flows, including SSH and
+# Prometheus scrapes, are dropped once nf_conntrack_max fills. A run that asked
+# for 1.3M connections hit that at 1,048,576 tracked flows
+# (results/aws/2026-09-30-mumbai-validation).
+command -v iptables >/dev/null || dnf install -y iptables-nft
+PORT_RANGE=$(echo "${server_ports}" | tr '-' ':')
+iptables -t raw -I PREROUTING -p tcp --dport "$PORT_RANGE" -j CT --notrack
+iptables -t raw -I OUTPUT -p tcp --sport "$PORT_RANGE" -j CT --notrack
+iptables -t raw -S | tail -3
 
 echo "[cloud-init] cloning repository"
 git clone ${repo_url} /home/ec2-user/millionws

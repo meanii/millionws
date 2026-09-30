@@ -1,0 +1,12 @@
+before: free=5271 MiB used conntrack=1047947
+net.netfilter.nf_conntrack_max = 2097152
+-P PREROUTING ACCEPT
+-P OUTPUT ACCEPT
+-A PREROUTING -p tcp -m tcp --dport 8080:8095 -j CT --notrack
+-A OUTPUT -p tcp -m tcp --sport 8080:8095 -j CT --notrack
+ Container aws-server-1  Recreated
+ Container aws-server-1  Starting
+ Container aws-server-1  Started
+memory.max now: 7168 MiB
+2026/09/30 14:12:30 memory limit: cgroup limit 7168 MiB, adjusting the Go memory limit eve
+2026/09/30 14:12:30 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws:

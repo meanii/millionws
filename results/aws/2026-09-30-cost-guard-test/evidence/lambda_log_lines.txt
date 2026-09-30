@@ -1,0 +1,6 @@
+2026-09-30T08:47:00.518000+00:00 2026/09/30/ 4 tagged instance(s), none past 165 min
+2026-09-30T08:57:00.751000+00:00 2026/09/30/ 4 tagged instance(s), none past 165 min
+2026-09-30T09:07:00.905000+00:00 2026/09/30/ 4 tagged instance(s), none past 165 min
+2026-09-30T09:17:00.663000+00:00 2026/09/30/ 4 tagged instance(s), none past 165 min
+2026-09-30T09:28:59.702000+00:00 2026/09/30/ 2 tagged instance(s), none past 12 min
+2026-09-30T09:38:59.298000+00:00 2026/09/30/ terminating 2 instance(s) older than 12 min: ['i-0eb462d8f1dda2721', 'i-0982991c0066ced7c']

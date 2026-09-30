@@ -1,0 +1,54 @@
+14:46:58 part 3 start: 14:46:58,1300002,0.0,0.0,1500097.0,0.388,16666.234
+14:46:58 PUSH: +60,000 more connections on each client (target 1.48M)
+loadgen-extra4 started: 60000 connections at 1000 dials/s
+loadgen-extra4 started: 60000 connections at 1000 dials/s
+loadgen-extra4 started: 60000 connections at 1000 dials/s
+14:47:03 push: 14:47:00,1300002,0.0,0.0,1500097.0,0.388,16664.877 | ct=34 mem=6.124GiB / 7GiB free=5841MiB 
+14:47:18 push: 14:47:13,1331576,0.0,0.0,1500097.0,0.405,16631.492 | ct=42 mem=6.106GiB / 7GiB free=5793MiB 
+14:47:31 push: 14:47:28,1372996,0.0,0.0,1500097.0,0.513,16642.954 | ct=50 mem=6.169GiB / 7GiB free=5821MiB 
+14:47:46 push: 14:47:41,1415068,0.0,0.0,1500097.0,0.523,16664.801 | ct=64 mem=6.316GiB / 7GiB free=5909MiB 
+14:47:59 push: 14:47:56,1420239,35030.0,0.0,1500097.0,0.577,16653.152 | ct=72 mem=6.313GiB / 7GiB free=5895MiB 
+14:48:13 push: 14:48:09,1420239,62119.0,0.0,1500097.0,0.406,16702.221 | ct=75 mem=6.297GiB / 7GiB free=5879MiB 
+14:48:26 push: 14:48:23,1420239,103683.0,0.0,1500097.0,0.402,16675.487 | ct=83 mem=6.302GiB / 7GiB free=5883MiB 
+14:48:41 push: 14:48:36,1420239,145044.0,0.0,1500097.0,0.402,16666.59 | ct=91 mem=6.306GiB / 7GiB free=5880MiB 
+14:48:55 push: 14:48:51,1420239,185603.0,0.0,1500097.0,0.399,16663.164 | ct=105 mem=6.312GiB / 7GiB free=5888MiB 
+14:49:08 push: 14:49:05,1420239,211889.0,0.0,1500097.0,0.401,16667.925 | ct=95 mem=6.307GiB / 7GiB free=5887MiB 
+14:49:23 push: 14:49:18,1420236,252665.0,0.0,1500097.0,0.4,16669.444 | ct=103 mem=6.315GiB / 7GiB free=5880MiB 
+14:49:37 push: 14:49:33,1420234,292302.0,0.0,1500097.0,0.401,16664.997 | ct=113 mem=6.323GiB / 7GiB free=5870MiB 
+14:49:52 push: 14:49:47,1420233,333097.0,0.0,1500097.0,0.401,16665.204 | ct=121 mem=6.312GiB / 7GiB free=5875MiB 
+14:50:06 push: 14:50:02,1420233,371815.0,0.0,1500097.0,0.401,16662.39 | ct=91 mem=6.317GiB / 7GiB free=5874MiB 
+14:50:19 push: 14:50:16,1420233,411771.0,0.0,1500097.0,0.401,16671.21 | ct=99 mem=6.327GiB / 7GiB free=5869MiB 
+14:50:33 push: 14:50:29,1420233,438935.0,0.0,1500097.0,0.401,16671.485 | ct=107 mem=6.321GiB / 7GiB free=5878MiB 
+14:50:48 push: 14:50:43,1420233,479171.0,0.0,1500097.0,0.401,16667.897 | ct=115 mem=6.308GiB / 7GiB free=5878MiB 
+14:51:01 push: 14:50:58,1420233,520607.0,0.0,1500097.0,0.399,16668.363 | ct=125 mem=6.313GiB / 7GiB free=5885MiB 
+14:51:16 push: 14:51:11,1420233,561358.0,0.0,1500097.0,0.398,16665.75 | ct=99 mem=6.315GiB / 7GiB free=5877MiB 
+14:51:29 push: 14:51:26,1420233,602595.0,0.0,1500097.0,0.398,16663.175 | ct=107 mem=6.315GiB / 7GiB free=5891MiB 
+14:51:43 push: 14:51:39,1420233,629965.0,0.0,1500097.0,0.399,16671.94 | ct=115 mem=6.313GiB / 7GiB free=5886MiB 
+14:51:57 push: 14:51:53,1420233,670767.0,0.0,1500097.0,0.399,16664.145 | ct=123 mem=6.321GiB / 7GiB free=5885MiB 
+14:52:10 push: 14:52:07,1420233,711564.0,0.0,1500097.0,0.402,16667.727 | ct=84 mem=6.308GiB / 7GiB free=5884MiB 
+14:52:25 push: 14:52:20,1420233,751095.0,0.0,1500097.0,0.4,16670.798 | ct=98 mem=6.328GiB / 7GiB free=5886MiB 
+14:52:39 push: 14:52:35,1420233,777116.0,0.0,1500097.0,0.404,16660.297 | ct=106 mem=6.315GiB / 7GiB free=5867MiB 
+14:52:52 push: 14:52:49,1420233,818597.0,0.0,1500097.0,0.404,16669.684 | ct=114 mem=6.318GiB / 7GiB free=5886MiB 
+14:53:07 push: 14:53:02,1420233,858963.0,0.0,1500097.0,0.403,16674.307 | ct=121 mem=6.309GiB / 7GiB free=5891MiB 
+14:53:20 push: 14:53:17,1420233,898562.0,0.0,1500097.0,0.403,16662.703 | ct=96 mem=6.315GiB / 7GiB free=5894MiB 
+14:53:34 push: 14:53:30,1420233,923941.0,0.0,1500097.0,0.4,16672.85 | ct=110 mem=6.318GiB / 7GiB free=5873MiB 
+14:53:49 push: 14:53:44,1420233,964890.0,0.0,1500097.0,0.401,16669.198 | ct=119 mem=6.309GiB / 7GiB free=5886MiB 
+[Wed Sep 30 14:11:01 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+[Wed Sep 30 14:11:01 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+[Wed Sep 30 14:11:03 2026] nf_conntrack: nf_conntrack: table full, dropping packet
+restarts=0 oomkilled=false
+2026/09/30 14:47:42 memory guard: 6454 MiB of 7168 MiB used, rejecting new connections
+14:54:06 PUSH done. rejected=1030719.0 active=1420233
+14:54:06 removing the extra containers to return to ~1M
+loadgen-extra loadgen-4 loadgen-3 loadgen-2 loadgen-1 
+loadgen-extra loadgen-4 loadgen-3 loadgen-2 loadgen-1 
+loadgen-extra loadgen-4 loadgen-3 loadgen-2 loadgen-1 
+14:57:09 back at ~1M: 14:57:08,1000002,1032831.0,0.0,1500097.0,0.381,16660.925
+mw14s
+14:57:30 STALL 14s at container limit 7168 MiB (conntrack exempted)
+14:57:31.169 STOP pid 62416 for 14s
+14:57:45.238 CONT
+14:59:28 RESULT 7g stall 14s: minimum connections in the next 100 s = 63613
+14:59:28 *** SERVER KILLED by a 14s stall at 7168 MiB ***
+15:00:44 recovered: active=1000002
+15:02:14 part 3 done

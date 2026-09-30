@@ -1,0 +1,69 @@
+13:08:09 run A start. server 13.126.102.215
+13:08:09 prometheus ready
+13:08:09 STAGE 500k reached: active=500004
+13:13:13 500k hold done; snapshot taken. 13:13:13,500004,0.0,0.0,39.0,0.352,16665.683
+13:13:13 scaling to 1M: +166,666 connections on each client
+loadgen-extra started: 166666 connections at 1000 dials/s
+loadgen-extra started: 166666 connections at 1000 dials/s
+loadgen-extra started: 166666 connections at 1000 dials/s
+13:16:11 STAGE 1M reached: active=1000002
+13:20:17 1M hold done; snapshot taken. 13:20:16,1000002,0.0,0.0,39.0,0.386,16660.385
+13:20:17 STALL SERIES 1: container limit 6144 MiB (as started)
+memwatchlimit6g_5s-started
+13:20:38 STALL 5s at container limit 6144 MiB (limit6g)
+13:20:38.810 STOP pid 16800 for 5s
+13:20:43.893 CONT
+13:22:24 RESULT limit6g stall 5s: minimum connections seen in the next 100 s = 1000002
+memwatchlimit6g_9s-started
+13:23:45 STALL 9s at container limit 6144 MiB (limit6g)
+13:23:45.887 STOP pid 16800 for 9s
+13:23:54.957 CONT
+13:25:37 RESULT limit6g stall 9s: minimum connections seen in the next 100 s = 24386
+13:25:37 *** SERVER KILLED by a 9s stall at 6144 MiB ***
+13:27:00 recovered: active=1000002
+13:29:00 raising the container limit live to 6500m (docker update, no restart)
+aws-server-1
+6815744000
+13:29:31 STALL SERIES 2: container limit 6500 MiB
+memwatchlimit6500m_9s-started
+13:29:52 STALL 9s at container limit 6500 MiB (limit6500m)
+13:29:53.111 STOP pid 22442 for 9s
+13:30:02.176 CONT
+13:31:42 RESULT limit6500m stall 9s: minimum connections seen in the next 100 s = 1000002
+memwatchlimit6500m_14s-started
+13:33:03 STALL 14s at container limit 6500 MiB (limit6500m)
+13:33:04.105 STOP pid 22442 for 14s
+13:33:18.270 CONT
+13:35:01 RESULT limit6500m stall 14s: minimum connections seen in the next 100 s = 62711
+13:35:01 *** SERVER KILLED by a 14s stall at 6500 MiB ***
+13:36:20 recovered: active=1000002
+13:38:20 STAGE above 1M: +100,000 connections on each client (target 1.3M), server thresholds as started
+loadgen-extra2 started: 100000 connections at 1000 dials/s
+loadgen-extra2 started: 100000 connections at 1000 dials/s
+loadgen-extra2 started: 100000 connections at 1000 dials/s
+13:38:21 above1M: 13:38:21,1000002,0.0,0.0,1000074.0,0.386,16665.137
+13:38:32 above1M: 13:38:31,1028067,0.0,0.0,1000074.0,0.386,16667.586
+13:39:19 above1M: 13:38:42,,,0.0,1000074.0,,16670.542
+13:40:17 above1M: 13:39:29,,,,,,
+13:41:16 above1M: 13:40:27,,,,,,
+13:42:14 above1M: 13:41:26,,,,,,
+13:43:13 above1M: 13:42:24,,,,,,
+13:44:11 above1M: 13:43:23,,,,,,
+13:45:10 above1M: 13:44:21,,,,,,
+13:46:08 above1M: 13:45:20,,,,,,
+13:47:07 above1M: 13:46:18,,,,,,
+13:48:05 above1M: 13:47:17,,,,,,
+13:49:04 above1M: 13:48:15,,,,,,
+13:50:02 above1M: 13:49:14,,,,,,
+13:51:01 above1M: 13:50:12,,,,,,
+13:51:59 above1M: 13:51:11,,,,,,
+13:52:58 above1M: 13:52:09,,,,,,
+13:53:56 above1M: 13:53:08,,,,,,
+13:54:55 above1M: 13:54:06,,,,,,
+13:55:53 above1M: 13:55:05,,,,,,
+13:56:52 above1M: 13:56:03,,,,,,
+13:57:50 above1M: 13:57:02,,,,,,
+13:58:49 above1M: 13:58:00,,,,,,
+13:59:47 above1M: 13:58:59,,,,,,
+14:04:07 above-1M snapshot taken. final: 14:03:18,,,,,,
+14:04:07 run A stages done
