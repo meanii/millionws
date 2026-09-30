@@ -11,7 +11,7 @@ LOG=/tmp/cloud-init.log
 shutdown -h +${max_runtime_minutes}
 exec > >(tee -a $LOG) 2>&1
 
-dnf install -y docker git awscli
+dnf install -y docker git awscli ethtool
 systemctl enable --now docker
 usermod -aG docker ec2-user || true
 

@@ -10,7 +10,7 @@ LOG=/tmp/cloud-init.log
 shutdown -h +${max_runtime_minutes}
 exec > >(tee -a $LOG) 2>&1
 
-dnf install -y docker git awscli
+dnf install -y docker git awscli ethtool
 systemctl enable --now docker
 # Amazon Linux 2023 ships docker but not the compose plugin.
 mkdir -p /usr/local/lib/docker/cli-plugins
