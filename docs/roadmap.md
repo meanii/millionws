@@ -46,12 +46,11 @@ Done, 2026-09-29:
   `Addrs` (`99d9237`), `-port` unchanged for the single-port case. Proven
   locally: 1 loadgen × 2 ports held 100k with zero dial errors
   (`results/local/2026-09-29-nbio-2ports/`), past the ~64k-per-pair ceiling.
-- fd limits raised everywhere: Hetzner host `nofile` 200k → 2M,
-  `file-max` → 3M, `fs.nr_open` = 2M, `nf_conntrack_max` = 1M, container
-  `ulimits` 2M, 16 ports published; same block in the EC2 cloud-init.
+- fd limits raised: host `nofile` 2M, `file-max` → 3M, `fs.nr_open` = 2M,
+  `nf_conntrack_max` = 1M, container `ulimits` 2M, 16 ports published, all
+  in the EC2 cloud-init.
 - CI (`.github/workflows/ci.yml`): `gofmt` clean, `go vet`, `go test`,
-  `go build`, plus `tofu fmt -check`, `init`, `validate` for
-  `hetzner` and `aws-ec2`.
+  `go build`, plus `tofu fmt -check`, `init`, `validate` for `aws-ec2`.
 
 ### 2. Local run
 
@@ -68,7 +67,7 @@ both cloud-init scripts `bash -n` clean and template-render tested): one VPC,
 one public subnet in a single AZ, a security group that allows SSH, Grafana
 and Prometheus only from `my_ip` with all traffic between the instances, one
 server and N clients. Spot by default with a `use_spot` flag for on-demand.
-The cloud-init reuses the Hetzner tuning block (adapted to AL2023/`dnf`,
+The cloud-init sets the kernel and file-descriptor tuning (AL2023/`dnf`,
 `ec2-user`), with the 2M fd limits and 1M conntrack from the start.
 
 Two design points worth knowing: server and clients discover each other
@@ -136,23 +135,14 @@ Still to check on the first real run: the ENA `conntrack_allowance_exceeded` cou
 Blocking the 1M run:
 
 - The 1M run is done (999,999 connections, 2026-09-30, [results](../results/aws/2026-09-30-1m/README.md)). What remains open is in the list under Server below and in the results' "not measured" sections.
-- The Hetzner stack has no load generator. `cmd/loadgen` can fill that role now.
-- The Hetzner OpenTofu uses `cx23` (2 vCPU, 4 GB); a 1M run needs about 5.2 GiB for the server alone (estimate above). The AWS stack uses a 16 GiB server instead.
 
 Resolved 2026-09-29 to 30 (kept here so the history is visible): the Locust client cannot hold 1M connections, so `cmd/loadgen` replaced it for connection-count tests; the one-port limit of about 64,000 connections per client IP is gone with `-ports`; file descriptor limits are raised on the Hetzner host and both containers.
-
-Minor: `locustfile.py` defaults to `ws://localhost:4001`, while the server listens on 8080 (8002 on the Hetzner host).
 
 Server:
 
 - At 1M connections the 6 GiB container has room for a 7 to 12 second stall of the read path (see the Mumbai report); a larger limit or instance, or a way to bound socket-buffer memory per container, would remove that cliff. Untested.
 - Done: `MaxLoad` is now the `-maxload` flag (default 1,000,000). Not yet used: a run above 1M to find where this server really stops. Note that at the cap the server refuses `/metrics` requests too, so a run should set it above its target.
 - Near the memory limit the GC uses a full core and echo p99 rises to about 100 ms. Each connection has its own read-deadline timer and stores its local and remote address; in the heap profile at 120,000 connections these were about 20 MB and 22.5 MB. A shared idle sweep instead of per-connection timers could save part of the 1.08 KiB of Go memory per connection. Not measured yet.
-- `deploy/millionws/deployment.yaml` limits each pod to 512 MiB and scales on CPU, which does not track idle connections.
-
-Security, since the Hetzner server has a public IP:
-
-- Grafana with `admin/admin`, Prometheus with `--web.enable-lifecycle`, and the image renderer are reachable from the internet. Needs a firewall rule or an SSH tunnel.
 
 ## Cost estimates
 

@@ -19,18 +19,6 @@ test:
 benchmark:
     go test -bench=.
 
-locust:
-    locust -f locust/locustfile.py
-
-locust-report:
-    mkdir -p dist
-    locust -f locust/locustfile.py \
-        --headless \
-        -u 100 \
-        -r 10 \
-        --run-time 1m \
-        --html dist/locust-report.html
-
 # one local benchmark run of a variant in bench/local/variants
 bench variant="nbio-tuned" total="300000" replicas="5":
     bench/local/run.sh {{variant}} {{total}} {{replicas}}

@@ -1,7 +1,6 @@
 infra
 deploy
 dist
-locust
 bench
 results
 docs
