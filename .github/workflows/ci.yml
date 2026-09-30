@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dir: [infra/opentofu/hetzner, infra/opentofu/aws-ec2]
+        dir: [infra/opentofu/aws-ec2]
     defaults:
       run:
         working-directory: ${{ matrix.dir }}

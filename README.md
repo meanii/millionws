@@ -13,7 +13,6 @@ Work in progress. The target of 1,000,000 connections has not been reached yet.
 | Echo server with Prometheus metrics | Done |
 | Switch from gorilla/websocket to nbio (epoll) | Done, measured |
 | Grafana dashboard, auto-provisioned | Done |
-| Single-server deployment on Hetzner Cloud | Done |
 | Go load generator (`cmd/loadgen`) | Done |
 | Local benchmark with the server capped at 1 CPU and 1 GiB | Done |
 | EC2 stack (OpenTofu), cost guards, tests | Done; first canary ran on 2026-09-30 ([runbook](docs/aws-runbook.md)) |
@@ -55,8 +54,8 @@ Every step between these rows, the method, and its limits: [docs/local-benchmark
 | WebSocket | [nbio](https://github.com/lesismal/nbio) v1.6.8, event loop on epoll |
 | Metrics | Prometheus client, scraped every 5 s |
 | Dashboards | Grafana, provisioned from `deploy/grafana/provisioning` |
-| Load testing | `cmd/loadgen` (Go, nbio) for connection counts; Locust for the earlier EKS setup |
-| Infrastructure | Terraform for Hetzner Cloud and AWS EKS |
+| Load testing | `cmd/loadgen` (Go, nbio) |
+| Infrastructure | OpenTofu for AWS EC2 |
 
 With gorilla/websocket each connection needs a goroutine blocked on read, so 1M connections means 1M goroutines and their stacks. nbio registers every socket with epoll and runs callbacks from a small pool of goroutines, so the goroutine count stays flat as connections grow.
 
@@ -106,15 +105,6 @@ just bench nbio-tuned   # one run of one version, results in results/local/
 just bench-matrix 3     # every version 3 times, plus a comparison table
 ```
 
-On Hetzner Cloud (creates one server; you are billed per hour until you destroy it):
-
-```sh
-cd infra/opentofu/hetzner
-export HZ_TOKEN=...     # Hetzner Cloud API token
-make start              # tofu apply; cloud-init installs Docker and starts the stack
-make stop               # tofu destroy
-```
-
 On AWS EC2 (one server and N clients on Spot or on-demand; default instance types work on the AWS free plan, see [docs/aws-runbook.md](docs/aws-runbook.md)):
 
 ```sh
@@ -126,8 +116,6 @@ scripts/kill-bench.sh   # emergency: terminate every tagged instance now
 
 Instances terminate themselves after 4 hours and a watchdog Lambda terminates any that outlive that, so a forgotten stack cannot bill for long.
 
-The Hetzner stack exposes Grafana with the default `admin/admin` login on a public IP. Change the password or restrict the firewall before leaving it running.
-
 ## Repository layout
 
 | Path | Contents |
@@ -137,16 +125,13 @@ The Hetzner stack exposes Grafana with the default `admin/admin` login on a publ
 | `bench/local` | Local benchmark: Compose file, run and recording scripts, one file per server version |
 | `results/local` | Benchmark output, one directory per run |
 | `deploy/local` | Docker Compose for local Prometheus and Grafana |
-| `deploy/hetzner` | Docker Compose for the single-server Hetzner stack |
 | `deploy/aws` | Docker Compose for the server side of the EC2 stack |
 | `deploy/grafana` | Grafana datasource and dashboard provisioning |
-| `deploy/millionws` | Kubernetes manifests (EKS approach) |
-| `infra/opentofu/hetzner` | OpenTofu for one Hetzner Cloud server |
 | `infra/opentofu/aws-ec2` | OpenTofu for the EC2 load-test stack (server + clients) and the cost watchdog Lambda (`watchdog.tf`, `guard/`) |
 | `scripts` | `kill-bench.sh`, the emergency terminate |
-| `infra/opentofu/clusters`, `modules` | OpenTofu for two EKS clusters (earlier approach, see journey) |
-| `locust` | Locust test and Locust Operator manifests |
 | `docs` | Roadmap, journey, benchmark method, and the AWS runbook |
+
+Earlier approaches were removed once the EC2 stack replaced them: two EKS clusters with a Locust load generator, and a single Hetzner Cloud server. The last commit that has them is `d6c12c0` (`git show d6c12c0:infra/opentofu/hetzner/main.tf`); the reasons are in [docs/journey.md](docs/journey.md).
 
 ## References
 
