@@ -90,3 +90,9 @@ variable "server_mem_limit" {
   type        = string
   default     = "6g"
 }
+
+variable "timezone" {
+  description = "System timezone set on every instance, so logs, `date` and cron output line up with the operator's clock. IST by default."
+  type        = string
+  default     = "Asia/Kolkata"
+}

@@ -267,6 +267,7 @@ resource "aws_instance" "server" {
     repo_url            = var.repo_url
     git_ref             = var.git_ref
     max_runtime_minutes = var.max_runtime_minutes
+    timezone            = var.timezone
   })
   dynamic "instance_market_options" {
     for_each = local.market
@@ -306,6 +307,7 @@ resource "aws_instance" "client" {
     repo_url            = var.repo_url
     git_ref             = var.git_ref
     max_runtime_minutes = var.max_runtime_minutes
+    timezone            = var.timezone
   })
   dynamic "instance_market_options" {
     for_each = local.market

@@ -4,12 +4,14 @@
 # discovered through the EC2 API, so no Terraform cross-references.
 # Replicas share the client IP (16 server ports x 64k ephemeral ports each
 # is plenty), but each exposes its own host metrics port 9101..910N.
-# Template vars: port_first, port_count, conns (per replica), replicas, repo_url, git_ref, max_runtime_minutes.
+# Template vars: port_first, port_count, conns (per replica), replicas, repo_url, git_ref, max_runtime_minutes, timezone.
 LOG=/tmp/cloud-init.log
 # Cost guard: the instance shuts itself down (and, with terminate-on-shutdown,
 # disappears) after this many minutes even if nobody runs tofu destroy.
 shutdown -h +${max_runtime_minutes}
 exec > >(tee -a $LOG) 2>&1
+
+timedatectl set-timezone ${timezone}
 
 dnf install -y docker git awscli ethtool
 systemctl enable --now docker
@@ -76,8 +78,12 @@ for i in $(seq 1 ${replicas}); do
     --network host \
     --ulimit "nofile=1048576:1048576" \
     -e LOADGEN_METRICS=":$port" \
+    -e TZ="${timezone}" \
     -e LOADGEN_URL="$URLS" \
     -e LOADGEN_CONNS="${conns}" \
     millionws:loadgen
 done
+echo "[cloud-init] starting the evidence sampler (CSV every 10 s in /home/ec2-user/evidence)"
+mkdir -p /home/ec2-user/evidence
+systemd-run --unit=millionws-sampler /home/ec2-user/millionws/scripts/evidence/sampler.sh /home/ec2-user/evidence/samples.csv 10 loadgen-1
 echo "[cloud-init] done"
