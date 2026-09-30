@@ -61,3 +61,14 @@ variable "server_port_count" {
   type        = number
   default     = 16
 }
+
+variable "repo_url" {
+  description = "Git repository the instances clone and build."
+  type        = string
+  default     = "https://github.com/meanii/millionws.git"
+}
+
+variable "git_ref" {
+  description = "Branch, tag or commit SHA to build. Required so every run records exactly what it ran; the default branch (main) does not have the AWS stack or the load generator."
+  type        = string
+}

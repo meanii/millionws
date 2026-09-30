@@ -96,6 +96,20 @@ Every run records instance types, region, kernel version, Go version, commit SHA
 
 A results table in the README comparing gorilla/websocket, nbio locally, and nbio on EC2, with the measured cost of each run.
 
+## First apply attempt, 2026-09-30
+
+The first `tofu apply` on EC2 (1 server, 3 clients, 100k target) launched nothing: all four Spot requests were cancelled with `InvalidParameterCombination: instance type is not eligible for Free Tier`, because the account was still on the free plan (phase 0). Both vCPU quotas are 8; a 100k run fits exactly, the 1M setup (4 + 4 x 2 = 12 vCPU) does not.
+
+A review of the stack before the retry found and fixed:
+
+- `deploy/aws/compose.yml` passed `-ports=8080-8095` with the default `-port=8080`. 8080 was listed twice, the second bind failed, and the server stayed up listening on no port at all. The server now drops repeated ports, and exits if any listener is not accepting connections after start.
+- Cloud-init cloned the default branch (`main`), which has no `deploy/aws` or `cmd/loadgen`. A required `git_ref` variable is now checked out, and the resolved SHA is written to `~/GIT_SHA`.
+- Tags on `aws_spot_instance_request` do not reach the launched instance, so discovery by `tag:Name` would never have found a peer. Server and clients are now `aws_instance` with `instance_market_options` (Spot, `one-time`).
+- `go test` had no tests. `main_test.go` covers port parsing, the duplicate-port case, the listening check, the cgroup reader, and an end-to-end echo on two ports plus the 503 guard.
+- `nf_conntrack` is loaded before `sysctl` so `nf_conntrack_max` applies; `conns_per_client / client_replicas` is floored.
+
+Not done, worth checking on the first real run: Docker NAT and conntrack on the load path (`--network host` for loadgen and server), and the ENA `conntrack_allowance_exceeded` counter, since the security group's self-referencing rule is tracked.
+
 ## Open items
 
 Blocking the 1M run:

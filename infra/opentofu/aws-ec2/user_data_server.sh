@@ -2,7 +2,7 @@
 # Server cloud-init (Amazon Linux 2023): Docker, kernel/file tuning for 1M+
 # connections, repo clone, Prometheus targets for every client (discovered
 # through the EC2 API, so no Terraform cross-references), compose up.
-# Template vars: server_ports ("8080-8095"), expect_clients, replicas.
+# Template vars: server_ports ("8080-8095"), expect_clients, replicas, repo_url, git_ref.
 LOG=/tmp/cloud-init.log
 exec > >(tee -a $LOG) 2>&1
 
@@ -11,6 +11,10 @@ systemctl enable --now docker
 usermod -aG docker ec2-user || true
 
 echo "[cloud-init] tuning kernel and file limits"
+# nf_conntrack_max only exists once the module is loaded; without this the
+# sysctl below is skipped and Docker loads the module later with its default.
+modprobe nf_conntrack
+echo nf_conntrack >/etc/modules-load.d/nf_conntrack.conf
 cat >/etc/sysctl.d/99-millionws.conf <<'SYSCTL'
 # 1M connections need ~1 fd each, plus runtime headroom.
 fs.file-max = 3000000
@@ -30,7 +34,9 @@ cat >/etc/security/limits.d/99-millionws.conf <<'LIMITS'
 LIMITS
 
 echo "[cloud-init] cloning repository"
-git clone https://github.com/meanii/millionws.git /home/ec2-user/millionws
+git clone ${repo_url} /home/ec2-user/millionws
+git -C /home/ec2-user/millionws checkout ${git_ref}
+git -C /home/ec2-user/millionws rev-parse HEAD | tee /home/ec2-user/GIT_SHA
 cd /home/ec2-user/millionws/deploy/aws
 
 echo "[cloud-init] waiting for ${expect_clients} clients via EC2 API"

@@ -16,5 +16,9 @@ output "clients_ssh" {
 }
 
 output "target" {
-  value = "total target: ${var.client_count * var.conns_per_client} connections (${var.conns_per_client} per client x ${var.client_count} clients, ${var.server_port_count} server ports)"
+  value = "total target: ${var.client_count * floor(var.conns_per_client / var.client_replicas) * var.client_replicas} connections (${floor(var.conns_per_client / var.client_replicas) * var.client_replicas} per client x ${var.client_count} clients, ${var.server_port_count} server ports)"
+}
+
+output "git_ref" {
+  value = "building ${var.repo_url} at ${var.git_ref}"
 }

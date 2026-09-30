@@ -4,7 +4,8 @@
 #   terraform init
 #   terraform apply \
 #     -var my_ip=<your-public-ip>/32 \
-#     -var key_name=<existing-ec2-key-pair>
+#     -var key_name=<existing-ec2-key-pair> \
+#     -var git_ref=<branch, tag or commit SHA to build>
 #   # ... run the benchmark, watch Grafana ...
 #   terraform destroy   # every session ends here; idle setup costs ~$800/mo
 #
@@ -156,33 +157,17 @@ data "aws_ami" "al2023" {
   }
 }
 
-# ----------------------------------------------------- server ---
+# ------------------------------------------------ server + clients ---
+# Spot is requested through instance_market_options on aws_instance, not
+# aws_spot_instance_request: the latter tags only the request, so the
+# launched instance would have no Name tag and the EC2-API discovery in
+# cloud-init would never find its peers.
 
-resource "aws_spot_instance_request" "server" {
-  count                          = var.use_spot ? 1 : 0
-  ami                            = data.aws_ami.al2023.id
-  instance_type                  = var.server_type
-  subnet_id                      = aws_subnet.bench.id
-  vpc_security_group_ids         = [aws_security_group.bench.id]
-  key_name                       = var.key_name
-  iam_instance_profile           = aws_iam_instance_profile.bench.name
-  wait_for_fulfillment           = true
-  instance_interruption_behavior = "terminate"
-  user_data_replace_on_change    = true
-  user_data = templatefile("${path.module}/user_data_server.sh", {
-    server_ports   = "${var.server_port_first}-${var.server_port_first + var.server_port_count - 1}"
-    expect_clients = var.client_count
-    replicas       = var.client_replicas
-  })
-  root_block_device {
-    volume_size = 30
-    volume_type = "gp3"
-  }
-  tags = { Name = "millionws-server" }
+locals {
+  market = var.use_spot ? [1] : []
 }
 
-resource "aws_instance" "server_ondemand" {
-  count                       = var.use_spot ? 0 : 1
+resource "aws_instance" "server" {
   ami                         = data.aws_ami.al2023.id
   instance_type               = var.server_type
   subnet_id                   = aws_subnet.bench.id
@@ -194,7 +179,21 @@ resource "aws_instance" "server_ondemand" {
     server_ports   = "${var.server_port_first}-${var.server_port_first + var.server_port_count - 1}"
     expect_clients = var.client_count
     replicas       = var.client_replicas
+    repo_url       = var.repo_url
+    git_ref        = var.git_ref
   })
+  dynamic "instance_market_options" {
+    for_each = local.market
+    content {
+      market_type = "spot"
+      spot_options {
+        # one-time: a persistent request would relaunch a replacement
+        # after an interruption and keep billing.
+        spot_instance_type             = "one-time"
+        instance_interruption_behavior = "terminate"
+      }
+    }
+  }
   root_block_device {
     volume_size = 30
     volume_type = "gp3"
@@ -202,39 +201,8 @@ resource "aws_instance" "server_ondemand" {
   tags = { Name = "millionws-server" }
 }
 
-locals {
-  server_public_ip  = var.use_spot ? aws_spot_instance_request.server[0].public_ip : aws_instance.server_ondemand[0].public_ip
-  client_public_ips = var.use_spot ? aws_spot_instance_request.client[*].public_ip : aws_instance.client_ondemand[*].public_ip
-}
-
-# ----------------------------------------------------- clients ---
-
-resource "aws_spot_instance_request" "client" {
-  count                          = var.use_spot ? var.client_count : 0
-  ami                            = data.aws_ami.al2023.id
-  instance_type                  = var.client_type
-  subnet_id                      = aws_subnet.bench.id
-  vpc_security_group_ids         = [aws_security_group.bench.id]
-  key_name                       = var.key_name
-  iam_instance_profile           = aws_iam_instance_profile.bench.name
-  wait_for_fulfillment           = true
-  instance_interruption_behavior = "terminate"
-  user_data_replace_on_change    = true
-  user_data = templatefile("${path.module}/user_data_client.sh", {
-    port_first = var.server_port_first
-    port_count = var.server_port_count
-    conns      = var.conns_per_client / var.client_replicas
-    replicas   = var.client_replicas
-  })
-  root_block_device {
-    volume_size = 30
-    volume_type = "gp3"
-  }
-  tags = { Name = "millionws-client-${count.index}" }
-}
-
-resource "aws_instance" "client_ondemand" {
-  count                       = var.use_spot ? 0 : var.client_count
+resource "aws_instance" "client" {
+  count                       = var.client_count
   ami                         = data.aws_ami.al2023.id
   instance_type               = var.client_type
   subnet_id                   = aws_subnet.bench.id
@@ -245,12 +213,30 @@ resource "aws_instance" "client_ondemand" {
   user_data = templatefile("${path.module}/user_data_client.sh", {
     port_first = var.server_port_first
     port_count = var.server_port_count
-    conns      = var.conns_per_client / var.client_replicas
-    replicas   = var.client_replicas
+    # floor: the loadgen rejects a fractional LOADGEN_CONNS.
+    conns    = floor(var.conns_per_client / var.client_replicas)
+    replicas = var.client_replicas
+    repo_url = var.repo_url
+    git_ref  = var.git_ref
   })
+  dynamic "instance_market_options" {
+    for_each = local.market
+    content {
+      market_type = "spot"
+      spot_options {
+        spot_instance_type             = "one-time"
+        instance_interruption_behavior = "terminate"
+      }
+    }
+  }
   root_block_device {
     volume_size = 30
     volume_type = "gp3"
   }
   tags = { Name = "millionws-client-${count.index}" }
+}
+
+locals {
+  server_public_ip  = aws_instance.server.public_ip
+  client_public_ips = aws_instance.client[*].public_ip
 }

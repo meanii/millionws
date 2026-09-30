@@ -8,7 +8,8 @@ services:
     build:
       context: ../..
       dockerfile: Dockerfile
-    # 16 ports by default (-ports overrides the single -port); keepalive-off
+    # 16 ports by default. -ports adds to -port (default 8080); the server
+    # drops the repeat, so 8080-8095 is safe. Keepalive-off
     # is the measured best (see results/local/2026-09-29-optimization.md).
     # SERVER_PORTS is substituted by cloud-init from Terraform vars.
     command: ["-ports=${SERVER_PORTS:-8080-8095}", "-keepalive=0s"]

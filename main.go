@@ -68,10 +68,10 @@ func newUpgrader(keepalive time.Duration) *websocket.Upgrader {
 }
 
 // parsePorts expands "8081,8090-8092" into [8081 8090 8091 8092].
-// Empty items are skipped; anything else is fatal, because silently
+// Empty items are skipped; anything else is an error, because silently
 // listening on fewer ports than planned would cap a benchmark at 64k
 // connections per missing port with no obvious error.
-func parsePorts(s string) []int {
+func parsePorts(s string) ([]int, error) {
 	var out []int
 	for _, item := range strings.Split(s, ",") {
 		item = strings.TrimSpace(item)
@@ -83,24 +83,92 @@ func parsePorts(s string) []int {
 			lo, hasHi = item[:i], true
 			var err error
 			if hi, err = strconv.Atoi(item[i+1:]); err != nil {
-				log.Fatalf("bad -ports %q: %v", s, err)
+				return nil, fmt.Errorf("bad -ports %q: %v", s, err)
 			}
 		}
 		start, err := strconv.Atoi(lo)
 		if err != nil {
-			log.Fatalf("bad -ports %q: %v", s, err)
+			return nil, fmt.Errorf("bad -ports %q: %v", s, err)
 		}
 		if !hasHi {
 			hi = start
 		}
 		if start < 1 || hi > 65535 || hi < start {
-			log.Fatalf("bad -ports %q: %q out of range", s, item)
+			return nil, fmt.Errorf("bad -ports %q: %q out of range", s, item)
 		}
 		for p := start; p <= hi; p++ {
 			out = append(out, p)
 		}
 	}
-	return out
+	return out, nil
+}
+
+// listenAddrs joins the main port and the extra -ports list into host:port
+// addresses, dropping repeats. A repeat is not harmless: nbio binds each
+// address in turn, the second bind of the same port fails, and the engine
+// then spins on "Accept failed" with no port open at all.
+func listenAddrs(host string, port int, extra string) ([]string, error) {
+	more, err := parsePorts(extra)
+	if err != nil {
+		return nil, err
+	}
+	seen := make(map[int]bool)
+	var addrs []string
+	for _, p := range append([]int{port}, more...) {
+		if seen[p] {
+			continue
+		}
+		seen[p] = true
+		addrs = append(addrs, net.JoinHostPort(host, strconv.Itoa(p)))
+	}
+	return addrs, nil
+}
+
+// checkListening dials every address once. nbio's Start returns nil even when
+// a listener failed to bind, so this turns a silent "listening on nothing"
+// into a startup failure.
+func checkListening(addrs []string) error {
+	for _, a := range addrs {
+		host, port, _ := net.SplitHostPort(a)
+		if ip := net.ParseIP(host); host == "" || (ip != nil && ip.IsUnspecified()) {
+			host = "127.0.0.1"
+			if ip != nil && ip.To4() == nil {
+				host = "::1"
+			}
+		}
+		c, err := net.DialTimeout("tcp", net.JoinHostPort(host, port), 2*time.Second)
+		if err != nil {
+			return fmt.Errorf("not listening on %s: %v", a, err)
+		}
+		c.Close()
+	}
+	return nil
+}
+
+// newMux builds the HTTP handler served on every port.
+func newMux(upgrader *websocket.Upgrader, enablePprof bool) *http.ServeMux {
+	mux := &http.ServeMux{}
+	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		if overloaded.Load() {
+			rejectedConnections.Inc()
+			w.WriteHeader(http.StatusServiceUnavailable)
+			return
+		}
+		// Upgrade has already written the HTTP error response on failure.
+		if _, err := upgrader.Upgrade(w, r, nil); err != nil {
+			upgradeErrors.Inc()
+		}
+	})
+	mux.Handle("/metrics", promhttp.Handler())
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, "OK")
+	})
+	if enablePprof {
+		mux.HandleFunc("/debug/pprof/", pprof.Index)
+		mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	}
+	return mux
 }
 
 func main() {
@@ -123,27 +191,7 @@ func main() {
 	go guardMemory()
 
 	upgrader := newUpgrader(*keepalive)
-	mux := &http.ServeMux{}
-	mux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		if overloaded.Load() {
-			rejectedConnections.Inc()
-			w.WriteHeader(http.StatusServiceUnavailable)
-			return
-		}
-		// Upgrade has already written the HTTP error response on failure.
-		if _, err := upgrader.Upgrade(w, r, nil); err != nil {
-			upgradeErrors.Inc()
-		}
-	})
-	mux.Handle("/metrics", promhttp.Handler())
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, "OK")
-	})
-	if *enablePprof {
-		mux.HandleFunc("/debug/pprof/", pprof.Index)
-		mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
-	}
+	mux := newMux(upgrader, *enablePprof)
 
 	// "tcp" on 0.0.0.0 makes Go open a dual-stack [::] socket, so every
 	// accepted IPv4 connection is an IPv6 socket in the kernel (a larger slab
@@ -153,9 +201,9 @@ func main() {
 		network = "tcp4"
 	}
 
-	addrs := []string{net.JoinHostPort(*addr, strconv.Itoa(*port))}
-	for _, p := range parsePorts(*ports) {
-		addrs = append(addrs, net.JoinHostPort(*addr, strconv.Itoa(p)))
+	addrs, err := listenAddrs(*addr, *port, *ports)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	engine := nbhttp.NewEngine(nbhttp.Config{
@@ -170,6 +218,9 @@ func main() {
 	log.Printf("starting millionws server on ws://%s", strings.Join(addrs, ", ws://"))
 	if err := engine.Start(); err != nil {
 		log.Fatalf("nbio.Start failed: %v", err)
+	}
+	if err := checkListening(addrs); err != nil {
+		log.Fatal(err)
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)

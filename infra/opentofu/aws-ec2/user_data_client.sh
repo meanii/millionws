@@ -4,7 +4,7 @@
 # discovered through the EC2 API, so no Terraform cross-references.
 # Replicas share the client IP (16 server ports x 64k ephemeral ports each
 # is plenty), but each exposes its own host metrics port 9101..910N.
-# Template vars: port_first, port_count, conns (per replica), replicas.
+# Template vars: port_first, port_count, conns (per replica), replicas, repo_url, git_ref.
 LOG=/tmp/cloud-init.log
 exec > >(tee -a $LOG) 2>&1
 
@@ -13,6 +13,10 @@ systemctl enable --now docker
 usermod -aG docker ec2-user || true
 
 echo "[cloud-init] tuning kernel and file limits"
+# nf_conntrack_max only exists once the module is loaded; without this the
+# sysctl below is skipped and Docker loads the module later with its default.
+modprobe nf_conntrack
+echo nf_conntrack >/etc/modules-load.d/nf_conntrack.conf
 cat >/etc/sysctl.d/99-millionws.conf <<'SYSCTL'
 fs.file-max = 3000000
 fs.nr_open = 2000000
@@ -54,7 +58,9 @@ URLS=$(echo "$URLS" | sed 's/^,//')
 echo "[cloud-init] loadgen URLs: $URLS"
 
 echo "[cloud-init] cloning repository and building loadgen"
-git clone https://github.com/meanii/millionws.git /home/ec2-user/millionws
+git clone ${repo_url} /home/ec2-user/millionws
+git -C /home/ec2-user/millionws checkout ${git_ref}
+git -C /home/ec2-user/millionws rev-parse HEAD | tee /home/ec2-user/GIT_SHA
 cd /home/ec2-user/millionws
 docker build -q --target loadgen -t millionws:loadgen . >/dev/null
 
