@@ -102,3 +102,9 @@ variable "server_maxload" {
   type        = number
   default     = 1000000
 }
+
+variable "iam_name_prefix" {
+  description = "Prefix of the IAM role and instance profile names. IAM is account-wide, so two stacks running at the same time (for example in two regions) need different prefixes."
+  type        = string
+  default     = "millionws-bench"
+}
