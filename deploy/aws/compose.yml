@@ -1,0 +1,70 @@
+# Server side of the EC2 benchmark stack. Started by cloud-init
+# (infra/opentofu/aws-ec2/user_data_server.sh), which clones this repo,
+# writes prometheus.yml with the client targets, and runs
+# `docker compose up -d --build` here.
+services:
+  server:
+    image: millionws:server
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    # 16 ports by default. -ports adds to -port (default 8080); the server
+    # drops the repeat, so 8080-8095 is safe. Keepalive-off
+    # is the measured best (see results/local/2026-09-29-optimization.md).
+    # SERVER_PORTS is substituted by cloud-init from Terraform vars.
+    command: ["-ports=${SERVER_PORTS:-8080-8095}", "-keepalive=0s"]
+    # Host networking: with bridge + published ports every connection would
+    # also take a Docker NAT conntrack entry, and 1M of them run into
+    # nf_conntrack_max. The host's sysctls (cloud-init) apply directly.
+    network_mode: host
+    # No -pprof by default: a 30 s CPU profile at 1M connections stalled the read
+    # path long enough to OOM-kill the server three times (docs/aws-runbook.md).
+    # A heap or goroutine profile was harmless; add -pprof only for those.
+    environment:
+      TZ: ${TIMEZONE:-UTC}
+    cpus: 2
+    # SERVER_MEM_LIMIT comes from cloud-init (Terraform server_mem_limit).
+    mem_limit: ${SERVER_MEM_LIMIT:-6g}
+    memswap_limit: ${SERVER_MEM_LIMIT:-6g}
+    ulimits:
+      nofile:
+        # Must not exceed the host fs.nr_open (2000000 in cloud-init), or
+        # runc fails with "error setting rlimit type 7: operation not permitted".
+        soft: 2000000
+        hard: 2000000
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    # The server is on the host network; reach it through the host gateway.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.1.1
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      TZ: ${TIMEZONE:-UTC}
+      GF_DATE_FORMATS_DEFAULT_TIMEZONE: ${TIMEZONE:-UTC}
+    volumes:
+      - ../grafana/provisioning/datasources/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml:ro
+      - ../grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:

@@ -1,0 +1,1562 @@
+heap profile: 284: 14043904 [2774: 49077576] @ heap/1048576
+0: 0 [29: 232] @ 0x7030d4 0x70298b 0x7f49f8 0x7f335e 0x700b65 0x700505 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7030d3	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).writeFrame+0x53		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:877
+#	0x70298a	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).WriteMessage+0x44a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:698
+#	0x7f49f7	main.newUpgrader.func2+0x17							/app/main.go:60
+#	0x7f335d	main.newUpgrader.(*Upgrader).OnMessage.func4+0x3d				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:246
+#	0x700b64	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleWsMessage+0x524		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:259
+#	0x700504	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage.func2+0x84	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:216
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [11: 176] @ 0x6e97c5 0x6e6fce 0x6f131e 0x6eee7c 0x484001
+#	0x6e97c4	github.com/lesismal/nbio.dupStdConn+0x64				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/net_unix.go:35
+#	0x6e6fcd	github.com/lesismal/nbio.NBConn+0x2d					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:1038
+#	0x6f131d	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x3d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:681
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [1: 80] @ 0x7c2cbf 0x7c400e 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x7c2cbe	github.com/prometheus/procfs.parseCPUStat+0x5e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:86
+#	0x7c400d	github.com/prometheus/procfs.parseStat+0x56d						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:241
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 16] @ 0x7c03cd 0x7bff2f 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x7c03cc	github.com/prometheus/procfs.parseProcNetstat+0x38c					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:202
+#	0x7bff2e	github.com/prometheus/procfs.Proc.Netstat+0x14e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:178
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 256] @ 0x48c67c 0x48c4c6 0x48c23c 0x4eefbe 0x4ef550 0x7c61f4 0x7e3398 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x48c67b	sync.(*Pool).pinSlow+0x17b												/usr/local/go/src/sync/pool.go:241
+#	0x48c4c5	sync.(*Pool).pin+0x45													/usr/local/go/src/sync/pool.go:220
+#	0x48c23b	sync.(*Pool).Get+0x1b													/usr/local/go/src/sync/pool.go:135
+#	0x4eefbd	fmt.newPrinter+0x1d													/usr/local/go/src/fmt/print.go:152
+#	0x4ef54f	fmt.Sprintf+0x2f													/usr/local/go/src/fmt/print.go:238
+#	0x7c61f3	github.com/prometheus/common/expfmt.Negotiate+0x73									/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:64
+#	0x7e3397	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x537				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:197
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 16] @ 0x6fccc5 0x6fa7cf 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6fccc4	github.com/lesismal/nbio/nbhttp.(*Response).eoncodeHead+0xd04			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:513
+#	0x6fa7ce	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0x6e		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:297
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 2304] @ 0x50125f 0x7c0145 0x7c0126 0x7bff2f 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x50125e	strings.genSplit+0x7e									/usr/local/go/src/strings/strings.go:305
+#	0x7c0144	strings.Split+0x104									/usr/local/go/src/strings/strings.go:361
+#	0x7c0125	github.com/prometheus/procfs.parseProcNetstat+0xe5					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:192
+#	0x7bff2e	github.com/prometheus/procfs.Proc.Netstat+0x14e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:178
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 512] @ 0x48cc52 0x48c1e5 0x6f9749 0x6fa805 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x48cc51	sync.(*poolChain).pushHead+0x131						/usr/local/go/src/sync/poolqueue.go:245
+#	0x48c1e4	sync.(*Pool).Put+0x84								/usr/local/go/src/sync/pool.go:115
+#	0x6f9748	github.com/lesismal/nbio/nbhttp.releaseRequest+0x148				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:63
+#	0x6fa804	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0xa4		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:311
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 112] @ 0x40f7b4 0x7d7f05 0x7db57b 0x7e319c 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7d7f04	github.com/prometheus/client_golang/prometheus.(*Registry).Gather+0x104							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:422
+#	0x7db57a	github.com/prometheus/client_golang/prometheus.(*noTransactionGatherer).Gather+0x1a					/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:1074
+#	0x7e319b	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x33b				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:171
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [8: 524288] @ 0x5f98c7 0x5f98b3 0x60430d 0x6042ce 0x5ec335 0x7cc1a5 0x7cbb74 0x7c71fb 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x5f98c6	compress/flate.(*compressor).initDeflate+0x506										/usr/local/go/src/compress/flate/deflate.go:370
+#	0x5f98b2	compress/flate.(*compressor).init+0x4f2											/usr/local/go/src/compress/flate/deflate.go:593
+#	0x60430c	compress/flate.NewWriter+0x2ac												/usr/local/go/src/compress/flate/deflate.go:664
+#	0x6042cd	compress/gzip.(*Writer).Write+0x26d											/usr/local/go/src/compress/gzip/gzip.go:191
+#	0x5ec334	bufio.(*Writer).Flush+0x54												/usr/local/go/src/bufio/bufio.go:645
+#	0x7cc1a4	github.com/prometheus/common/expfmt.MetricFamilyToText.func1+0x24							/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:96
+#	0x7cbb73	github.com/prometheus/common/expfmt.MetricFamilyToText+0xf13								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:281
+#	0x7c71fa	github.com/prometheus/common/expfmt.NewEncoder.func7+0x3a								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [2: 4096] @ 0x4da6a9 0x7bde88 0x7c386c 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da6a8	io.ReadAll+0xc8										/usr/local/go/src/io/io.go:723
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7c386b	github.com/prometheus/procfs.FS.Stat+0x10b						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:169
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [2: 10752] @ 0x4da6a9 0x7bde88 0x7bfe7a 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da6a8	io.ReadAll+0xc8										/usr/local/go/src/io/io.go:723
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7bfe79	github.com/prometheus/procfs.Proc.Netstat+0x99						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:174
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [3: 48] @ 0x6fc0e5 0x6fa7cf 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6fc0e4	github.com/lesismal/nbio/nbhttp.(*Response).eoncodeHead+0x124			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:450
+#	0x6fa7ce	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0x6e		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:297
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 4096] @ 0x6e23b1 0x6fb4d2 0x6fb4b5 0x6fb317 0x7e16db 0x5ec335 0x7cc1a5 0x7cbb74 0x7c71fb 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e23b0	github.com/lesismal/nbio/mempool.(*MemPool).Append+0x50									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:87
+#	0x6fb4d1	github.com/lesismal/nbio/mempool.Append+0x171										/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/allocator.go:32
+#	0x6fb4b4	github.com/lesismal/nbio/nbhttp.(*Response).writeChunk+0x154								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:234
+#	0x6fb316	github.com/lesismal/nbio/nbhttp.(*Response).Write+0x596									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:116
+#	0x7e16da	github.com/prometheus/client_golang/prometheus/promhttp.(*responseWriterDelegator).Write+0x5a				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/delegator.go:74
+#	0x5ec334	bufio.(*Writer).Flush+0x54												/usr/local/go/src/bufio/bufio.go:645
+#	0x7cc1a4	github.com/prometheus/common/expfmt.MetricFamilyToText.func1+0x24							/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:96
+#	0x7cbb73	github.com/prometheus/common/expfmt.MetricFamilyToText+0xf13								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:281
+#	0x7c71fa	github.com/prometheus/common/expfmt.NewEncoder.func7+0x3a								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 1280] @ 0x50125f 0x7c018f 0x7c0175 0x7bff2f 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x50125e	strings.genSplit+0x7e									/usr/local/go/src/strings/strings.go:305
+#	0x7c018e	strings.Split+0x14e									/usr/local/go/src/strings/strings.go:361
+#	0x7c0174	github.com/prometheus/procfs.parseProcNetstat+0x134					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:194
+#	0x7bff2e	github.com/prometheus/procfs.Proc.Netstat+0x14e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:178
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [3: 28416] @ 0x48cc52 0x48c1e5 0x6e25dc 0x70051e 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x48cc51	sync.(*poolChain).pushHead+0x131						/usr/local/go/src/sync/poolqueue.go:245
+#	0x48c1e4	sync.(*Pool).Put+0x84								/usr/local/go/src/sync/pool.go:115
+#	0x6e25db	github.com/lesismal/nbio/mempool.(*MemPool).Free+0x5b				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:104
+#	0x70051d	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage.func2+0x9d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:217
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 4096] @ 0x4da6a9 0x7bde88 0x7bfe7a 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da6a8	io.ReadAll+0xc8										/usr/local/go/src/io/io.go:723
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7bfe79	github.com/prometheus/procfs.Proc.Netstat+0x99						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:174
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 160] @ 0x603b4e 0x7e15be 0x7e15bf 0x48c2d1 0x7e474d 0x7e35c7 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x603b4d	compress/gzip.NewWriterLevel+0x8d											/usr/local/go/src/compress/gzip/gzip.go:64
+#	0x7e15bd	compress/gzip.NewWriter+0x1d												/usr/local/go/src/compress/gzip/gzip.go:50
+#	0x7e15be	github.com/prometheus/client_golang/prometheus/promhttp.init.func1+0x1e							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:78
+#	0x48c2d0	sync.(*Pool).Get+0xb0													/usr/local/go/src/sync/pool.go:155
+#	0x7e474c	github.com/prometheus/client_golang/prometheus/promhttp.negotiateEncodingWriter+0x18c					/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:482
+#	0x7e35c6	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x766				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:201
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [10: 240] @ 0x6e2b1e 0x6fe978 0x6e3d2a 0x6e3c90 0x6f5199 0x6f505f 0x6e34e2 0x6e3367 0x484001
+#	0x6e2b1d	github.com/lesismal/nbio/taskpool.(*TaskPool).fork+0x7d				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:29
+#	0x6fe977	github.com/lesismal/nbio/taskpool.(*TaskPool).Go+0x37				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:61
+#	0x6e3d29	github.com/lesismal/nbio.(*Conn).execute+0x1a9					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e3c8f	github.com/lesismal/nbio.(*Conn).MustExecute+0x10f				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:220
+#	0x6f5198	github.com/lesismal/nbio/nbhttp.NewEngine.func6+0x98				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1168
+#	0x6f505e	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnClose.func9.1+0x5e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:332
+#	0x6e34e1	github.com/lesismal/nbio/timer.(*Timer).Async.func1.1+0x41			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:109
+#	0x6e3366	github.com/lesismal/nbio/timer.(*Timer).Async.func1+0x26			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:110
+
+0: 0 [6: 442368] @ 0x5f9926 0x5f98b3 0x60430d 0x6042ce 0x5ec335 0x7cc1a5 0x7cbb74 0x7c71fb 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x5f9925	compress/flate.(*compressor).initDeflate+0x565										/usr/local/go/src/compress/flate/deflate.go:372
+#	0x5f98b2	compress/flate.(*compressor).init+0x4f2											/usr/local/go/src/compress/flate/deflate.go:593
+#	0x60430c	compress/flate.NewWriter+0x2ac												/usr/local/go/src/compress/flate/deflate.go:664
+#	0x6042cd	compress/gzip.(*Writer).Write+0x26d											/usr/local/go/src/compress/gzip/gzip.go:191
+#	0x5ec334	bufio.(*Writer).Flush+0x54												/usr/local/go/src/bufio/bufio.go:645
+#	0x7cc1a4	github.com/prometheus/common/expfmt.MetricFamilyToText.func1+0x24							/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:96
+#	0x7cbb73	github.com/prometheus/common/expfmt.MetricFamilyToText+0xf13								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:281
+#	0x7c71fa	github.com/prometheus/common/expfmt.NewEncoder.func7+0x3a								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 5376] @ 0x6e23b1 0x6fb4d2 0x6fb4b5 0x6fb317 0x7e16db 0x5ec335 0x7cc1a5 0x7cbb74 0x7c71fb 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e23b0	github.com/lesismal/nbio/mempool.(*MemPool).Append+0x50									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:87
+#	0x6fb4d1	github.com/lesismal/nbio/mempool.Append+0x171										/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/allocator.go:32
+#	0x6fb4b4	github.com/lesismal/nbio/nbhttp.(*Response).writeChunk+0x154								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:234
+#	0x6fb316	github.com/lesismal/nbio/nbhttp.(*Response).Write+0x596									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:116
+#	0x7e16da	github.com/prometheus/client_golang/prometheus/promhttp.(*responseWriterDelegator).Write+0x5a				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/delegator.go:74
+#	0x5ec334	bufio.(*Writer).Flush+0x54												/usr/local/go/src/bufio/bufio.go:645
+#	0x7cc1a4	github.com/prometheus/common/expfmt.MetricFamilyToText.func1+0x24							/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:96
+#	0x7cbb73	github.com/prometheus/common/expfmt.MetricFamilyToText+0xf13								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:281
+#	0x7c71fa	github.com/prometheus/common/expfmt.NewEncoder.func7+0x3a								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [2: 4608] @ 0x7c3c3a 0x7c3c3b 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x7c3c39	bufio.(*Scanner).Text+0x199								/usr/local/go/src/bufio/scan.go:115
+#	0x7c3c3a	github.com/prometheus/procfs.parseStat+0x19a						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:196
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 48] @ 0x48cb59 0x48c1e5 0x6f9749 0x6fa805 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x48cb58	sync.(*poolChain).pushHead+0x38							/usr/local/go/src/sync/poolqueue.go:225
+#	0x48c1e4	sync.(*Pool).Put+0x84								/usr/local/go/src/sync/pool.go:115
+#	0x6f9748	github.com/lesismal/nbio/nbhttp.releaseRequest+0x148				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:63
+#	0x6fa804	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0xa4		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:311
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 64] @ 0x7dc0c9 0x7dbd1e 0x7d3b2a 0x7d3a91 0x7d8de5 0x484001
+#	0x7dc0c8	github.com/prometheus/client_golang/prometheus.populateMetric+0x1c8		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:199
+#	0x7dbd1d	github.com/prometheus/client_golang/prometheus.NewConstMetric+0xbd		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:114
+#	0x7d3b29	github.com/prometheus/client_golang/prometheus.MustNewConstMetric+0x4c9		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:127
+#	0x7d3a90	github.com/prometheus/client_golang/prometheus.(*goCollector).Collect+0x430	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/go_collector_latest.go:367
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [4: 131072] @ 0x63c645 0x63d59f 0x63f7f9 0x643f05 0x7bf4b4 0x7d6993 0x7d5ed9 0x7d8de5 0x484001
+#	0x63c644	regexp.(*bitState).reset+0x104								/usr/local/go/src/regexp/backtrack.go:91
+#	0x63d59e	regexp.(*Regexp).backtrack+0x19e							/usr/local/go/src/regexp/backtrack.go:317
+#	0x63f7f8	regexp.(*Regexp).doExecute+0x278							/usr/local/go/src/regexp/exec.go:535
+#	0x643f04	regexp.(*Regexp).FindStringSubmatch+0x84						/usr/local/go/src/regexp/regexp.go:1040
+#	0x7bf4b3	github.com/prometheus/procfs.Proc.Limits+0x213						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_limits.go:104
+#	0x7d6992	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xa12	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:60
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [20: 960] @ 0x6fc64e 0x6fa7cf 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6fc64d	github.com/lesismal/nbio/nbhttp.(*Response).eoncodeHead+0x68d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:491
+#	0x6fa7ce	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0x6e		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:297
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [3: 960] @ 0x6ed37a 0x48c2d1 0x6f98e5 0x6f5f14 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6ed379	github.com/lesismal/nbio/nbhttp.init.func2+0x19				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:28
+#	0x48c2d0	sync.(*Pool).Get+0xb0							/usr/local/go/src/sync/pool.go:155
+#	0x6f98e4	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnMethod+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:125
+#	0x6f5f13	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x4d3			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:222
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [3: 24] @ 0x6e2ac8 0x6fe978 0x6e3d2a 0x6e3c90 0x6f5199 0x6f505f 0x6e34e2 0x6e3367 0x484001
+#	0x6e2ac7	github.com/lesismal/nbio/taskpool.(*TaskPool).fork+0x27				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:27
+#	0x6fe977	github.com/lesismal/nbio/taskpool.(*TaskPool).Go+0x37				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:61
+#	0x6e3d29	github.com/lesismal/nbio.(*Conn).execute+0x1a9					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e3c8f	github.com/lesismal/nbio.(*Conn).MustExecute+0x10f				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:220
+#	0x6f5198	github.com/lesismal/nbio/nbhttp.NewEngine.func6+0x98				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1168
+#	0x6f505e	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnClose.func9.1+0x5e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:332
+#	0x6e34e1	github.com/lesismal/nbio/timer.(*Timer).Async.func1.1+0x41			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:109
+#	0x6e3366	github.com/lesismal/nbio/timer.(*Timer).Async.func1+0x26			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:110
+
+0: 0 [7: 168] @ 0x6e3cda 0x6e3c90 0x6f5199 0x6f505f 0x6e34e2 0x6e3367 0x484001
+#	0x6e3cd9	github.com/lesismal/nbio.(*Conn).execute+0x159					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e3c8f	github.com/lesismal/nbio.(*Conn).MustExecute+0x10f				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:220
+#	0x6f5198	github.com/lesismal/nbio/nbhttp.NewEngine.func6+0x98				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1168
+#	0x6f505e	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnClose.func9.1+0x5e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:332
+#	0x6e34e1	github.com/lesismal/nbio/timer.(*Timer).Async.func1.1+0x41			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:109
+#	0x6e3366	github.com/lesismal/nbio/timer.(*Timer).Async.func1+0x26			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:110
+
+0: 0 [11: 528] @ 0x6f4f3f 0x6ea085 0x6e6ebe 0x6e6dcd 0x6eb109 0x6ea31a 0x484001
+#	0x6f4f3e	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnClose.func9+0x3e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:330
+#	0x6ea084	github.com/lesismal/nbio.(*poller).deleteConn+0x84			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:142
+#	0x6e6ebd	github.com/lesismal/nbio.(*Conn).closeWithErrorWithoutLock+0x7d		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:1014
+#	0x6e6dcc	github.com/lesismal/nbio.(*Conn).closeWithError+0x14c			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:996
+#	0x6eb108	github.com/lesismal/nbio.(*poller).readWriteLoop+0x4c8			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:307
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [2: 4608] @ 0x48cc52 0x48c1e5 0x6e25dc 0x70051e 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x48cc51	sync.(*poolChain).pushHead+0x131						/usr/local/go/src/sync/poolqueue.go:245
+#	0x48c1e4	sync.(*Pool).Put+0x84								/usr/local/go/src/sync/pool.go:115
+#	0x6e25db	github.com/lesismal/nbio/mempool.(*MemPool).Free+0x5b				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:104
+#	0x70051d	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage.func2+0x9d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:217
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [3: 48] @ 0x6fbf0b 0x6fbee4 0x6fbedb 0x6fa7c5 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6fbf0a	net/textproto.MIMEHeader.Set+0x18a						/usr/local/go/src/net/textproto/header.go:22
+#	0x6fbee3	net/http.Header.Set+0x163							/usr/local/go/src/net/http/header.go:40
+#	0x6fbeda	github.com/lesismal/nbio/nbhttp.(*Response).checkChunked+0x15a			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:428
+#	0x6fa7c4	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0x64		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:296
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [26: 1248] @ 0x6f5136 0x6f505f 0x6e34e2 0x6e3367 0x484001
+#	0x6f5135	github.com/lesismal/nbio/nbhttp.NewEngine.func6+0x35				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1168
+#	0x6f505e	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnClose.func9.1+0x5e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:332
+#	0x6e34e1	github.com/lesismal/nbio/timer.(*Timer).Async.func1.1+0x41			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:109
+#	0x6e3366	github.com/lesismal/nbio/timer.(*Timer).Async.func1+0x26			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:110
+
+0: 0 [20: 960] @ 0x47a15a 0x47a16f 0x6fc958 0x6fa7cf 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6fc957	github.com/lesismal/nbio/nbhttp.(*Response).eoncodeHead+0x997			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:504
+#	0x6fa7ce	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0x6e		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:297
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 96] @ 0x4e7da5 0x4e80bd 0x4e701e 0x4e758a 0x4e7581 0x7f4818 0x7f44da 0x484001
+#	0x4e7da4	os.newFile+0x64		/usr/local/go/src/os/file_unix.go:145
+#	0x4e80bc	os.openFileNolog+0x17c	/usr/local/go/src/os/file_unix.go:279
+#	0x4e701d	os.OpenFile+0x3d	/usr/local/go/src/os/file.go:412
+#	0x4e7589	os.Open+0x49		/usr/local/go/src/os/file.go:390
+#	0x4e7580	os.ReadFile+0x40	/usr/local/go/src/os/file.go:865
+#	0x7f4817	main.readCgroupInt+0x17	/app/memory.go:126
+#	0x7f44d9	main.guardMemory+0xd9	/app/memory.go:110
+
+0: 0 [145: 51040] @ 0x47a113 0x406fe5 0x406fd8 0x40bb59 0x6fbf3d 0x6fbee4 0x6fbedb 0x6fa7c5 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6fbf3c	net/textproto.MIMEHeader.Set+0x1bc						/usr/local/go/src/net/textproto/header.go:22
+#	0x6fbee3	net/http.Header.Set+0x163							/usr/local/go/src/net/http/header.go:40
+#	0x6fbeda	github.com/lesismal/nbio/nbhttp.(*Response).checkChunked+0x15a			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:428
+#	0x6fa7c4	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0x64		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:296
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [4: 19456] @ 0x48cc52 0x48c1e5 0x6e25dc 0x70051e 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x48cc51	sync.(*poolChain).pushHead+0x131						/usr/local/go/src/sync/poolqueue.go:245
+#	0x48c1e4	sync.(*Pool).Put+0x84								/usr/local/go/src/sync/pool.go:115
+#	0x6e25db	github.com/lesismal/nbio/mempool.(*MemPool).Free+0x5b				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:104
+#	0x70051d	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage.func2+0x9d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:217
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [37: 37888] @ 0x6e1afe 0x48c2d1 0x6e2225 0x701aff 0x701569 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e1afd	github.com/lesismal/nbio/mempool.init.New.func1+0x3d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:39
+#	0x48c2d0	sync.(*Pool).Get+0xb0							/usr/local/go/src/sync/pool.go:155
+#	0x6e2224	github.com/lesismal/nbio/mempool.(*MemPool).Malloc+0xa4			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:53
+#	0x701afe	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse.func3+0x37e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:486
+#	0x701568	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x468		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:538
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 4096] @ 0x63c58d 0x63d59f 0x63f7f9 0x643f05 0x7bf4b4 0x7d6993 0x7d5ed9 0x7d8de5 0x484001
+#	0x63c58c	regexp.(*bitState).reset+0x4c								/usr/local/go/src/regexp/backtrack.go:84
+#	0x63d59e	regexp.(*Regexp).backtrack+0x19e							/usr/local/go/src/regexp/backtrack.go:317
+#	0x63f7f8	regexp.(*Regexp).doExecute+0x278							/usr/local/go/src/regexp/exec.go:535
+#	0x643f04	regexp.(*Regexp).FindStringSubmatch+0x84						/usr/local/go/src/regexp/regexp.go:1040
+#	0x7bf4b3	github.com/prometheus/procfs.Proc.Limits+0x213						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_limits.go:104
+#	0x7d6992	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xa12	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:60
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 176] @ 0x63d4b6 0x63d4b7 0x63f7f9 0x643f05 0x7bf4b4 0x7d6993 0x7d5ed9 0x7d8de5 0x484001
+#	0x63d4b5	regexp.newBitState+0xb5									/usr/local/go/src/regexp/backtrack.go:52
+#	0x63d4b6	regexp.(*Regexp).backtrack+0xb6								/usr/local/go/src/regexp/backtrack.go:315
+#	0x63f7f8	regexp.(*Regexp).doExecute+0x278							/usr/local/go/src/regexp/exec.go:535
+#	0x643f04	regexp.(*Regexp).FindStringSubmatch+0x84						/usr/local/go/src/regexp/regexp.go:1040
+#	0x7bf4b3	github.com/prometheus/procfs.Proc.Limits+0x213						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_limits.go:104
+#	0x7d6992	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xa12	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:60
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 96] @ 0x7b96ee 0x7c71e9 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7b96ed	github.com/prometheus/common/model.EscapeMetricFamily+0x4d								/go/pkg/mod/github.com/prometheus/common@v0.66.1/model/metric.go:346
+#	0x7c71e8	github.com/prometheus/common/expfmt.NewEncoder.func7+0x28								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [5: 4480] @ 0x4e78ad 0x4e7866 0x4e7613 0x7f4818 0x7f44da 0x484001
+#	0x4e78ac	slices.Grow[...]+0x14c		/usr/local/go/src/slices/slices.go:426
+#	0x4e7865	os.readFileContents+0x105	/usr/local/go/src/os/file.go:922
+#	0x4e7612	os.ReadFile+0xd2		/usr/local/go/src/os/file.go:871
+#	0x7f4817	main.readCgroupInt+0x17		/app/memory.go:126
+#	0x7f44d9	main.guardMemory+0xd9		/app/memory.go:110
+
+0: 0 [1: 32] @ 0x494f05 0x495e76 0x495e7e 0x4e79eb 0x4e79d4 0x4e7fd4 0x4e7f97 0x4e7f66 0x4e701e 0x4e758a 0x4e7581 0x7f4818 0x7f44da 0x484001
+#	0x494f04	syscall.ByteSliceFromString+0x84	/usr/local/go/src/syscall/syscall.go:52
+#	0x495e75	syscall.BytePtrFromString+0x35		/usr/local/go/src/syscall/syscall.go:68
+#	0x495e7d	syscall.openat+0x3d			/usr/local/go/src/syscall/zsyscall_linux_amd64.go:94
+#	0x4e79ea	syscall.Open+0x2a			/usr/local/go/src/syscall/syscall_linux.go:280
+#	0x4e79d3	os.open+0x13				/usr/local/go/src/os/file_open_unix.go:15
+#	0x4e7fd3	os.openFileNolog.func1+0x93		/usr/local/go/src/os/file_unix.go:261
+#	0x4e7f96	os.ignoringEINTR+0x56			/usr/local/go/src/os/file_posix.go:263
+#	0x4e7f65	os.openFileNolog+0x25			/usr/local/go/src/os/file_unix.go:260
+#	0x4e701d	os.OpenFile+0x3d			/usr/local/go/src/os/file.go:412
+#	0x4e7589	os.Open+0x49				/usr/local/go/src/os/file.go:390
+#	0x4e7580	os.ReadFile+0x40			/usr/local/go/src/os/file.go:865
+#	0x7f4817	main.readCgroupInt+0x17			/app/memory.go:126
+#	0x7f44d9	main.guardMemory+0xd9			/app/memory.go:110
+
+0: 0 [1: 240] @ 0x7c53e5 0x7c621f 0x7e3398 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7c53e4	github.com/munnerz/goautoneg.ParseAccept+0x84										/go/pkg/mod/github.com/munnerz/goautoneg@v0.0.0-20191010083416-a7dc8b61c822/autoneg.go:100
+#	0x7c621e	github.com/prometheus/common/expfmt.Negotiate+0x9e									/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:65
+#	0x7e3397	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x537				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:197
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 1280] @ 0x50125f 0x7c0145 0x7c0126 0x7bff2f 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x50125e	strings.genSplit+0x7e									/usr/local/go/src/strings/strings.go:305
+#	0x7c0144	strings.Split+0x104									/usr/local/go/src/strings/strings.go:361
+#	0x7c0125	github.com/prometheus/procfs.parseProcNetstat+0xe5					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:192
+#	0x7bff2e	github.com/prometheus/procfs.Proc.Netstat+0x14e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:178
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 64] @ 0x7c3c3a 0x7c3c3b 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x7c3c39	bufio.(*Scanner).Text+0x199								/usr/local/go/src/bufio/scan.go:115
+#	0x7c3c3a	github.com/prometheus/procfs.parseStat+0x19a						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:196
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [2: 48] @ 0x6e1ae5 0x48c2d1 0x6e2225 0x701aff 0x701569 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e1ae4	github.com/lesismal/nbio/mempool.init.New.func1+0x24			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:39
+#	0x48c2d0	sync.(*Pool).Get+0xb0							/usr/local/go/src/sync/pool.go:155
+#	0x6e2224	github.com/lesismal/nbio/mempool.(*MemPool).Malloc+0xa4			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:53
+#	0x701afe	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse.func3+0x37e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:486
+#	0x701568	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x468		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:538
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 64] @ 0x643f3d 0x7bf4b4 0x7d6993 0x7d5ed9 0x7d8de5 0x484001
+#	0x643f3c	regexp.(*Regexp).FindStringSubmatch+0xbc						/usr/local/go/src/regexp/regexp.go:1044
+#	0x7bf4b3	github.com/prometheus/procfs.Proc.Limits+0x213						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_limits.go:104
+#	0x7d6992	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xa12	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:60
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 4096] @ 0x4da6a9 0x7bde88 0x7c386c 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da6a8	io.ReadAll+0xc8										/usr/local/go/src/io/io.go:723
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7c386b	github.com/prometheus/procfs.FS.Stat+0x10b						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:169
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 512] @ 0x4da612 0x7bde88 0x7bfe7a 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da611	io.ReadAll+0x31										/usr/local/go/src/io/io.go:710
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7bfe79	github.com/prometheus/procfs.Proc.Netstat+0x99						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:174
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 112] @ 0x7dbcda 0x7d677f 0x7d675a 0x7d5ed9 0x7d8de5 0x484001
+#	0x7dbcd9	github.com/prometheus/client_golang/prometheus.NewConstMetric+0x79			/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:113
+#	0x7d677e	github.com/prometheus/client_golang/prometheus.MustNewConstMetric+0x7fe			/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:127
+#	0x7d6759	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x7d9	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:46
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 208] @ 0x4e942c 0x4e7713 0x4e75f3 0x7f4818 0x7f44da 0x484001
+#	0x4e942b	os.(*File).Stat+0x2b	/usr/local/go/src/os/stat_unix.go:19
+#	0x4e7712	os.statOrZero+0x12	/usr/local/go/src/os/file.go:875
+#	0x4e75f2	os.ReadFile+0xb2	/usr/local/go/src/os/file.go:871
+#	0x7f4817	main.readCgroupInt+0x17	/app/memory.go:126
+#	0x7f44d9	main.guardMemory+0xd9	/app/memory.go:110
+
+0: 0 [2: 8192] @ 0x5ed11a 0x7c00f8 0x7bff2f 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x5ed119	bufio.(*Scanner).Scan+0x379								/usr/local/go/src/bufio/scan.go:209
+#	0x7c00f7	github.com/prometheus/procfs.parseProcNetstat+0xb7					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:191
+#	0x7bff2e	github.com/prometheus/procfs.Proc.Netstat+0x14e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:178
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [12: 96] @ 0x534126 0x535019 0x5342f0 0x6eeca2 0x484001
+#	0x534125	net.newTCPConn+0xa5						/usr/local/go/src/net/tcpsock.go:297
+#	0x535018	net.(*TCPListener).accept+0x58					/usr/local/go/src/net/tcpsock_posix.go:163
+#	0x5342ef	net.(*TCPListener).Accept+0x2f					/usr/local/go/src/net/tcpsock.go:380
+#	0x6eeca1	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0xc1	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:338
+
+0: 0 [1: 96] @ 0x7d975a 0x7d8665 0x7db57b 0x7e319c 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7d9759	github.com/prometheus/client_golang/prometheus.processMetric+0x5b9							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:685
+#	0x7d8664	github.com/prometheus/client_golang/prometheus.(*Registry).Gather+0x864							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:502
+#	0x7db57a	github.com/prometheus/client_golang/prometheus.(*noTransactionGatherer).Gather+0x1a					/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:1074
+#	0x7e319b	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x33b				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:171
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [2: 2392064] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [1: 64] @ 0x7dc0c9 0x7cdaa5 0x7d922a 0x7d8665 0x7db57b 0x7e319c 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7dc0c8	github.com/prometheus/client_golang/prometheus.populateMetric+0x1c8							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:199
+#	0x7cdaa4	github.com/prometheus/client_golang/prometheus.(*counter).Write+0xc4							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/counter.go:169
+#	0x7d9229	github.com/prometheus/client_golang/prometheus.processMetric+0x89							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:633
+#	0x7d8664	github.com/prometheus/client_golang/prometheus.(*Registry).Gather+0x864							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:502
+#	0x7db57a	github.com/prometheus/client_golang/prometheus.(*noTransactionGatherer).Gather+0x1a					/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:1074
+#	0x7e319b	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x33b				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:171
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [32: 256] @ 0x6e3915 0x700338 0x70159c 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e3914	github.com/lesismal/nbio.(*Conn).Execute+0x154				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x700337	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage+0x197	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:212
+#	0x70159b	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x49b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:548
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 16] @ 0x4f8adc 0x4fa7d5 0x4fb772 0x4f6705 0x7c2e45 0x7c2cdc 0x7c400e 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x4f8adb	fmt.(*ss).floatToken+0x25b								/usr/local/go/src/fmt/scan.go:737
+#	0x4fa7d4	fmt.(*ss).scanOne+0xc14									/usr/local/go/src/fmt/scan.go:1009
+#	0x4fb771	fmt.(*ss).doScanf+0x231									/usr/local/go/src/fmt/scan.go:1230
+#	0x4f6704	fmt.Fscanf+0xc4										/usr/local/go/src/fmt/scan.go:143
+#	0x7c2e44	fmt.Sscanf+0x1e4									/usr/local/go/src/fmt/scan.go:114
+#	0x7c2cdb	github.com/prometheus/procfs.parseCPUStat+0x7b						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:89
+#	0x7c400d	github.com/prometheus/procfs.parseStat+0x56d						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:241
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [5: 40960] @ 0x7c3bae 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x7c3bad	github.com/prometheus/procfs.parseStat+0x10d						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:191
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [2: 1900544] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [150: 31200] @ 0x6f1646 0x6f15f0 0x6eee7c 0x484001
+#	0x6f1645	github.com/lesismal/nbio/nbhttp.NewParser+0x365					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:840
+#	0x6f15ef	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x30f	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:715
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [7: 112] @ 0x70477e 0x7f3e08 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x70477d	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).Upgrade+0x5d		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:302
+#	0x7f3e07	main.main.func1+0x47								/app/main.go:93
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [20: 480] @ 0x6e3946 0x6e38f9 0x6fa575 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e3945	github.com/lesismal/nbio.(*Conn).execute+0x185				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e38f8	github.com/lesismal/nbio.(*Conn).Execute+0x138				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x6fa574	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x3d4	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:280
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [266: 93632] @ 0x47a113 0x406fe5 0x406fd8 0x40bb59 0x6f9dc5 0x6f70c2 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f9dc4	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnHeader+0xe4	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:186
+#	0x6f70c1	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x1681			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:463
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [28: 224] @ 0x6e2ac8 0x6fe978 0x6e3996 0x6e38f9 0x700338 0x70159c 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e2ac7	github.com/lesismal/nbio/taskpool.(*TaskPool).fork+0x27			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:27
+#	0x6fe977	github.com/lesismal/nbio/taskpool.(*TaskPool).Go+0x37			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:61
+#	0x6e3995	github.com/lesismal/nbio.(*Conn).execute+0x1d5				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e38f8	github.com/lesismal/nbio.(*Conn).Execute+0x138				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x700337	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage+0x197	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:212
+#	0x70159b	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x49b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:548
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 753664] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [1: 3072] @ 0x4da6a9 0x7bde88 0x7c386c 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da6a8	io.ReadAll+0xc8										/usr/local/go/src/io/io.go:723
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7c386b	github.com/prometheus/procfs.FS.Stat+0x10b						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:169
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [101: 2424] @ 0x6e21a8 0x70132c 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e21a7	github.com/lesismal/nbio/mempool.(*MemPool).Malloc+0x27			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:47
+#	0x70132b	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x22b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:419
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [23: 1104] @ 0x6fa4f3 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6fa4f2	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x352	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:280
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [10: 160] @ 0x4fcd65 0x4fce70 0x502e65 0x6fa60a 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x4fcd64	strings.(*Builder).grow+0x24						/usr/local/go/src/strings/builder.go:67
+#	0x4fce6f	strings.(*Builder).Grow+0x4f						/usr/local/go/src/strings/builder.go:81
+#	0x502e64	strings.ToLower+0xa4							/usr/local/go/src/strings/strings.go:746
+#	0x6fa609	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x469	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:249
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 112] @ 0x7dbcda 0x7d6bc6 0x7d6b6f 0x7d5ed9 0x7d8de5 0x484001
+#	0x7dbcd9	github.com/prometheus/client_golang/prometheus.NewConstMetric+0x79			/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:113
+#	0x7d6bc5	github.com/prometheus/client_golang/prometheus.MustNewConstMetric+0xc45			/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:127
+#	0x7d6b6e	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xbee	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:62
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [92: 2208] @ 0x6e21a8 0x7032b4 0x70298b 0x7f49f8 0x7f335e 0x700b65 0x700505 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e21a7	github.com/lesismal/nbio/mempool.(*MemPool).Malloc+0x27				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:47
+#	0x7032b3	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).writeFrame+0x233		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:891
+#	0x70298a	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).WriteMessage+0x44a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:698
+#	0x7f49f7	main.newUpgrader.func2+0x17							/app/main.go:60
+#	0x7f335d	main.newUpgrader.(*Upgrader).OnMessage.func4+0x3d				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:246
+#	0x700b64	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleWsMessage+0x524		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:259
+#	0x700504	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage.func2+0x84	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:216
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [3: 18432] @ 0x7d3a5e 0x7d8de5 0x484001
+#	0x7d3a5d	github.com/prometheus/client_golang/prometheus.(*goCollector).Collect+0x3fd	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/go_collector_latest.go:364
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [3: 24] @ 0x6e3915 0x6fa575 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e3914	github.com/lesismal/nbio.(*Conn).Execute+0x154				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x6fa574	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x3d4	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:280
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 18432] @ 0x6e23b1 0x6fb4d2 0x6fb4b5 0x6fb317 0x5ec335 0x5ec54d 0x654205 0x6546d6 0x654a05 0x6549b1 0x6549b1 0x6549b1 0x654ffb 0x655c74 0x4ef497 0x659605 0x659c4f 0x659705 0x6579ab 0x672d0a 0x6737ba 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e23b0	github.com/lesismal/nbio/mempool.(*MemPool).Append+0x50				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:87
+#	0x6fb4d1	github.com/lesismal/nbio/mempool.Append+0x171					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/allocator.go:32
+#	0x6fb4b4	github.com/lesismal/nbio/nbhttp.(*Response).writeChunk+0x154			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:234
+#	0x6fb316	github.com/lesismal/nbio/nbhttp.(*Response).Write+0x596				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:116
+#	0x5ec334	bufio.(*Writer).Flush+0x54							/usr/local/go/src/bufio/bufio.go:645
+#	0x5ec54c	bufio.(*Writer).Write+0xcc							/usr/local/go/src/bufio/bufio.go:689
+#	0x654204	text/tabwriter.(*Writer).write0+0x24						/usr/local/go/src/text/tabwriter/tabwriter.go:252
+#	0x6546d5	text/tabwriter.(*Writer).writeLines+0x255					/usr/local/go/src/text/tabwriter/tabwriter.go:319
+#	0x654a04	text/tabwriter.(*Writer).format+0x1a4						/usr/local/go/src/text/tabwriter/tabwriter.go:406
+#	0x6549b0	text/tabwriter.(*Writer).format+0x150						/usr/local/go/src/text/tabwriter/tabwriter.go:400
+#	0x6549b0	text/tabwriter.(*Writer).format+0x150						/usr/local/go/src/text/tabwriter/tabwriter.go:400
+#	0x6549b0	text/tabwriter.(*Writer).format+0x150						/usr/local/go/src/text/tabwriter/tabwriter.go:400
+#	0x654ffa	text/tabwriter.(*Writer).flushNoDefers+0x11a					/usr/local/go/src/text/tabwriter/tabwriter.go:514
+#	0x655c73	text/tabwriter.(*Writer).Write+0xc33						/usr/local/go/src/text/tabwriter/tabwriter.go:547
+#	0x4ef496	fmt.Fprintf+0x96								/usr/local/go/src/fmt/print.go:225
+#	0x659604	runtime/pprof.printStackRecord+0x444						/usr/local/go/src/runtime/pprof/pprof.go:566
+#	0x659c4e	runtime/pprof.writeHeapInternal+0x4ae						/usr/local/go/src/runtime/pprof/pprof.go:677
+#	0x659704	runtime/pprof.writeHeap+0x24							/usr/local/go/src/runtime/pprof/pprof.go:585
+#	0x6579aa	runtime/pprof.(*Profile).WriteTo+0x14a						/usr/local/go/src/runtime/pprof/pprof.go:371
+#	0x672d09	net/http/pprof.handler.ServeHTTP+0x529						/usr/local/go/src/net/http/pprof/pprof.go:272
+#	0x6737b9	net/http/pprof.Index+0xd9							/usr/local/go/src/net/http/pprof/pprof.go:389
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [3: 24] @ 0x6e3ca9 0x6f5199 0x6f505f 0x6e34e2 0x6e3367 0x484001
+#	0x6e3ca8	github.com/lesismal/nbio.(*Conn).MustExecute+0x128				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:220
+#	0x6f5198	github.com/lesismal/nbio/nbhttp.NewEngine.func6+0x98				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1168
+#	0x6f505e	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnClose.func9.1+0x5e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:332
+#	0x6e34e1	github.com/lesismal/nbio/timer.(*Timer).Async.func1.1+0x41			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:109
+#	0x6e3366	github.com/lesismal/nbio/timer.(*Timer).Async.func1+0x26			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:110
+
+0: 0 [35: 1680] @ 0x47a15a 0x47a16f 0x6f99b9 0x6f5f14 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f99b8	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnMethod+0x138	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:130
+#	0x6f5f13	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x4d3			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:222
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [11: 176] @ 0x4620b2 0x461845 0x461a85 0x533c06 0x533b53 0x6fa215 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x533c05	net.JoinHostPort+0x225							/usr/local/go/src/net/ipsock.go:242
+#	0x533b52	net.(*TCPAddr).String+0x172						/usr/local/go/src/net/tcpsock.go:52
+#	0x6fa214	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x74	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:230
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [2: 1196032] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [8: 147456] @ 0x5014d5 0x7c3c3f 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x5014d4	strings.Fields+0x74									/usr/local/go/src/strings/strings.go:404
+#	0x7c3c3e	github.com/prometheus/procfs.parseStat+0x19e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:196
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 3072] @ 0x4da6a9 0x7bde88 0x7bfe7a 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da6a8	io.ReadAll+0xc8										/usr/local/go/src/io/io.go:723
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7bfe79	github.com/prometheus/procfs.Proc.Netstat+0x99						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:174
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 9472] @ 0x7c3d76 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x7c3d75	github.com/prometheus/procfs.parseStat+0x2d5						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:211
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [125: 4000] @ 0x7002dd 0x70159c 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x7002dc	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage+0x13c	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:212
+#	0x70159b	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x49b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:548
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [9: 216] @ 0x6e21a8 0x7067af 0x70595e 0x7f3e08 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e21a7	github.com/lesismal/nbio/mempool.(*MemPool).Malloc+0x27				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:47
+#	0x7067ae	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).commResponse+0x8e		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:648
+#	0x70595d	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).Upgrade+0x123d		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:534
+#	0x7f3e07	main.main.func1+0x47								/app/main.go:93
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [103: 2472] @ 0x6e3946 0x6e38f9 0x700338 0x70159c 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e3945	github.com/lesismal/nbio.(*Conn).execute+0x185				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e38f8	github.com/lesismal/nbio.(*Conn).Execute+0x138				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x700337	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage+0x197	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:212
+#	0x70159b	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x49b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:548
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [6: 96] @ 0x6e9829 0x6e6fce 0x6f131e 0x6eee7c 0x484001
+#	0x6e9828	github.com/lesismal/nbio.dupStdConn+0xc8				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/net_unix.go:40
+#	0x6e6fcd	github.com/lesismal/nbio.NBConn+0x2d					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:1038
+#	0x6f131d	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x3d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:681
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [92: 13248] @ 0x579645 0x5794c6 0x6f9af6 0x6f5ff8 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x579644	net/url.parse+0xc4							/usr/local/go/src/net/url/url.go:525
+#	0x5794c5	net/url.ParseRequestURI+0x25						/usr/local/go/src/net/url/url.go:503
+#	0x6f9af5	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnURL+0xb5		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:147
+#	0x6f5ff7	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x5b7			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:245
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [2: 950272] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [1: 112] @ 0x7dbcda 0x7d15f1 0x7d156e 0x7d36a5 0x7d8de5 0x484001
+#	0x7dbcd9	github.com/prometheus/client_golang/prometheus.NewConstMetric+0x79		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:113
+#	0x7d15f0	github.com/prometheus/client_golang/prometheus.MustNewConstMetric+0x470		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/value.go:127
+#	0x7d156d	github.com/prometheus/client_golang/prometheus.(*baseGoCollector).Collect+0x3ed	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/go_collector.go:260
+#	0x7d36a4	github.com/prometheus/client_golang/prometheus.(*goCollector).Collect+0x44	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/go_collector_latest.go:308
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [1: 176] @ 0x5014d5 0x7c3c3f 0x7c3932 0x7c2b50 0x7d6645 0x7d5ed9 0x7d8de5 0x484001
+#	0x5014d4	strings.Fields+0x74									/usr/local/go/src/strings/strings.go:404
+#	0x7c3c3e	github.com/prometheus/procfs.parseStat+0x19e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:196
+#	0x7c3931	github.com/prometheus/procfs.FS.Stat+0x1d1						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/stat.go:173
+#	0x7c2b4f	github.com/prometheus/procfs.ProcStat.StartTime+0x6f					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_stat.go:219
+#	0x7d6644	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0x6c4	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:45
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [35: 23224320] @ 0x6042f4 0x6042ce 0x5ec335 0x7cc1a5 0x7cbb74 0x7c71fb 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6042f3	compress/flate.NewWriter+0x293												/usr/local/go/src/compress/flate/deflate.go:663
+#	0x6042cd	compress/gzip.(*Writer).Write+0x26d											/usr/local/go/src/compress/gzip/gzip.go:191
+#	0x5ec334	bufio.(*Writer).Flush+0x54												/usr/local/go/src/bufio/bufio.go:645
+#	0x7cc1a4	github.com/prometheus/common/expfmt.MetricFamilyToText.func1+0x24							/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:96
+#	0x7cbb73	github.com/prometheus/common/expfmt.MetricFamilyToText+0xf13								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:281
+#	0x7c71fa	github.com/prometheus/common/expfmt.NewEncoder.func7+0x3a								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [8: 64] @ 0x533cc8 0x533cb5 0x6e97e2 0x6e6fce 0x6f131e 0x6eee7c 0x484001
+#	0x533cc7	net.newRawConn+0x27							/usr/local/go/src/net/rawconn.go:79
+#	0x533cb4	net.(*TCPConn).SyscallConn+0x14						/usr/local/go/src/net/tcpsock.go:157
+#	0x6e97e1	github.com/lesismal/nbio.dupStdConn+0x81				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/net_unix.go:35
+#	0x6e6fcd	github.com/lesismal/nbio.NBConn+0x2d					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:1038
+#	0x6f131d	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x3d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:681
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [3: 1536] @ 0x4e77a9 0x4e7613 0x7f4818 0x7f44da 0x484001
+#	0x4e77a8	os.readFileContents+0x48	/usr/local/go/src/os/file.go:906
+#	0x4e7612	os.ReadFile+0xd2		/usr/local/go/src/os/file.go:871
+#	0x7f4817	main.readCgroupInt+0x17		/app/memory.go:126
+#	0x7f44d9	main.guardMemory+0xd9		/app/memory.go:110
+
+0: 0 [11: 176] @ 0x6f6175 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f6174	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x734			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:264
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 2304] @ 0x50125f 0x7c018f 0x7c0175 0x7bff2f 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x50125e	strings.genSplit+0x7e									/usr/local/go/src/strings/strings.go:305
+#	0x7c018e	strings.Split+0x14e									/usr/local/go/src/strings/strings.go:361
+#	0x7c0174	github.com/prometheus/procfs.parseProcNetstat+0x134					/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:194
+#	0x7bff2e	github.com/prometheus/procfs.Proc.Netstat+0x14e						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:178
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [85: 2040] @ 0x6e2b1e 0x6fe978 0x6e3996 0x6e38f9 0x700338 0x70159c 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e2b1d	github.com/lesismal/nbio/taskpool.(*TaskPool).fork+0x7d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:29
+#	0x6fe977	github.com/lesismal/nbio/taskpool.(*TaskPool).Go+0x37			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:61
+#	0x6e3995	github.com/lesismal/nbio.(*Conn).execute+0x1d5				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e38f8	github.com/lesismal/nbio.(*Conn).Execute+0x138				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x700337	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).handleMessage+0x197	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:212
+#	0x70159b	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x49b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:548
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [4: 32] @ 0x6f15e7 0x6f15db 0x6eee7c 0x484001
+#	0x6f15e6	github.com/lesismal/nbio/nbhttp.NewServerProcessor+0x306			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:338
+#	0x6f15da	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x2fa	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:714
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [1: 294912] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [2: 13056] @ 0x708fc5 0x7d132a 0x7d36a5 0x7d8de5 0x484001
+#	0x708fc4	runtime/debug.ReadGCStats+0x1c4							/usr/local/go/src/runtime/debug/garbage.go:57
+#	0x7d1329	github.com/prometheus/client_golang/prometheus.(*baseGoCollector).Collect+0x1a9	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/go_collector.go:252
+#	0x7d36a4	github.com/prometheus/client_golang/prometheus.(*goCollector).Collect+0x44	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/go_collector_latest.go:308
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [19: 456] @ 0x6e983d 0x6e6fce 0x6f131e 0x6eee7c 0x484001
+#	0x6e983c	github.com/lesismal/nbio.dupStdConn+0xdc				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/net_unix.go:41
+#	0x6e6fcd	github.com/lesismal/nbio.NBConn+0x2d					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:1038
+#	0x6f131d	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x3d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:681
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [83: 1992] @ 0x6e21a8 0x701aff 0x701569 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e21a7	github.com/lesismal/nbio/mempool.(*MemPool).Malloc+0x27			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:47
+#	0x701afe	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse.func3+0x37e	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:486
+#	0x701568	github.com/lesismal/nbio/nbhttp/websocket.(*Conn).Parse+0x468		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:538
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [13: 416] @ 0x7071e5 0x7067f6 0x70595e 0x7f3e08 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7071e4	github.com/lesismal/nbio/nbhttp/websocket.acceptKeyBytes+0x184			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:748
+#	0x7067f5	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).commResponse+0xd5		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:651
+#	0x70595d	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).Upgrade+0x123d		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:534
+#	0x7f3e07	main.main.func1+0x47								/app/main.go:93
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 180224] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [32: 768] @ 0x6f6927 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f6926	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0xee6			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:406
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [92: 11776] @ 0x524d45 0x524cef 0x534fdb 0x5342f0 0x6eeca2 0x484001
+#	0x524d44	net.newFD+0x144							/usr/local/go/src/net/fd_unix.go:27
+#	0x524cee	net.(*netFD).accept+0xee					/usr/local/go/src/net/fd_unix.go:169
+#	0x534fda	net.(*TCPListener).accept+0x1a					/usr/local/go/src/net/tcpsock_posix.go:159
+#	0x5342ef	net.(*TCPListener).Accept+0x2f					/usr/local/go/src/net/tcpsock.go:380
+#	0x6eeca1	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0xc1	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:338
+
+0: 0 [2: 8192] @ 0x5ed11a 0x7bf412 0x7d6993 0x7d5ed9 0x7d8de5 0x484001
+#	0x5ed119	bufio.(*Scanner).Scan+0x379								/usr/local/go/src/bufio/scan.go:209
+#	0x7bf411	github.com/prometheus/procfs.Proc.Limits+0x171						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_limits.go:100
+#	0x7d6992	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xa12	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:60
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [15: 240] @ 0x5278bf 0x533a31 0x533a12 0x6fa215 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x5278be	net.IP.String+0xfe							/usr/local/go/src/net/ip.go:315
+#	0x533a30	net.ipEmptyString+0x50							/usr/local/go/src/net/ip.go:332
+#	0x533a11	net.(*TCPAddr).String+0x31						/usr/local/go/src/net/tcpsock.go:48
+#	0x6fa214	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x74	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:230
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 139264] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [15: 360] @ 0x6e2b1e 0x6fe978 0x6e3996 0x6e38f9 0x6fa575 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e2b1d	github.com/lesismal/nbio/taskpool.(*TaskPool).fork+0x7d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:29
+#	0x6fe977	github.com/lesismal/nbio/taskpool.(*TaskPool).Go+0x37			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:61
+#	0x6e3995	github.com/lesismal/nbio.(*Conn).execute+0x1d5				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e38f8	github.com/lesismal/nbio.(*Conn).Execute+0x138				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x6fa574	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x3d4	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:280
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [12: 196608] @ 0x7d7f05 0x7db57b 0x7e319c 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7d7f04	github.com/prometheus/client_golang/prometheus.(*Registry).Gather+0x104							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:422
+#	0x7db57a	github.com/prometheus/client_golang/prometheus.(*noTransactionGatherer).Gather+0x1a					/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:1074
+#	0x7e319b	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x33b				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:171
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [3: 28416] @ 0x6e23b1 0x6fb4d2 0x6fb4b5 0x6fb317 0x7e16db 0x5ec335 0x7cc1a5 0x7cbb74 0x7c71fb 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e23b0	github.com/lesismal/nbio/mempool.(*MemPool).Append+0x50									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:87
+#	0x6fb4d1	github.com/lesismal/nbio/mempool.Append+0x171										/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/allocator.go:32
+#	0x6fb4b4	github.com/lesismal/nbio/nbhttp.(*Response).writeChunk+0x154								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:234
+#	0x6fb316	github.com/lesismal/nbio/nbhttp.(*Response).Write+0x596									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:116
+#	0x7e16da	github.com/prometheus/client_golang/prometheus/promhttp.(*responseWriterDelegator).Write+0x5a				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/delegator.go:74
+#	0x5ec334	bufio.(*Writer).Flush+0x54												/usr/local/go/src/bufio/bufio.go:645
+#	0x7cc1a4	github.com/prometheus/common/expfmt.MetricFamilyToText.func1+0x24							/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:96
+#	0x7cbb73	github.com/prometheus/common/expfmt.MetricFamilyToText+0xf13								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:281
+#	0x7c71fa	github.com/prometheus/common/expfmt.NewEncoder.func7+0x3a								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [7: 168] @ 0x57fa08 0x707136 0x7067f6 0x70595e 0x7f3e08 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x57fa07	crypto/sha1.(*digest).Sum+0xe7							/usr/local/go/src/crypto/sha1/sha1.go:160
+#	0x707135	github.com/lesismal/nbio/nbhttp/websocket.acceptKeyBytes+0xd5			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:747
+#	0x7067f5	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).commResponse+0xd5		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:651
+#	0x70595d	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).Upgrade+0x123d		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:534
+#	0x7f3e07	main.main.func1+0x47								/app/main.go:93
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [1: 106496] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [37: 1776] @ 0x47a15a 0x47a16f 0x6fa49c 0x6fa42d 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6fa49b	github.com/lesismal/nbio/nbhttp.NewResponse+0x2fb			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:622
+#	0x6fa42c	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x28c	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:275
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [11: 88] @ 0x6e2ac8 0x6fe978 0x6e3996 0x6e38f9 0x6fa575 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e2ac7	github.com/lesismal/nbio/taskpool.(*TaskPool).fork+0x27			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:27
+#	0x6fe977	github.com/lesismal/nbio/taskpool.(*TaskPool).Go+0x37			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:61
+#	0x6e3995	github.com/lesismal/nbio.(*Conn).execute+0x1d5				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:226
+#	0x6e38f8	github.com/lesismal/nbio.(*Conn).Execute+0x138				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:199
+#	0x6fa574	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x3d4	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:280
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 1408] @ 0x4da6a9 0x7bde88 0x7bfe7a 0x7d6c3c 0x7d5ed9 0x7d8de5 0x484001
+#	0x4da6a8	io.ReadAll+0xc8										/usr/local/go/src/io/io.go:723
+#	0x7bde87	github.com/prometheus/procfs/internal/util.ReadFileNoStat+0xc7				/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/internal/util/readfile.go:36
+#	0x7bfe79	github.com/prometheus/procfs.Proc.Netstat+0x99						/go/pkg/mod/github.com/prometheus/procfs@v0.16.1/proc_netstat.go:174
+#	0x7d6c3b	github.com/prometheus/client_golang/prometheus.(*processCollector).processCollect+0xcbb	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector_procfsenabled.go:67
+#	0x7d5ed8	github.com/prometheus/client_golang/prometheus.(*processCollector).Collect+0x18		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/process_collector.go:147
+#	0x7d8de4	github.com/prometheus/client_golang/prometheus.(*Registry).Gather.func1+0x104		/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:456
+
+0: 0 [2: 13824] @ 0x6e23b1 0x6fb4d2 0x6fb4b5 0x6fb317 0x7e16db 0x5ec335 0x7cc1a5 0x7cbb74 0x7c71fb 0x7cd1a7 0x7e396d 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e23b0	github.com/lesismal/nbio/mempool.(*MemPool).Append+0x50									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:87
+#	0x6fb4d1	github.com/lesismal/nbio/mempool.Append+0x171										/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/allocator.go:32
+#	0x6fb4b4	github.com/lesismal/nbio/nbhttp.(*Response).writeChunk+0x154								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:234
+#	0x6fb316	github.com/lesismal/nbio/nbhttp.(*Response).Write+0x596									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:116
+#	0x7e16da	github.com/prometheus/client_golang/prometheus/promhttp.(*responseWriterDelegator).Write+0x5a				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/delegator.go:74
+#	0x5ec334	bufio.(*Writer).Flush+0x54												/usr/local/go/src/bufio/bufio.go:645
+#	0x7cc1a4	github.com/prometheus/common/expfmt.MetricFamilyToText.func1+0x24							/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:96
+#	0x7cbb73	github.com/prometheus/common/expfmt.MetricFamilyToText+0xf13								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/text_create.go:281
+#	0x7c71fa	github.com/prometheus/common/expfmt.NewEncoder.func7+0x3a								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:178
+#	0x7cd1a6	github.com/prometheus/common/expfmt.encoderCloser.Encode+0x26								/go/pkg/mod/github.com/prometheus/common@v0.66.1/expfmt/encode.go:51
+#	0x7e396c	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0xb0c				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:249
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [42: 672] @ 0x6f6927 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f6926	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0xee6			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:406
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [13: 212992] @ 0x7d7f1e 0x7db57b 0x7e319c 0x61dca9 0x7e4436 0x61dca9 0x7e5203 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7d7f1d	github.com/prometheus/client_golang/prometheus.(*Registry).Gather+0x11d							/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:423
+#	0x7db57a	github.com/prometheus/client_golang/prometheus.(*noTransactionGatherer).Gather+0x1a					/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/registry.go:1074
+#	0x7e319b	github.com/prometheus/client_golang/prometheus/promhttp.HandlerForTransactional.func1+0x33b				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/http.go:171
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e4435	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentMetricHandler.InstrumentHandlerInFlight.func1+0xb5	/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:60
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x7e5202	github.com/prometheus/client_golang/prometheus/promhttp.InstrumentHandlerCounter.func1+0xc2				/go/pkg/mod/github.com/prometheus/client_golang@v1.23.2/prometheus/promhttp/instrument_server.go:147
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28											/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6											/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b						/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c							/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32									/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d								/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [71: 1136] @ 0x6f9d4b 0x6f70c2 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f9d4a	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnHeader+0x6a	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:185
+#	0x6f70c1	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x1681			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:463
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [3: 24] @ 0x7048a5 0x7f3e08 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x7048a4	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).Upgrade+0x184		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:316
+#	0x7f3e07	main.main.func1+0x47								/app/main.go:93
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+0: 0 [24: 384] @ 0x6f6dee 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f6ded	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x13ad			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:452
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+0: 0 [1: 57344] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+0: 0 [47: 1128] @ 0x6f6dee 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6f6ded	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x13ad			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:452
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+1: 8 [4: 32] @ 0x6e3867 0x6fa575 0x6f956b 0x6f727e 0x6f09a4 0x6fd9ff 0x6f4ec5 0x6eb255 0x6ea31a 0x484001
+#	0x6e3866	github.com/lesismal/nbio.(*Conn).Execute+0xa6				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:193
+#	0x6fa574	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete+0x3d4	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:280
+#	0x6f956a	github.com/lesismal/nbio/nbhttp.(*Parser).handleMessage+0x2a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:811
+#	0x6f727d	github.com/lesismal/nbio/nbhttp.(*Parser).Parse+0x183d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/parser.go:484
+#	0x6f09a3	github.com/lesismal/nbio/nbhttp.(*Engine).DataHandler+0x123		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:589
+#	0x6fd9fe	github.com/lesismal/nbio/nbhttp.NewEngine.func7+0x1e			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1184
+#	0x6f4ec4	github.com/lesismal/nbio/nbhttp.NewEngine.(*Engine).OnData.func10+0x24	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine.go:352
+#	0x6eb254	github.com/lesismal/nbio.(*poller).readWriteLoop+0x614			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:280
+#	0x6ea319	github.com/lesismal/nbio.(*poller).start+0x259				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/poller_epoll.go:160
+
+1: 24 [9: 216] @ 0x6e21a8 0x6fc095 0x6fc08e 0x6fa7cf 0x6fa745 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x6e21a7	github.com/lesismal/nbio/mempool.(*MemPool).Malloc+0x27				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/mempool.go:47
+#	0x6fc094	github.com/lesismal/nbio/mempool.Malloc+0xd4					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/mempool/allocator.go:22
+#	0x6fc08d	github.com/lesismal/nbio/nbhttp.(*Response).eoncodeHead+0xcd			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/response.go:446
+#	0x6fa7ce	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).flushResponse+0x6e		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:297
+#	0x6fa744	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x64	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:282
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+4: 64 [6: 96] @ 0x6f15fb 0x6eee7c 0x484001
+#	0x6f15fa	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x31a	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:715
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+1: 96 [1: 96] @ 0x42b57a 0x42bcbf 0x484001
+#	0x42b579	runtime.(*scavengerState).init+0x59	/usr/local/go/src/runtime/mgcscavenge.go:363
+#	0x42bcbe	runtime.bgscavenge+0x1e			/usr/local/go/src/runtime/mgcscavenge.go:650
+
+6: 96 [11: 176] @ 0x6f1728 0x6eee7c 0x484001
+#	0x6f1727	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x447	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:721
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+8: 192 [16: 384] @ 0x6e5ceb 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x6e5cea	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x22a				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+7: 224 [22: 704] @ 0x6e5c85 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x6e5c84	github.com/lesismal/nbio.(*Conn).setDeadline+0x1c4				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+10: 320 [25: 800] @ 0x4952e5 0x49553f 0x4e36df 0x4e212d 0x524c29 0x534fdb 0x5342f0 0x6eeca2 0x484001
+#	0x4952e4	syscall.anyToSockaddr+0x64					/usr/local/go/src/syscall/syscall_linux.go:669
+#	0x49553e	syscall.Accept4+0x7e						/usr/local/go/src/syscall/syscall_linux.go:701
+#	0x4e36de	internal/poll.accept+0x1e					/usr/local/go/src/internal/poll/sock_cloexec.go:17
+#	0x4e212c	internal/poll.(*FD).Accept+0x1ac				/usr/local/go/src/internal/poll/fd_unix.go:604
+#	0x524c28	net.(*netFD).accept+0x28					/usr/local/go/src/net/fd_unix.go:161
+#	0x534fda	net.(*TCPListener).accept+0x1a					/usr/local/go/src/net/tcpsock_posix.go:159
+#	0x5342ef	net.(*TCPListener).Accept+0x2f					/usr/local/go/src/net/tcpsock.go:380
+#	0x6eeca1	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0xc1	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:338
+
+10: 320 [25: 800] @ 0x4952e5 0x495672 0x524dcc 0x534fdb 0x5342f0 0x6eeca2 0x484001
+#	0x4952e4	syscall.anyToSockaddr+0x64					/usr/local/go/src/syscall/syscall_linux.go:669
+#	0x495671	syscall.Getsockname+0x71					/usr/local/go/src/syscall/syscall_linux.go:715
+#	0x524dcb	net.(*netFD).accept+0x1cb					/usr/local/go/src/net/fd_unix.go:177
+#	0x534fda	net.(*TCPListener).accept+0x1a					/usr/local/go/src/net/tcpsock_posix.go:159
+#	0x5342ef	net.(*TCPListener).Accept+0x2f					/usr/local/go/src/net/tcpsock.go:380
+#	0x6eeca1	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0xc1	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:338
+
+10: 320 [16: 512] @ 0x6eee3c 0x484001
+#	0x6eee3b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x25b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+1: 448 [1: 448] @ 0x450545 0x4507b9 0x4506e5 0x4821ca
+#	0x450544	runtime.malg+0x24		/usr/local/go/src/runtime/proc.go:5137
+#	0x4507b8	runtime.newproc1+0x78		/usr/local/go/src/runtime/proc.go:5185
+#	0x4506e4	runtime.newproc.func1+0x24	/usr/local/go/src/runtime/proc.go:5162
+#	0x4821c9	runtime.systemstack+0x49	/usr/local/go/src/runtime/asm_amd64.s:513
+
+10: 480 [16: 768] @ 0x5346c5 0x524f05 0x534fdb 0x5342f0 0x6eeca2 0x484001
+#	0x5346c4	net.sockaddrToTCP+0x104						/usr/local/go/src/net/tcpsock_posix.go:19
+#	0x524f04	net.(*netFD).accept+0x304					/usr/local/go/src/net/fd_unix.go:178
+#	0x534fda	net.(*TCPListener).accept+0x1a					/usr/local/go/src/net/tcpsock_posix.go:159
+#	0x5342ef	net.(*TCPListener).Accept+0x2f					/usr/local/go/src/net/tcpsock.go:380
+#	0x6eeca1	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0xc1	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:338
+
+20: 960 [34: 1632] @ 0x5346c5 0x524e5b 0x534fdb 0x5342f0 0x6eeca2 0x484001
+#	0x5346c4	net.sockaddrToTCP+0x104						/usr/local/go/src/net/tcpsock_posix.go:19
+#	0x524e5a	net.(*netFD).accept+0x25a					/usr/local/go/src/net/fd_unix.go:178
+#	0x534fda	net.(*TCPListener).accept+0x1a					/usr/local/go/src/net/tcpsock_posix.go:159
+#	0x5342ef	net.(*TCPListener).Accept+0x2f					/usr/local/go/src/net/tcpsock.go:380
+#	0x6eeca1	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0xc1	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:338
+
+37: 4144 [79: 8848] @ 0x48035c 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x48035b	time.newTimer+0x3b								/usr/local/go/src/runtime/time.go:390
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+1: 12288 [4: 49152] @ 0x47a113 0x40861d 0x40861e 0x40856f 0x409c2e 0x409bb0 0x40c7a6 0x6f1590 0x6eee7c 0x484001
+#	0x6f158f	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x2af	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:711
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+71: 12496 [71: 12496] @ 0x703aa5 0x703bf4 0x7049de 0x7f3e08 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x703aa4	github.com/lesismal/nbio/nbhttp/websocket.newConn+0x44				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:1025
+#	0x703bf3	github.com/lesismal/nbio/nbhttp/websocket.NewServerConn+0x193			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/conn.go:1020
+#	0x7049dd	github.com/lesismal/nbio/nbhttp/websocket.(*Upgrader).Upgrade+0x2bd		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:361
+#	0x7f3e07	main.main.func1+0x47								/app/main.go:93
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+74: 15392 [157: 32656] @ 0x6e991f 0x6e6fce 0x6f131e 0x6eee7c 0x484001
+#	0x6e991e	github.com/lesismal/nbio.dupStdConn+0x1be				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/net_unix.go:64
+#	0x6e6fcd	github.com/lesismal/nbio.NBConn+0x2d					/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:1038
+#	0x6f131d	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x3d	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:681
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+5: 61440 [11: 135168] @ 0x47a113 0x40861d 0x40861e 0x40856f 0x409c51 0x409bb0 0x40c7a6 0x6f1590 0x6eee7c 0x484001
+#	0x6f158f	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x2af	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:711
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+1: 65536 [1: 65536] @ 0x6e871a 0x6f015b 0x7f3a7f 0x44657d 0x484001
+#	0x6e8719	github.com/lesismal/nbio.(*Engine).Start+0x319		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine_unix.go:87
+#	0x6f015a	github.com/lesismal/nbio/nbhttp.(*Engine).Start+0x15a	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:506
+#	0x7f3a7e	main.main+0x6de						/app/main.go:125
+#	0x44657c	runtime.main+0x29c					/usr/local/go/src/runtime/proc.go:285
+
+1: 524288 [1: 524288] @ 0x6e2d0d 0x6f412a 0x6fef1b 0x4558b5 0x446630 0x446520 0x484001
+#	0x6e2d0c	github.com/lesismal/nbio/taskpool.New+0x2c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:87
+#	0x6f4129	github.com/lesismal/nbio/nbhttp.NewEngine+0x3a9		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1093
+#	0x6fef1a	github.com/lesismal/nbio/nbhttp/websocket.init+0x3a	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:51
+#	0x4558b4	runtime.doInit1+0xd4					/usr/local/go/src/runtime/proc.go:7670
+#	0x44662f	runtime.doInit+0x34f					/usr/local/go/src/runtime/proc.go:7637
+#	0x44651f	runtime.main+0x23f					/usr/local/go/src/runtime/proc.go:256
+
+1: 524288 [1: 524288] @ 0x6e2d0d 0x6f4025 0x6fef1b 0x4558b5 0x446630 0x446520 0x484001
+#	0x6e2d0c	github.com/lesismal/nbio/taskpool.New+0x2c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:87
+#	0x6f4024	github.com/lesismal/nbio/nbhttp.NewEngine+0x2a4		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:1071
+#	0x6fef1a	github.com/lesismal/nbio/nbhttp/websocket.init+0x3a	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/websocket/upgrader.go:51
+#	0x4558b4	runtime.doInit1+0xd4					/usr/local/go/src/runtime/proc.go:7670
+#	0x44662f	runtime.doInit+0x34f					/usr/local/go/src/runtime/proc.go:7637
+#	0x44651f	runtime.main+0x23f					/usr/local/go/src/runtime/proc.go:256
+
+1: 1048576 [1: 1048576] @ 0x455d76 0x411471 0x65afd0 0x671b8b 0x61dca9 0x61fb27 0x6fa72c 0x6e3b53 0x6e3a0d 0x6e3053 0x6e2bfe 0x484001
+#	0x65afcf	runtime/pprof.StartCPUProfile+0xef						/usr/local/go/src/runtime/pprof/pprof.go:847
+#	0x671b8a	net/http/pprof.Profile+0x2ca							/usr/local/go/src/net/http/pprof/pprof.go:157
+#	0x61dca8	net/http.HandlerFunc.ServeHTTP+0x28						/usr/local/go/src/net/http/server.go:2322
+#	0x61fb26	net/http.(*ServeMux).ServeHTTP+0x1c6						/usr/local/go/src/net/http/server.go:2861
+#	0x6fa72b	github.com/lesismal/nbio/nbhttp.(*ServerProcessor).OnComplete.func1+0x4b	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/processor.go:281
+#	0x6e3b52	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1.1+0x32		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:241
+#	0x6e3a0c	github.com/lesismal/nbio.(*Conn).Execute.(*Conn).execute.func1+0x4c		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn.go:242
+#	0x6e3052	github.com/lesismal/nbio/taskpool.New.func1+0x32				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:99
+#	0x6e2bfd	github.com/lesismal/nbio/taskpool.(*TaskPool).fork.func1+0x5d			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/taskpool/taskpool.go:31
+
+1: 1499136 [2: 2998272] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+1: 1884160 [1: 1884160] @ 0x4654b7 0x465f12 0x465c97 0x4803d0 0x4a1395 0x6e5d35 0x6e5b3f 0x6f1865 0x6f1818 0x6eee7c 0x484001
+#	0x4803cf	time.newTimer+0xaf								/usr/local/go/src/runtime/time.go:407
+#	0x4a1394	time.AfterFunc+0x34								/usr/local/go/src/time/sleep.go:211
+#	0x6e5d34	github.com/lesismal/nbio/timer.(*Timer).AfterFunc+0x274				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/timer/timer.go:60
+#	0x6e5b3e	github.com/lesismal/nbio.(*Conn).setDeadline+0x7e				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:527
+#	0x6f1864	github.com/lesismal/nbio.(*Conn).SetReadDeadline+0x584				/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/conn_unix.go:552
+#	0x6f1817	github.com/lesismal/nbio/nbhttp.(*Engine).AddConnNonTLSNonBlocking+0x537	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:729
+#	0x6eee7b	github.com/lesismal/nbio/nbhttp.(*Engine).listen.func1+0x29b			/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:340
+
+1: 8388608 [1: 8388608] @ 0x6e843b 0x6f015b 0x7f3a7f 0x44657d 0x484001
+#	0x6e843a	github.com/lesismal/nbio.(*Engine).Start+0x3a		/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/engine_unix.go:28
+#	0x6f015a	github.com/lesismal/nbio/nbhttp.(*Engine).Start+0x15a	/go/pkg/mod/github.com/lesismal/nbio@v1.6.8/nbhttp/engine.go:506
+#	0x7f3a7e	main.main+0x6de						/app/main.go:125
+#	0x44657c	runtime.main+0x29c					/usr/local/go/src/runtime/proc.go:285
+
+
+# runtime.MemStats
+# Alloc = 174746480
+# TotalAlloc = 1471383816
+# Sys = 260303160
+# Lookups = 0
+# Mallocs = 42897756
+# Frees = 40259257
+# HeapAlloc = 174746480
+# HeapSys = 245465088
+# HeapIdle = 29483008
+# HeapInuse = 215982080
+# HeapReleased = 29483008
+# HeapObjects = 2638499
+# Stack = 1703936 / 1703936
+# MSpan = 3897920 / 4324800
+# MCache = 2416 / 15704
+# BuckHashSys = 1481808
+# GCSys = 6325568
+# OtherSys = 986256
+# NextGC = 173303048
+# LastGC = 1790624669727284386
+# PauseNs = [66446 43783 31981 77928 200000 30769 70864 99048 38362 60846 40417 311971 66226 132631 160643 58962 66846 38243 35537 910474 28303 61727 4153345 46788 75392 97044 51527 33761068 78589 82837 95801 36760 87957 48752 28384 119897 57479 62378 3705568 344723 1711903 82476 121500 54093 45567 107233 2138301 93097 48782 109828 50936 133744 51038 51067 1820608 66005 128964 227441 55004 1582657 36839 111631 1431541 10307591 162968 52108 613112 66336 58630 31399 38544 84390 87466 91805 38222 62238 37953 39955 85291 245395 103285 71516 35297 110008 49593 482855 128413 51588 37481 96033 136287 39114 39505 107684 2093284 42541 1301705 2370109 112463 76014 98848 1172540 399557 514214 96303 522680 83007 56838 75183 46708 94388 5079569 73870 10768854 989635 30986818 117372 3419275 93868 131399 98226 1564793 91724 213776 1184194 424503 87586 40146 88257 91223 3108156 84379 562585 480961 94990 733380 322861 1046882 117293 56748 71324 547136 1316543 55525 15027278 1712212 46398 81924 1310271 72538 40487 882761 58472 60034 1130140 602490 35156 978955 644772 52640 976989 886840 1494289 3568397 132230 1259125 68059 58801 20959 28604 64763 24907 39244 69612 16011 14637 52629 14147 51728 18254 25217 32632 60866 46538 38975 15139 26991 33944 22142 19428 28013 31139 15810 17363 45826 30999 15049 54874 321318 1180335 26631 33743 34074 25218 33504 28965 23124 57609 46999 54684 28183 15700 41489 2076934 64152 23235 59844 63991 40437 69792 53452 2684474 4297327 1614798 996537 2942983 81374 2041556 50867 1345236 77536 93618 1159896 90031 40597 91833 46929 30378 32852 25378 2063388 68270 189298 64272 31911 30719 941543 73309 425356 979073 63922 59694 79611 1138497 267486 70763]
+# PauseEnd = [1790624618461506739 1790624619227337211 1790624619810966601 1790624620714664910 1790624621599181854 1790624622365055511 1790624622887308197 1790624623923525796 1790624624990684572 1790624625688308721 1790624626199105364 1790624627037533069 1790624628147024471 1790624629061361667 1790624629860595660 1790624630471769682 1790624631484727039 1790624632155592768 1790624633032858792 1790624633856911170 1790624634793461471 1790624635365387798 1790624636082050682 1790624636926016375 1790624637611662189 1790624638152778751 1790624638934576992 1790624639551398196 1790624640118106054 1790624640539039029 1790624641078035287 1790624641429006918 1790624641829914158 1790624642228619890 1790624643044341771 1790624643487223235 1790624644145854734 1790624644714594473 1790624645475639737 1790624646082069025 1790624647322730577 1790624647943292100 1790624648913021102 1790624650062772688 1790624651218701335 1790624652282346693 1790624653484687831 1790624654149690093 1790624654835097128 1790624655473543288 1790624656134808995 1790624657250750611 1790624658474670653 1790624659415835570 1790624660027364035 1790624661187913105 1790624662114736805 1790624662749201620 1790624663335925652 1790624664062944492 1790624665011985792 1790624665986551502 1790624666586798977 1790624667145882714 1790624668037585907 1790624668786452328 1790624669727284386 1790624483245175762 1790624483775328824 1790624484445338010 1790624485342359990 1790624486014976915 1790624487056747756 1790624487633564034 1790624488397531955 1790624489019509342 1790624489722375793 1790624490507056299 1790624491001351977 1790624491785063910 1790624492463452802 1790624492937828221 1790624493523677399 1790624494082602032 1790624494806433348 1790624495642747786 1790624496480276154 1790624496998320878 1790624497789662758 1790624498778842190 1790624499792442217 1790624500606065343 1790624501651718099 1790624502253280280 1790624503263557300 1790624504255566660 1790624504875464194 1790624505499349590 1790624506288058544 1790624507247156796 1790624508176989020 1790624509011571135 1790624509787055361 1790624510648899663 1790624511731366179 1790624512639834293 1790624513237685888 1790624513843105114 1790624514761088179 1790624515418835027 1790624516456138266 1790624517460703433 1790624518369095491 1790624519744292343 1790624520838171154 1790624521575555776 1790624522144514405 1790624522831925755 1790624523672111921 1790624524774560288 1790624526127527056 1790624527316101040 1790624527923368269 1790624528554687575 1790624529467507173 1790624530120525631 1790624530789221098 1790624531667544654 1790624532599188163 1790624533616711172 1790624534706489020 1790624535804155008 1790624536544682568 1790624537272895359 1790624538045746952 1790624538988411410 1790624540156661560 1790624541072462579 1790624541897648102 1790624543169544592 1790624544127573402 1790624544763787703 1790624545718560069 1790624546397284693 1790624547432566032 1790624548230490487 1790624549162414560 1790624550412143685 1790624551358587788 1790624551987863966 1790624553037547176 1790624553959869302 1790624554859620406 1790624555857073561 1790624556459087847 1790624556971886013 1790624557955869264 1790624558919610813 1790624560023610714 1790624561265638484 1790624561845553765 1790624563036598230 1790624563970619113 1790624564786788058 1790624565526685495 1790624566500640386 1790624566985763831 1790624567334816885 1790624567796112266 1790624568214265689 1790624568581080590 1790624568922067409 1790624569120902540 1790624569403554740 1790624569624777458 1790624569910959241 1790624570165481660 1790624570412159253 1790624570622247576 1790624570820890674 1790624571171985056 1790624571439994847 1790624571719326278 1790624572003106825 1790624572304926444 1790624572528262004 1790624572780377365 1790624573096812652 1790624573349164462 1790624573582001546 1790624573810888118 1790624574061668923 1790624574345612931 1790624574638238659 1790624574888017356 1790624575137991033 1790624575682423340 1790624576130571920 1790624576757071632 1790624577106210403 1790624577537195140 1790624577947980444 1790624578422343810 1790624578735560154 1790624579174795336 1790624579520983641 1790624579919478010 1790624580373815213 1790624580850992709 1790624581415067929 1790624581812152921 1790624582341148970 1790624582704303346 1790624583308158681 1790624583690629417 1790624584255441435 1790624584901760798 1790624585488937720 1790624586286915909 1790624587427182092 1790624588718554306 1790624589604188028 1790624590375354547 1790624591341029039 1790624592404994654 1790624593423777955 1790624594619418385 1790624595390531568 1790624596133564634 1790624597139871593 1790624598297600964 1790624599406386387 1790624599988559484 1790624600532453740 1790624601397806638 1790624602136167322 1790624602963941246 1790624603704364858 1790624604134281017 1790624604903088042 1790624605397526112 1790624605958582854 1790624606706675923 1790624607570353165 1790624608646130812 1790624609183689225 1790624610045266232 1790624610925554686 1790624611760172170 1790624612383596287 1790624612987719213 1790624613471419493 1790624614329024653 1790624615388720844 1790624616213338965 1790624617276002027]
+# NumGC = 323
+# NumForcedGC = 0
+# GCCPUFraction = 0.13413051386491043
+# DebugGC = false
+# MaxRSS = 253288448

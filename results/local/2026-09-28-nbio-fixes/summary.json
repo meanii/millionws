@@ -1,0 +1,59 @@
+{
+  "variant": "nbio-fixes",
+  "stop_reason": "server container stopped (exited true 137)",
+  "duration_s": 194,
+  "peak_connections": 194014,
+  "loadgen_target": 300000.0,
+  "at_peak": {
+    "server_conns": 194014.0,
+    "loadgen_conns": 190712.0,
+    "loadgen_target": 300000.0,
+    "cg_memory": 1071140864,
+    "cg_anon": 282406912,
+    "cg_sock": 0,
+    "cg_kernel": 787415040,
+    "cg_slab": 786474408,
+    "cg_percpu": 4984,
+    "cg_file": 0,
+    "cg_peak": 1072062464,
+    "oom_kills": 0,
+    "cpu_pct": 35.1,
+    "pids": 14,
+    "process_rss": 289460224.0,
+    "go_heap_inuse": 278806528.0,
+    "go_stack_inuse": 2916352.0,
+    "goroutines": 15.0,
+    "open_fds": 194029.0,
+    "dial_errors_15s": null,
+    "echo_rate": 5941.266799185188,
+    "echo_p50_ms": 2.8363334697528475,
+    "echo_p99_ms": 42.11131424714986,
+    "conntrack": 565,
+    "rejected": null
+  },
+  "idle": {
+    "cg_memory": 5255168,
+    "cg_anon": 4558848,
+    "cg_sock": 0,
+    "cg_kernel": 696320,
+    "process_rss": 11792384.0,
+    "goroutines": 15.0,
+    "open_fds": 15.0
+  },
+  "bytes_per_connection": {
+    "cgroup_total": 5494,
+    "cgroup_anon": 1432,
+    "kernel_sockets": 0,
+    "kernel_other": 4055,
+    "kernel_slab": 4052,
+    "process_rss": 1431,
+    "go_heap": 1362
+  },
+  "cpu_pct_near_peak_avg": 34.9,
+  "final_state": "exited true 137",
+  "oom_killed": true,
+  "cgroup_memory_peak": 1074163712,
+  "dial_errors_by_reason": {
+    "reset": 2
+  }
+}

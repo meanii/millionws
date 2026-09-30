@@ -1,0 +1,58 @@
+(attempt 1)
+### date
+2026-09-30T03:54:07Z
+### uname
+Linux ip-10-0-1-177.ec2.internal 6.12.110-135.201.amzn2023.x86_64 #1 SMP PREEMPT_DYNAMIC Wed Sep 23 18:51:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+### GIT_SHA
+cecfc2487c9c0a23e612aff90301dbd91ca33c40
+### instance type
+m7i-flex.large
+### free -m
+               total        used        free      shared  buff/cache   available
+Mem:            7778        5143         288           0        2346        2336
+Swap:              0           0           0
+### ss -s
+Total: 1000188
+TCP:   1000039 (estab 999998, closed 18, orphaned 0, timewait 1)
+
+Transport Total     IP        IPv6
+RAW	  1         0         1        
+UDP	  4         2         2        
+TCP	  1000021   1000018   3        
+INET	  1000026   1000020   6        
+FRAG	  0         0         0        
+
+### sysctl
+fs.nr_open = 2000000
+fs.file-max = 3000000
+net.core.somaxconn = 65535
+net.ipv4.ip_local_port_range = 1024	65535
+### docker ps
+aws-grafana-1	grafana/grafana:12.1.1	Up 13 minutes
+aws-prometheus-1	prom/prometheus:v3.5.0	Up 13 minutes
+aws-server-1	millionws:server	Up 13 minutes
+### docker stats
+aws-grafana-1	cpu=0.52%	mem=121.6MiB / 7.596GiB
+aws-prometheus-1	cpu=0.14%	mem=29.3MiB / 7.596GiB
+aws-server-1	cpu=60.47%	mem=5.038GiB / 6GiB
+### ENA (conntrack + allowances)
+iface=enp39s0
+     bw_in_allowance_exceeded: 0
+     bw_out_allowance_exceeded: 0
+     pps_allowance_exceeded: 10966
+     conntrack_allowance_exceeded: 0
+     linklocal_allowance_exceeded: 0
+     conntrack_allowance_available: 76957
+### cgroup memory of server container
+memory.current=5411549184
+memory.max=6442450944
+### server log (non-INF lines)
+2026/09/30 03:41:03 memory limit: cgroup limit 6144 MiB, adjusting the Go memory limit every second
+2026/09/30 03:41:03 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws://0.0.0.0:8091, ws://0.0.0.0:8092, ws:/
+### cloud-init log tail
+ Container aws-prometheus-1  Starting
+ Container aws-server-1  Started
+ Container aws-prometheus-1  Started
+ Container aws-grafana-1  Starting
+ Container aws-grafana-1  Started
+[cloud-init] done

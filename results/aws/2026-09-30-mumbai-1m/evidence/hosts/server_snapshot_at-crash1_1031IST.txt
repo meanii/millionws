@@ -1,0 +1,138 @@
+
+### date (utc and local)
+2026-09-30T05:01:00Z
+2026-09-30T10:31:00+0530
+                Time zone: Asia/Kolkata (IST, +0530)
+
+### uname
+Linux ip-10-0-1-198.ap-south-1.compute.internal 6.12.110-135.201.amzn2023.x86_64 #1 SMP PREEMPT_DYNAMIC Wed Sep 23 18:51:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+### git sha
+4bbfa7b807a81df1d6640fcbbd11aab5ad77af36
+
+### instance type, az
+m7i-flex.large
+ap-south-1a
+
+### free -m
+               total        used        free      shared  buff/cache   available
+Mem:            7778        5111         305           0        2361        2311
+Swap:              0           0           0
+
+### meminfo (selected)
+MemTotal:        7965188 kB
+MemAvailable:    2366572 kB
+Cached:          1248412 kB
+SwapCached:            0 kB
+AnonPages:       1654516 kB
+Slab:            4594776 kB
+SReclaimable:    1167980 kB
+SUnreclaim:      3426796 kB
+
+### sockstat
+sockets: used 1000213
+TCP: inuse 1000019 orphan 0 tw 14 alloc 1000072 mem 154
+UDP: inuse 2 mem 0
+UDPLITE: inuse 0
+RAW: inuse 0
+FRAG: inuse 0 memory 0
+
+### ss -s
+Total: 1000213
+TCP:   1000086 (estab 999999, closed 64, orphaned 0, timewait 14)
+
+Transport Total     IP        IPv6
+RAW	  1         0         1        
+UDP	  4         2         2        
+TCP	  1000022   1000019   3        
+INET	  1000027   1000021   6        
+FRAG	  0         0         0        
+
+
+### ss -tin sample (first 12 established, with TCP internals)
+Recv-Q Send-Q Local Address:Port Peer Address:Port                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+0      0         10.0.1.198:8087   10.0.1.224:59804
+	 cubic wscale:7,7 rto:210 rtt:0.57/0.399 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:469 bytes_acked:469 bytes_received:568 segs_out:23 segs_in:27 data_segs_out:11 data_segs_in:11 send 1256000000bps lastsnd:1260 lastrcv:1260 lastack:1260 pacing_rate 2512000000bps delivery_rate 337698112bps delivered:12 app_limited rcv_space:56587 rcv_ssthresh:56587 minrtt:0.212 snd_wnd:62720 rcv_wnd:62464                                                                           
+0      0         10.0.1.198:8093    10.0.1.19:32392
+	 cubic wscale:7,7 rto:210 rtt:0.44/0.357 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:469 bytes_acked:469 bytes_received:568 segs_out:23 segs_in:30 data_segs_out:11 data_segs_in:11 send 1627090909bps lastsnd:1460 lastrcv:1460 lastack:1460 pacing_rate 3250488080bps delivery_rate 329917048bps delivered:12 app_limited rcv_space:56587 rcv_ssthresh:56587 minrtt:0.217 snd_wnd:62720 rcv_wnd:62464                                                                           
+0      0         10.0.1.198:8091   10.0.1.197:42816
+	 cubic wscale:7,7 rto:210 rtt:2.037/2.914 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:469 bytes_acked:469 bytes_received:568 segs_out:27 segs_in:33 data_segs_out:11 data_segs_in:11 send 351458027bps lastsnd:2160 lastrcv:2160 lastack:2160 pacing_rate 702657336bps delivery_rate 326904104bps delivered:12 app_limited busy:20ms rcv_space:56587 rcv_ssthresh:56587 minrtt:0.219 snd_wnd:62720 rcv_wnd:62464                                                                  
+0      0         10.0.1.198:8094   10.0.1.224:47044
+	 cubic wscale:7,7 rto:210 rtt:0.869/0.892 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:469 bytes_acked:469 bytes_received:568 segs_out:23 segs_in:31 data_segs_out:11 data_segs_in:11 send 823843498bps lastsnd:6360 lastrcv:6360 lastack:6360 pacing_rate 1647213112bps delivery_rate 350941176bps delivered:12 app_limited rcv_space:56587 rcv_ssthresh:56587 minrtt:0.204 snd_wnd:62720 rcv_wnd:62464                                                                           
+0      0         10.0.1.198:8085   10.0.1.197:25354
+	 cubic wscale:7,7 rto:210 rtt:0.557/0.517 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:503 bytes_acked:503 bytes_received:606 segs_out:29 segs_in:35 data_segs_out:12 data_segs_in:12 send 1285314183bps lastsnd:7270 lastrcv:7280 lastack:7270 pacing_rate 2566596456bps delivery_rate 294617280bps delivered:13 app_limited busy:10ms rcv_space:56587 rcv_ssthresh:56587 minrtt:0.243 snd_wnd:62720 rcv_wnd:62464                                                                
+0      0         10.0.1.198:8086    10.0.1.19:6502 
+	 cubic wscale:7,7 rto:210 rtt:0.469/0.193 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:571 bytes_retrans:68 bytes_acked:503 bytes_received:606 segs_out:29 segs_in:34 data_segs_out:14 data_segs_in:13 send 1526481876bps lastsnd:8220 lastrcv:8220 lastack:8220 pacing_rate 3049712456bps delivery_rate 319607136bps delivered:14 app_limited busy:450ms retrans:0/2 dsack_dups:1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.224 snd_wnd:62720 rcv_wnd:62464                     
+0      0         10.0.1.198:8087   10.0.1.197:60370
+	 cubic wscale:7,7 rto:210 rtt:4.185/6.526 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:503 bytes_acked:503 bytes_received:606 segs_out:28 segs_in:36 data_segs_out:12 data_segs_in:12 send 171068100bps lastsnd:8670 lastrcv:8680 lastack:8670 pacing_rate 342136200bps delivery_rate 325418176bps delivered:13 app_limited rcv_space:56587 rcv_ssthresh:56587 minrtt:0.22 snd_wnd:62720 rcv_wnd:62464                                                                             
+0      0         10.0.1.198:8084    10.0.1.19:2798 
+	 cubic wscale:7,7 rto:210 rtt:4.349/6.06 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:632 bytes_retrans:129 bytes_acked:503 bytes_received:606 segs_out:28 segs_in:35 data_segs_out:13 data_segs_in:12 send 164617153bps lastsnd:9220 lastrcv:9220 lastack:9220 pacing_rate 329205920bps delivery_rate 242684744bps delivered:14 app_limited busy:250ms retrans:0/1 dsack_dups:1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.295 snd_wnd:62720 rcv_wnd:62464                       
+0      0         10.0.1.198:8092    10.0.1.19:47312
+	 cubic wscale:7,7 rto:210 rtt:1.087/1.534 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:537 bytes_retrans:34 bytes_acked:503 bytes_received:606 segs_out:30 segs_in:35 data_segs_out:13 data_segs_in:12 send 658620055bps lastsnd:9790 lastrcv:9790 lastack:9790 pacing_rate 1316331872bps delivery_rate 315383256bps delivered:14 app_limited busy:220ms retrans:0/1 dsack_dups:1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.227 snd_wnd:62720 rcv_wnd:62464                      
+0      0         10.0.1.198:8091    10.0.1.19:31172
+	 cubic wscale:7,7 rto:210 rtt:0.309/0.06 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:503 bytes_acked:503 bytes_received:606 segs_out:28 segs_in:35 data_segs_out:12 data_segs_in:12 send 2316893204bps lastsnd:11790 lastrcv:11790 lastack:11790 pacing_rate 4633786400bps delivery_rate 326904104bps delivered:13 app_limited rcv_space:56587 rcv_ssthresh:56587 minrtt:0.219 snd_wnd:62720 rcv_wnd:62464                                                                        
+0      0         10.0.1.198:8086   10.0.1.197:19992
+	 cubic wscale:7,7 rto:210 rtt:0.564/0.357 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:503 bytes_acked:503 bytes_received:606 segs_out:28 segs_in:35 data_segs_out:12 data_segs_in:12 send 1269361702bps lastsnd:14870 lastrcv:14870 lastack:14870 pacing_rate 2538160864bps delivery_rate 350941176bps delivered:13 app_limited busy:10ms rcv_space:56587 rcv_ssthresh:56587 minrtt:0.204 snd_wnd:62720 rcv_wnd:62464                                                             
+0      0         10.0.1.198:8093   10.0.1.197:49434
+	 cubic wscale:7,7 rto:210 rtt:0.535/0.361 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:537 bytes_retrans:34 bytes_acked:503 bytes_received:606 segs_out:31 segs_in:34 data_segs_out:13 data_segs_in:12 send 1338168224bps lastsnd:16380 lastrcv:16380 lastack:16370 pacing_rate 2673213528bps delivery_rate 280752936bps delivered:14 app_limited busy:240ms retrans:0/1 dsack_dups:1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.255 snd_wnd:62720 rcv_wnd:62464                  
+
+### top kernel slabs by size (name, active objs, objsize, MiB)
+TCP                             1000056   2432     2319
+sock_inode_cache                1000340    832      794
+nf_conntrack                    1000136    256      244
+dentry                          1102206    192      202
+filp                            1001490    192      183
+pid                             1000836    128      122
+Acpi-State                      1096296     80       84
+xfs_inode                         81586   1024       80
+anon_vma_chain                  1003456     64       61
+lsm_file_cache                  1001742     40       38
+kmalloc-1k                        36973   1024       36
+kmalloc-32                      1080106     32       33
+
+### sysctl
+fs.nr_open = 2000000
+fs.file-max = 3000000
+net.core.somaxconn = 65535
+net.ipv4.ip_local_port_range = 1024	65535
+net.ipv4.tcp_max_syn_backlog = 65535
+
+### docker ps
+aws-grafana-1	grafana/grafana:12.1.1	Up 6 minutes
+aws-prometheus-1	prom/prometheus:v3.5.0	Up 6 minutes
+aws-server-1	millionws:server	Up 6 minutes
+
+### docker stats
+aws-grafana-1	cpu=0.33%	mem=113.5MiB / 7.596GiB
+aws-prometheus-1	cpu=1.06%	mem=33.5MiB / 7.596GiB
+aws-server-1	cpu=40.32%	mem=4.963GiB / 6GiB
+
+### ENA
+iface=enp39s0
+     bw_in_allowance_exceeded: 0
+     bw_out_allowance_exceeded: 0
+     pps_allowance_exceeded: 0
+     conntrack_allowance_exceeded: 0
+     linklocal_allowance_exceeded: 0
+     conntrack_allowance_available: 76957
+
+### server container cgroup
+memory.current=5327720448
+memory.max=6442450944
+anon 1394020352
+file 0
+kernel 3932774400
+kernel_stack 425984
+sock 471040
+slab_reclaimable 1040076040
+slab_unreclaimable 2880980600
+slab 3921056640
+
+### server log, lines that are not INF
+2026/09/30 10:24:59 memory limit: cgroup limit 6144 MiB, adjusting the Go memory limit every second
+2026/09/30 10:24:59 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws
+
+### sampler csv (last 3 rows)
+2026-09-30T05:00:41Z,2026-09-30T10:30:41+0530,999998,1.68,30.3,5463,4486,157,5080,0,76957,0,0,0
+2026-09-30T05:00:51Z,2026-09-30T10:30:51+0530,999998,1.42,17.9,5460,4488,669,5082,0,76957,0,0,0
+2026-09-30T05:01:01Z,2026-09-30T10:31:01+0530,999999,1.52,22.5,5472,4487,154,5080,0,76957,0,0,0

@@ -1,0 +1,3 @@
+reached 250000 at 03:16:16
+
+[exited with code 0]

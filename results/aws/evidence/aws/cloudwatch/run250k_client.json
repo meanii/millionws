@@ -1,0 +1,76 @@
+{
+ "instance": "i-0997840b970a3a480",
+ "period_s": 300,
+ "metrics": {
+  "CPUUtilization": [
+   {
+    "Timestamp": "2026-09-30T08:40:00+05:30",
+    "Average": 29.1062803323973,
+    "Maximum": 67.89053515774737,
+    "Unit": "Percent"
+   },
+   {
+    "Timestamp": "2026-09-30T08:45:00+05:30",
+    "Average": 19.420833107333298,
+    "Maximum": 23.923763827802215,
+    "Unit": "Percent"
+   }
+  ],
+  "NetworkIn": [
+   {
+    "Timestamp": "2026-09-30T08:40:00+05:30",
+    "Average": 80757589.5,
+    "Maximum": 94665378.0,
+    "Unit": "Bytes"
+   },
+   {
+    "Timestamp": "2026-09-30T08:45:00+05:30",
+    "Average": 105920992.0,
+    "Maximum": 122489135.0,
+    "Unit": "Bytes"
+   }
+  ],
+  "NetworkOut": [
+   {
+    "Timestamp": "2026-09-30T08:40:00+05:30",
+    "Average": 47110978.0,
+    "Maximum": 89885732.0,
+    "Unit": "Bytes"
+   },
+   {
+    "Timestamp": "2026-09-30T08:45:00+05:30",
+    "Average": 145013995.33333334,
+    "Maximum": 168158753.0,
+    "Unit": "Bytes"
+   }
+  ],
+  "NetworkPacketsIn": [
+   {
+    "Timestamp": "2026-09-30T08:40:00+05:30",
+    "Average": 428259.0,
+    "Maximum": 739910.0,
+    "Unit": "Count"
+   },
+   {
+    "Timestamp": "2026-09-30T08:45:00+05:30",
+    "Average": 1282940.6666666667,
+    "Maximum": 1495375.0,
+    "Unit": "Count"
+   }
+  ],
+  "NetworkPacketsOut": [
+   {
+    "Timestamp": "2026-09-30T08:40:00+05:30",
+    "Average": 519972.5,
+    "Maximum": 981522.0,
+    "Unit": "Count"
+   },
+   {
+    "Timestamp": "2026-09-30T08:45:00+05:30",
+    "Average": 1801077.3333333333,
+    "Maximum": 2131831.0,
+    "Unit": "Count"
+   }
+  ]
+ }
+}

@@ -1,0 +1,16 @@
+started=2026-09-30T06:04:03.131318586Z restarts=3 oomkilled=false
+
+2026/09/30 10:24:59 memory limit: cgroup limit 6144 MiB, adjusting the Go memory limit every second
+2026/09/30 10:24:59 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws
+2026/09/30 10:31:11 memory guard: 5530 MiB of 6144 MiB used, rejecting new connections
+2026/09/30 10:31:16.161 [ERR] AddConnNonTLSNonBlocking failed: overload, already has 1000000 online
+2026/09/30 10:31:28 memory limit: cgroup limit 6144 MiB, adjusting the Go memory limit every second
+2026/09/30 10:31:28 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws
+2026/09/30 11:07:43 memory guard: 5564 MiB of 6144 MiB used, rejecting new connections
+2026/09/30 11:08:01 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws
+2026/09/30 11:08:01 memory limit: cgroup limit 6144 MiB, adjusting the Go memory limit every second
+2026/09/30 11:21:35 memory guard: 5562 MiB of 6144 MiB used, rejecting new connections
+2026/09/30 11:21:45 memory guard: 5218 MiB of 6144 MiB used, accepting new connections
+2026/09/30 11:33:44 memory guard: 5545 MiB of 6144 MiB used, rejecting new connections
+2026/09/30 11:34:03 starting millionws server on ws://0.0.0.0:8080, ws://0.0.0.0:8081, ws://0.0.0.0:8082, ws://0.0.0.0:8083, ws://0.0.0.0:8084, ws://0.0.0.0:8085, ws://0.0.0.0:8086, ws://0.0.0.0:8087, ws://0.0.0.0:8088, ws://0.0.0.0:8089, ws://0.0.0.0:8090, ws
+2026/09/30 11:34:03 memory limit: cgroup limit 6144 MiB, adjusting the Go memory limit every second

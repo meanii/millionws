@@ -1,0 +1,4 @@
+2026-09-30T04:01:08Z cgroup_current_MiB=5168 rss_MB=1494 active=
+     pps_allowance_exceeded: 16534
+     conntrack_allowance_exceeded: 0
+     conntrack_allowance_available: 76957

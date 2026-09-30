@@ -7,7 +7,7 @@ This directory contains files for running Locust load tests in Kubernetes using 
 Edit or replace:
 
 ```
-benchmarking/locust/locustfile.py
+locust/locustfile.py
 ```
 
 Example:
@@ -59,13 +59,13 @@ Guidelines:
 Changing worker count requires reapplying:
 
 ```
-kubectl apply -k benchmarking/locust
+kubectl apply -k locust
 ```
 
 ## 3. Deploy the test
 
 ```
-kubectl apply -k benchmarking/locust
+kubectl apply -k locust
 ```
 
 Check test status:
@@ -125,7 +125,7 @@ http://localhost:8089
 After modifying `locustfile.py`, redeploy:
 
 ```
-kubectl apply -k benchmarking/locust
+kubectl apply -k locust
 ```
 
 Pods will restart with the new test code.
@@ -160,13 +160,13 @@ Locust UI allows exporting:
 Suggested storage layout:
 
 ```
-benchmarking/results/<test-name>/<timestamp>/
+results/<test-name>/<timestamp>/
 ```
 
 Example:
 
 ```
-benchmarking/results/load-test-ping/2025-12-10/
+results/load-test-ping/2025-12-10/
     stats.csv
     failures.csv
     distribution.csv
@@ -179,5 +179,5 @@ Commit only summary results or charts that are useful for comparison.
 ## 9. Removing all test resources
 
 ```
-kubectl delete -k benchmarking/locust
+kubectl delete -k locust
 ```

@@ -1,0 +1,28 @@
+output "server_ssh" {
+  value = "ssh ec2-user@${local.server_public_ip}"
+}
+
+output "grafana" {
+  # Grafana listens on 3000, allowed from my_ip only (see the security group).
+  value = "grafana http://${local.server_public_ip}:3000 (username admin, password admin)"
+}
+
+output "prometheus" {
+  value = "prometheus http://${local.server_public_ip}:9090"
+}
+
+output "clients_ssh" {
+  value = [for ip in local.client_public_ips : "ssh ec2-user@${ip}"]
+}
+
+output "target" {
+  value = "total target: ${var.client_count * floor(var.conns_per_client / var.client_replicas) * var.client_replicas} connections (${floor(var.conns_per_client / var.client_replicas) * var.client_replicas} per client x ${var.client_count} clients, ${var.server_port_count} server ports)"
+}
+
+output "git_ref" {
+  value = "building ${var.repo_url} at ${var.git_ref}"
+}
+
+output "cost_guard" {
+  value = "instances self-terminate after ${var.max_runtime_minutes} min; watchdog Lambda terminates any tagged instance older than ${var.max_runtime_minutes + var.guard_grace_minutes} min (checks every 10 min)"
+}

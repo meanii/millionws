@@ -1,0 +1,129 @@
+
+### date (utc and local)
+2026-09-30T05:01:00Z
+2026-09-30T10:31:00+0530
+                Time zone: Asia/Kolkata (IST, +0530)
+
+### uname
+Linux ip-10-0-1-224.ap-south-1.compute.internal 6.12.110-135.201.amzn2023.x86_64 #1 SMP PREEMPT_DYNAMIC Wed Sep 23 18:51:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+### git sha
+4bbfa7b807a81df1d6640fcbbd11aab5ad77af36
+
+### instance type, az
+c7i-flex.large
+ap-south-1a
+
+### free -m
+               total        used        free      shared  buff/cache   available
+Mem:            3814        2048         110           0        1655        1482
+Swap:              0           0           0
+
+### meminfo (selected)
+MemTotal:        3906056 kB
+MemAvailable:    1517492 kB
+Cached:          1242328 kB
+SwapCached:            0 kB
+AnonPages:        770828 kB
+Slab:            1674080 kB
+SReclaimable:     449804 kB
+SUnreclaim:      1224276 kB
+
+### sockstat
+sockets: used 333507
+TCP: inuse 333335 orphan 0 tw 0 alloc 333344 mem 96
+UDP: inuse 2 mem 0
+UDPLITE: inuse 0
+RAW: inuse 0
+FRAG: inuse 0 memory 0
+
+### ss -s
+Total: 333507
+TCP:   333344 (estab 333337, closed 0, orphaned 0, timewait 0)
+
+Transport Total     IP        IPv6
+RAW	  1         0         1        
+UDP	  4         2         2        
+TCP	  333344    333335    9        
+INET	  333349    333337    12       
+FRAG	  0         0         0        
+
+
+### ss -tin sample (first 12 established, with TCP internals)
+Recv-Q Send-Q Local Address:Port  Peer Address:Port                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+0      0         10.0.1.224:13130   10.0.1.198:8080
+	 cubic wscale:7,7 rto:210 rtt:2.493/2.603 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:7 ssthresh:7 bytes_sent:606 bytes_retrans:38 bytes_acked:569 bytes_received:469 segs_out:43 segs_in:23 data_segs_out:12 data_segs_in:12 send 201020457bps lastsnd:20 lastrcv:10 lastack:10 pacing_rate 241200360bps delivery_rate 321040352bps delivered:12 app_limited busy:260ms retrans:0/1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.223 snd_wnd:62464 rcv_wnd:62720                              
+0      0         10.0.1.224:32712   10.0.1.198:8083
+	 cubic wscale:7,7 rto:210 rtt:5.937/6.705 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:4 ssthresh:4 bytes_sent:644 bytes_retrans:76 bytes_acked:569 bytes_received:469 segs_out:45 segs_in:24 data_segs_out:13 data_segs_in:11 send 48234462bps lastsnd:390 lastrcv:370 lastack:370 pacing_rate 57874040bps delivery_rate 259391304bps delivered:12 app_limited busy:480ms retrans:0/3 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.276 snd_wnd:62464 rcv_wnd:62720 rehash:1                    
+0      0         10.0.1.224:30698   10.0.1.198:8088
+	 cubic wscale:7,7 rto:210 rtt:2.783/3.047 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:4 ssthresh:4 bytes_sent:644 bytes_retrans:76 bytes_acked:569 bytes_received:469 segs_out:46 segs_in:27 data_segs_out:13 data_segs_in:12 send 102899030bps lastsnd:3110 lastrcv:3110 lastack:3110 pacing_rate 123478832bps delivery_rate 82384344bps delivered:12 app_limited busy:460ms retrans:0/2 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.345 snd_wnd:62464 rcv_wnd:62720                         
+0      0         10.0.1.224:41920   10.0.1.198:8092
+	 cubic wscale:7,7 rto:230 rtt:20.611/36.78 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:7 ssthresh:7 bytes_sent:606 bytes_retrans:38 bytes_acked:569 bytes_received:469 segs_out:46 segs_in:25 data_segs_out:12 data_segs_in:12 send 24314395bps lastsnd:5130 lastrcv:5120 lastack:5120 pacing_rate 29176384bps delivery_rate 111862496bps delivered:12 app_limited busy:560ms retrans:0/1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.621 snd_wnd:62464 rcv_wnd:62720                         
+0      0         10.0.1.224:51734   10.0.1.198:8081
+	 cubic wscale:7,7 rto:210 rtt:1.535/1.368 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:606 bytes_retrans:38 bytes_acked:569 bytes_received:469 segs_out:44 segs_in:23 data_segs_out:12 data_segs_in:11 send 466397394bps lastsnd:4690 lastrcv:4690 lastack:4690 pacing_rate 932263360bps delivery_rate 104058136bps delivered:12 app_limited busy:260ms retrans:0/1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.374 snd_wnd:62464 rcv_wnd:62720                                  
+0      0         10.0.1.224:34164   10.0.1.198:8095
+	 cubic wscale:7,7 rto:210 rtt:3.442/3.055 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:2 ssthresh:2 bytes_sent:644 bytes_retrans:38 bytes_acked:607 bytes_received:503 segs_out:48 segs_in:27 data_segs_out:13 data_segs_in:12 send 41599070bps lastsnd:7380 lastrcv:7380 lastack:7380 pacing_rate 49918880bps delivery_rate 302075944bps delivered:13 app_limited busy:240ms retrans:0/3 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.237 snd_wnd:62464 rcv_wnd:62720 rehash:2                 
+0      0         10.0.1.224:60970   10.0.1.198:8090
+	 cubic wscale:7,7 rto:210 rtt:3.51/1.557 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:7 ssthresh:7 bytes_sent:644 bytes_retrans:38 bytes_acked:607 bytes_received:503 segs_out:43 segs_in:20 data_segs_out:13 data_segs_in:12 send 142776068bps lastsnd:12890 lastrcv:12890 lastack:12890 pacing_rate 171325176bps delivery_rate 349229264bps delivered:13 app_limited busy:230ms retrans:0/1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.205 snd_wnd:62464 rcv_wnd:62720                      
+0      0         10.0.1.224:11374   10.0.1.198:8080
+	 cubic wscale:7,7 rto:210 rtt:6.238/7.371 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:606 bytes_acked:607 bytes_received:503 segs_out:47 segs_in:24 data_segs_out:12 data_segs_in:13 send 114767554bps lastsnd:15110 lastrcv:15100 lastack:15100 pacing_rate 229516704bps delivery_rate 316778760bps delivered:13 app_limited busy:120ms rcv_space:56587 rcv_ssthresh:56587 minrtt:0.226 snd_wnd:62464 rcv_wnd:62720                                                            
+0      0         10.0.1.224:44750   10.0.1.198:8095
+	 cubic wscale:7,7 rto:210 rtt:1.446/0.955 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:7 ssthresh:7 bytes_sent:644 bytes_retrans:38 bytes_acked:607 bytes_received:503 segs_out:45 segs_in:20 data_segs_out:13 data_segs_in:12 send 346572614bps lastsnd:17620 lastrcv:17610 lastack:17610 pacing_rate 415743376bps delivery_rate 312628816bps delivered:13 app_limited busy:310ms retrans:0/1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.229 snd_wnd:62464 rcv_wnd:62720                     
+0      0         10.0.1.224:26066   10.0.1.198:8080
+	 cubic wscale:7,7 rto:220 rtt:13.144/20.757 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:10 bytes_sent:606 bytes_acked:607 bytes_received:503 segs_out:50 segs_in:27 data_segs_out:12 data_segs_in:13 send 54467438bps lastsnd:24900 lastrcv:24890 lastack:24890 pacing_rate 108928656bps delivery_rate 256602144bps delivered:13 app_limited busy:140ms rcv_space:56587 rcv_ssthresh:56587 minrtt:0.279 snd_wnd:62464 rcv_wnd:62720                                                           
+0      0         10.0.1.224:31786   10.0.1.198:8087
+	 cubic wscale:7,7 rto:210 rtt:2.668/1.349 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:2 ssthresh:7 bytes_sent:682 bytes_retrans:76 bytes_acked:607 bytes_received:503 segs_out:50 segs_in:23 data_segs_out:14 data_segs_in:13 send 53667166bps lastsnd:25980 lastrcv:25980 lastack:25980 pacing_rate 107319248bps delivery_rate 240241608bps delivered:13 app_limited busy:480ms retrans:0/2 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.298 snd_wnd:62464 rcv_wnd:62720 rehash:1             
+0      0         10.0.1.224:57996   10.0.1.198:8095
+	 cubic wscale:7,7 rto:210 rtt:5.871/9.603 ato:40 mss:8949 pmtu:9001 rcvmss:536 advmss:8949 cwnd:7 ssthresh:7 bytes_sent:606 bytes_retrans:38 bytes_acked:569 bytes_received:469 segs_out:43 segs_in:24 data_segs_out:12 data_segs_in:11 send 85359223bps lastsnd:410 lastrcv:370 lastack:370 pacing_rate 102428880bps delivery_rate 170052256bps delivered:12 app_limited busy:270ms retrans:0/1 rcv_space:56587 rcv_ssthresh:56587 minrtt:0.313 snd_wnd:62464 rcv_wnd:62720                            
+
+### top kernel slabs by size (name, active objs, objsize, MiB)
+TCP                              333338   2432      773
+sock_inode_cache                 333559    832      265
+nf_conntrack                     333363    256       81
+dentry                           416094    192       76
+xfs_inode                         65829   1024       64
+filp                             334572    192       61
+pid                              398394    128       49
+Acpi-State                       411060     80       31
+kmalloc-64                       414784     64       25
+kmalloc-1k                        25050   1024       24
+anon_vma_chain                   336128     64       21
+lsm_file_cache                   334764     40       13
+
+### sysctl
+fs.nr_open = 2000000
+fs.file-max = 3000000
+net.core.somaxconn = 65535
+net.ipv4.ip_local_port_range = 1024	65535
+net.ipv4.tcp_max_syn_backlog = 256
+
+### docker ps
+loadgen-4	millionws:loadgen	Up 6 minutes
+loadgen-3	millionws:loadgen	Up 6 minutes
+loadgen-2	millionws:loadgen	Up 6 minutes
+loadgen-1	millionws:loadgen	Up 6 minutes
+
+### docker stats
+loadgen-4	cpu=4.83%	mem=474.5MiB / 3.725GiB
+loadgen-3	cpu=5.57%	mem=474.5MiB / 3.725GiB
+loadgen-2	cpu=6.02%	mem=475.2MiB / 3.725GiB
+loadgen-1	cpu=5.55%	mem=476.5MiB / 3.725GiB
+
+### ENA
+iface=enp39s0
+     bw_in_allowance_exceeded: 0
+     bw_out_allowance_exceeded: 0
+     pps_allowance_exceeded: 37
+     conntrack_allowance_exceeded: 0
+     linklocal_allowance_exceeded: 0
+     conntrack_allowance_available: 76957
+
+### server container cgroup
+
+### server log, lines that are not INF
+Error response from daemon: No such container: aws-server-1
+
+### sampler csv (last 3 rows)
+2026-09-30T05:00:33Z,2026-09-30T10:30:33+0530,333336,0.79,16.2,2313,1634,352,474,0,76957,37,0,0
+2026-09-30T05:00:43Z,2026-09-30T10:30:43+0530,333336,0.74,18.8,2319,1633,352,474,0,76957,37,0,0
+2026-09-30T05:00:53Z,2026-09-30T10:30:53+0530,333336,0.94,17.5,2316,1633,0,474,0,76957,37,0,0
