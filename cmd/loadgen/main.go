@@ -17,7 +17,6 @@ import (
 	"os/signal"
 	"strconv"
 	"strings"
-	"sync"
 	"sync/atomic"
 	"syscall"
 	"time"
@@ -72,53 +71,6 @@ var (
 
 var loggedOther atomic.Int64
 
-// registry holds open connections so the sender can walk them in order.
-// Each connection stores its slot index in its session for O(1) removal.
-type registry struct {
-	mu    sync.Mutex
-	conns []*websocket.Conn
-}
-
-func (r *registry) add(c *websocket.Conn) {
-	r.mu.Lock()
-	c.SetSession(len(r.conns))
-	r.conns = append(r.conns, c)
-	r.mu.Unlock()
-}
-
-func (r *registry) remove(c *websocket.Conn) bool {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	i, ok := c.Session().(int)
-	if !ok || i >= len(r.conns) || r.conns[i] != c {
-		return false
-	}
-	last := len(r.conns) - 1
-	r.conns[i] = r.conns[last]
-	r.conns[i].SetSession(i)
-	r.conns[last] = nil
-	r.conns = r.conns[:last]
-	return true
-}
-
-// batch copies up to n connections starting at cursor into dst.
-func (r *registry) batch(dst []*websocket.Conn, cursor, n int) ([]*websocket.Conn, int) {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	total := len(r.conns)
-	if total == 0 {
-		return dst[:0], 0
-	}
-	if n > total {
-		n = total
-	}
-	dst = dst[:0]
-	for i := 0; i < n; i++ {
-		dst = append(dst, r.conns[(cursor+i)%total])
-	}
-	return dst, (cursor + n) % total
-}
-
 func main() {
 	target := flag.String("url", envOr("LOADGEN_URL", "ws://localhost:8080/ws"), "WebSocket URL; a comma-separated list is used round-robin")
 	conns := flag.Int("conns", envInt("LOADGEN_CONNS", 10000), "connections to open and hold")
@@ -136,7 +88,7 @@ func main() {
 	urls := strings.Split(*target, ",")
 	connsTarget.Set(float64(*conns))
 
-	reg := &registry{conns: make([]*websocket.Conn, 0, *conns)}
+	reg := newRegistry[*websocket.Conn](*conns)
 	var active atomic.Int64
 
 	upgrader := websocket.NewUpgrader()
@@ -191,7 +143,7 @@ func main() {
 
 // dialLoop keeps the number of open plus in-progress connections at the
 // target, starting at most rate dials per second.
-func dialLoop(ctx context.Context, engine *nbhttp.Engine, upgrader *websocket.Upgrader, urls []string, target, rate, inflight int, timeout time.Duration, reg *registry, active *atomic.Int64) {
+func dialLoop(ctx context.Context, engine *nbhttp.Engine, upgrader *websocket.Upgrader, urls []string, target, rate, inflight int, timeout time.Duration, reg *registry[*websocket.Conn], active *atomic.Int64) {
 	sem := make(chan struct{}, inflight)
 	tick := time.NewTicker(10 * time.Millisecond)
 	defer tick.Stop()
@@ -237,9 +189,12 @@ func dialLoop(ctx context.Context, engine *nbhttp.Engine, upgrader *websocket.Up
 					return
 				}
 				dialLatency.Observe(time.Since(start).Seconds())
-				reg.add(c)
-				active.Add(1)
-				connsActive.Inc()
+				// False when the server already closed the connection: OnClose found
+				// nothing to remove, so it must not be counted as open here either.
+				if reg.add(c) {
+					active.Add(1)
+					connsActive.Inc()
+				}
 			}()
 		}
 	}
@@ -247,7 +202,7 @@ func dialLoop(ctx context.Context, engine *nbhttp.Engine, upgrader *websocket.Up
 
 // sendLoop spreads messages evenly: every 100 ms it sends to the share of
 // connections that keeps each one on the configured interval.
-func sendLoop(ctx context.Context, reg *registry, interval time.Duration, size int) {
+func sendLoop(ctx context.Context, reg *registry[*websocket.Conn], interval time.Duration, size int) {
 	const step = 100 * time.Millisecond
 	tick := time.NewTicker(step)
 	defer tick.Stop()
@@ -262,9 +217,7 @@ func sendLoop(ctx context.Context, reg *registry, interval time.Duration, size i
 			return
 		case <-tick.C:
 		}
-		reg.mu.Lock()
-		total := len(reg.conns)
-		reg.mu.Unlock()
+		total := reg.len()
 		carry += float64(total) * float64(step) / float64(interval)
 		n := int(carry)
 		carry -= float64(n)

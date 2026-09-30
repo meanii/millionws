@@ -75,7 +75,7 @@ The listener uses `tcp4` when `-addr` is an IPv4 address. A dual-stack `[::]` li
 | `/health` | Returns `200 OK` |
 | `/metrics` | Prometheus metrics |
 
-The server listens on `0.0.0.0:8080` by default. Use `-addr` and `-port` to change it, and `-pprof` to serve `/debug/pprof/` on the same port.
+The server listens on `0.0.0.0:8080` by default. Use `-addr` and `-port` to change it, and `-pprof` to serve `/debug/pprof/` on the same port (a 30 second CPU profile at 1M connections stalls the server long enough to get it OOM-killed; see [docs/aws-runbook.md](docs/aws-runbook.md)). `-maxload` sets the maximum number of open connections (default 1,000,000): nbio refuses more, **including `/metrics` and `/health` requests**, which use the same ports, so keep it above the number of connections you plan to hold.
 
 ### Metrics
 

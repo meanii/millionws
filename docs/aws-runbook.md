@@ -144,5 +144,5 @@ Also worth doing in the console: a budget alert at $25 (a $100 monthly budget al
 - The watchdog terminating an instance, and the on-instance shutdown timer: the canary stack was destroyed before either fired. (Lambda, EventBridge and IAM creation on the free plan worked.)
 - The whole cloud-init path (compose plugin download, image builds, discovery).
 - The watchdog terminating a real instance (unit-tested against a stub only).
-- The stack above 1,000,000 connections or with a different `MaxLoad` (the server refuses beyond 1,000,000 in `main.go`), and holds longer than about 5 minutes at 1M.
-- A loadgen race: a connection that closes before it is registered stays counted as active.
+- The stack above 1,000,000 connections. The server's cap is now the `-maxload` flag (default 1,000,000), but no run has used a higher value.
+- (Fixed after the runs) A loadgen race: a connection that closed before it was registered was counted as active forever. The runs above used the old code; nothing in their data shows the race happened.

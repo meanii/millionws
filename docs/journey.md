@@ -164,3 +164,8 @@ Asked to redo the 1M run in Mumbai with timestamps in IST and as much evidence a
 - The sampler's CPU column ignored softirq and steal time and read 10 to 17% against CloudWatch's 47%. Fixed in the script; the published CSVs keep the wrong column, marked as such.
 - Cost: about $0.51 for the Mumbai fleet, about $1.0 for all runs of the day by list price.
 
+## September 2026, 30th, after the runs: cleanup
+
+- `-maxload` flag (default 1,000,000). The end-to-end check with a cap of 1,000 and a loadgen asking for 1,500 held exactly 1,000 and refused about 5,100 dials. It also showed that at the cap the server refuses `/metrics` requests too, because the cap counts every connection on those ports; that is what made the metrics endpoint go quiet near 1M in the runs. `-maxload=0` is rejected instead of silently becoming nbio's default.
+- Loadgen registry rewritten as a generic type in its own file, with tests. It tracks connection slots in a map rather than in the connection's session, and remembers connections that were reported closed before they were added, so they are no longer counted as open. The tests pass with `-race`; with the early-close memory disabled, three assertions fail (a mutation check), so they do detect the bug. I have no evidence that the race happened in the runs.
+

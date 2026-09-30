@@ -44,6 +44,20 @@ var (
 	})
 )
 
+// defaultMaxLoad is the connection cap when -maxload is not given. It is 1,000,000,
+// the target of the benchmark; the 1M runs stopped at 999,996 because of it.
+const defaultMaxLoad = 1000000
+
+// validateMaxLoad rejects values nbio would silently replace: a zero or negative
+// MaxLoad becomes nbio's own default, which would make -maxload=0 look like a cap
+// of zero when it is not.
+func validateMaxLoad(n int) error {
+	if n < 1 {
+		return fmt.Errorf("bad -maxload %d: must be at least 1", n)
+	}
+	return nil
+}
+
 func newUpgrader(keepalive time.Duration) *websocket.Upgrader {
 	u := websocket.NewUpgrader()
 	// Zero disables the per-connection read-deadline timers: nbio skips
@@ -185,7 +199,13 @@ func main() {
 	keepalive := flag.Duration("keepalive", 120*time.Second, "websocket read deadline, reset per message; 0 disables it")
 	// Number of nbio poller goroutines. Zero keeps nbio's default (NumCPU/4, min 1).
 	pollers := flag.Int("pollers", 0, "nbio event-loop goroutines; 0 uses the library default")
+	// nbio refuses connections beyond this many and answers them with a reset,
+	// so it is the number a benchmark reports when nothing else runs out first.
+	maxLoad := flag.Int("maxload", defaultMaxLoad, "maximum open connections; further ones are refused")
 	flag.Parse()
+	if err := validateMaxLoad(*maxLoad); err != nil {
+		log.Fatal(err)
+	}
 
 	go manageMemoryLimit()
 	go guardMemory()
@@ -209,7 +229,7 @@ func main() {
 	engine := nbhttp.NewEngine(nbhttp.Config{
 		Network:                 network,
 		Addrs:                   addrs,
-		MaxLoad:                 1000000,
+		MaxLoad:                 *maxLoad,
 		ReleaseWebsocketPayload: true,
 		NPoller:                 *pollers,
 		Handler:                 mux,

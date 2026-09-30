@@ -197,3 +197,60 @@ func TestServerEndToEnd(t *testing.T) {
 		t.Errorf("/ws while overloaded = %d, want 503", resp.StatusCode)
 	}
 }
+
+func TestValidateMaxLoad(t *testing.T) {
+	for _, n := range []int{1, 1000, defaultMaxLoad, 3000000} {
+		if err := validateMaxLoad(n); err != nil {
+			t.Errorf("validateMaxLoad(%d) = %v, want nil", n, err)
+		}
+	}
+	for _, n := range []int{0, -1, -1000000} {
+		if err := validateMaxLoad(n); err == nil {
+			t.Errorf("validateMaxLoad(%d) = nil, want an error", n)
+		}
+	}
+}
+
+// The cap must actually be enforced: with MaxLoad 2, a third connection is
+// refused while the first two stay open.
+func TestMaxLoadRefusesExtraConnections(t *testing.T) {
+	port := freePort(t)
+	addr := net.JoinHostPort("127.0.0.1", strconv.Itoa(port))
+	engine := nbhttp.NewEngine(nbhttp.Config{
+		Network: "tcp4",
+		Addrs:   []string{addr},
+		MaxLoad: 2,
+		Handler: newMux(newUpgrader(0), false),
+	})
+	if err := engine.Start(); err != nil {
+		t.Fatal(err)
+	}
+	defer engine.Stop()
+
+	clientEngine := nbhttp.NewEngine(nbhttp.Config{Name: "test-client-maxload"})
+	if err := clientEngine.Start(); err != nil {
+		t.Fatal(err)
+	}
+	defer clientEngine.Stop()
+
+	dial := func() (*websocket.Conn, error) {
+		d := &websocket.Dialer{Engine: clientEngine, Upgrader: websocket.NewUpgrader(), DialTimeout: 3 * time.Second}
+		c, _, err := d.Dial("ws://"+addr+"/ws", nil)
+		return c, err
+	}
+	var held []*websocket.Conn
+	for i := 0; i < 2; i++ {
+		c, err := dial()
+		if err != nil {
+			t.Fatalf("connection %d within the cap failed: %v", i+1, err)
+		}
+		held = append(held, c)
+	}
+	if c, err := dial(); err == nil {
+		c.Close()
+		t.Error("a third connection was accepted with MaxLoad 2")
+	}
+	for _, c := range held {
+		c.Close()
+	}
+}

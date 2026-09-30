@@ -146,7 +146,7 @@ Minor: `locustfile.py` defaults to `ws://localhost:4001`, while the server liste
 Server:
 
 - At 1M connections the 6 GiB container has room for a 7 to 12 second stall of the read path (see the Mumbai report); a larger limit or instance, or a way to bound socket-buffer memory per container, would remove that cliff. Untested.
-- `MaxLoad` is fixed at 1,000,000 in `main.go`, so the server cannot be used to find its own limit. Make it a flag before testing above 1M.
+- Done: `MaxLoad` is now the `-maxload` flag (default 1,000,000). Not yet used: a run above 1M to find where this server really stops. Note that at the cap the server refuses `/metrics` requests too, so a run should set it above its target.
 - Near the memory limit the GC uses a full core and echo p99 rises to about 100 ms. Each connection has its own read-deadline timer and stores its local and remote address; in the heap profile at 120,000 connections these were about 20 MB and 22.5 MB. A shared idle sweep instead of per-connection timers could save part of the 1.08 KiB of Go memory per connection. Not measured yet.
 - `deploy/millionws/deployment.yaml` limits each pod to 512 MiB and scales on CPU, which does not track idle connections.
 
