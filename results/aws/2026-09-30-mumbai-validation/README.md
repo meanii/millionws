@@ -53,7 +53,9 @@ The freeze is `scripts/evidence/stall.sh`: `SIGSTOP` on the server process for N
 | 6,144 MiB | 9 s | 5,115 MiB | 1,029 MiB | 130 MiB/s | **killed** |
 | 6,500 MiB | 9 s | 5,088 MiB | 1,412 MiB | 132 MiB/s | survived (peak 6,241) |
 | 6,500 MiB | 14 s | 5,165 MiB | 1,335 MiB | 131 MiB/s | **killed** |
-| 7,168 MiB | 14 s | 5,439 MiB | 1,729 MiB | 130 MiB/s | **killed**, one second before the freeze would have ended |
+| 7,168 MiB | 14 s | 5,439 MiB | 1,729 MiB | 130 MiB/s | **killed** (when the process resumed; see the note below) |
+
+A later test ([tcp buffer test](../2026-09-30-tcp-buffer-test/README.md)) showed two refinements: the kernel keeps charging socket memory past the container's limit while the process is frozen, and the OOM kill comes when the process resumes; and the growth stops by itself at one 4 KiB page per socket (connections x 4 KiB, 3.9 GiB at 1M) after one message interval. The rule below still predicts which freezes are fatal.
 
 The growth rate is the same in all five (33,333 messages per second times about 4 KiB), and headroom divided by 130 predicts every outcome to within about a second (7.9 s, 10.8 s, 10.3 s, 13.3 s). Two consequences:
 

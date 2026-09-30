@@ -1,0 +1,6 @@
+test,setting,freeze_s,min_conns_after,result
+baseline,defaults,9,50114,killed
+rmem,tcp_rmem=4096 4096 4096,9,21534,killed
+rmem,tcp_rmem=4096 4096 4096,20,42206,killed
+rmem,tcp_rmem=4096 4096 4096,30,32130,killed
+tcpmem,tcp_mem=16384 24576 32768,9,39171,killed
