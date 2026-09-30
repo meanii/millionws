@@ -1,0 +1,8 @@
+Transcribed by hand from the terminal output of a command run over SSH on the server; the command output was not saved to a file.
+Command (per sample): read the server container's cgroup memory.current and memory.stat (anon, sock, slab) and the process RSS from /metrics.
+
+time_utc   cgroup_current_MiB  rss_MB  anon_MiB  sock_MiB  slab_MiB
+03:56:22   5162                1488    1411      0         3739
+03:57:11   5165                1490    1413      1         3739
+03:58:12   5165                1490    1413      1         3739
+The 04:01 sample is in server_last_sample_04-01Z.txt (cgroup_current_MiB=5168 rss_MB=1494).

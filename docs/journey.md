@@ -140,5 +140,16 @@ Decision: fix the connection-tracking limit by opening the security group both w
 - The 999,999 is the server's own `MaxLoad` of 1,000,000, which I had set long before. nbio refuses connections beyond it (`len(engine.conns) >= engine.MaxLoad`). The clients asked for 1,002,000, so about 2,000 dials were refused for the whole run (1.29 million reset errors), which costs the server CPU and affects the latency figures. I had not planned this: I first read 999,999 as the machine's limit, until the reset counter kept rising and I read the nbio code.
 - My first "settled" sample was 20 seconds after the ramp because I used `date -d` in the wrong timezone; the timestamp in the output gave it away, and the results use a later sample.
 
-Total AWS spend for the day, all runs and probes, is under $0.30 by list price, against a target of $30. Every stack was destroyed and each destroy was checked with `describe-instances`, `describe-vpcs` and friends.
+Total AWS spend for the day, all runs and probes, is under $0.30 by list price, against a target of $30. (Updated below: a repeat run added about $0.15.) Every stack was destroyed and each destroy was checked with `describe-instances`, `describe-vpcs` and friends.
+
+## September 2026, 30th, evening: a repeat 1M run for the evidence
+
+I had no raw data or screenshots from the first 1M run: Prometheus and Grafana lived on the server that was destroyed. The user asked for evidence to attach to the repository, so I ran the 1M configuration again (target 1,000,000 so nothing was left dialing against `MaxLoad`) and captured Grafana screenshots, a Prometheus range export, and system snapshots of all four hosts, plus CloudTrail and CloudWatch records for every run. Report: [results/aws/2026-09-30-1m-repeat](../results/aws/2026-09-30-1m-repeat/README.md); index of files and their limits: [results/aws/evidence](../results/aws/evidence/README.md). Cost about $0.15; total for the day about $0.4.
+
+What the instrumented run added:
+
+- 999,996 held for 18 minutes, 0 rejections, no connection-tracking drops. The first run's result repeated.
+- `pps_allowance_exceeded` kept rising on the server through the hold (10,966 to 16,534): the m7i-flex.large is at its packet-rate allowance under about 33,000 messages per second each way. The first 1M report had said the packet-rate allowance was 0 because I had read it once, mid-ramp; I corrected that.
+- Process RSS rose about 27% in the first 8 minutes of the hold and then flattened; the kernel slab was constant at 3.83 KiB per connection. 18 minutes is too short to rule out a slow leak.
+- Getting screenshots took three attempts: a headless Chromium `--screenshot` hung on Grafana's live page, and Playwright first captured Grafana's "failed to load its application files" page because the container had no browser locale (`Intl.NumberFormat` threw); setting `en-US` fixed it.
 

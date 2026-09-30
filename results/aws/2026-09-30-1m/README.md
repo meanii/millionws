@@ -1,5 +1,7 @@
 # AWS run, 2026-09-30: 999,999 concurrent connections on one m7i-flex.large
 
+A repeat of this run with Prometheus history, Grafana screenshots and host snapshots is in [../2026-09-30-1m-repeat](../2026-09-30-1m-repeat/README.md); the evidence index is in [../evidence](../evidence/README.md).
+
 The 1,000,000-connection run. One server and three clients on EC2. The server held 999,999 connections for the five minutes it was observed after the ramp, with no rejections, no failed upgrades and no connection-tracking drops.
 
 This is the server's own configured limit, not the machine's: `MaxLoad` in `main.go` is 1,000,000 and nbio refuses connections beyond it (`len(engine.conns) >= engine.MaxLoad`). The clients were asked for 1,002,000 (3 x 334,000), so about 2,000 dials were refused for the whole run. See [what the number means](#what-the-number-means).
@@ -28,7 +30,8 @@ Settled sample at 03:27:00, about 5 minutes after the ramp finished:
 | 503 rejections (memory guard), failed upgrades | 0, 0 |
 | Disconnects after being established | 46 in about 5 minutes (out of about 1,000,000) |
 | ENA `conntrack_allowance_exceeded` | 0 throughout; `conntrack_allowance_available` unchanged at 76,957 |
-| bandwidth and packet-rate allowances exceeded | 0 |
+| bandwidth allowances exceeded | 0 |
+| ENA packet-rate allowance (`pps_allowance_exceeded`) | 0 when read at 03:22:43 (mid-ramp); not read again before destroy. The [repeat run](../2026-09-30-1m-repeat/README.md) read 10,966 and 16,534 on the same server type later in its hold, so a later reading here would probably have been above 0. |
 | Server container memory (cgroup, all-in) | 5.028 GiB of 6 GiB (83.8%): **5.27 KiB per connection** |
 | Server process RSS | 1.47 GB (1.436 KiB per connection); the rest, about 3.84 KiB per connection, is not in the process (kernel memory for sockets and epoll, and cache) |
 | Go memory limit the server set | 1.63 GiB |
@@ -59,4 +62,5 @@ At the memory guard's 90% threshold (5.4 GiB) this server would hold about 1,074
 - Client memory at 83,500 connections per replica (only at 25,000 and 150,000: 6.4 and 5.6 KiB per connection).
 - Latency at the server side; the figures are round trips measured at the loadgen on 2 vCPU clients running four processes each, so client queueing is included.
 - Behaviour above 1,000,000, or with a different `MaxLoad`.
+- The packet-rate allowance after the ramp (see the ENA row above).
 - The watchdog Lambda terminating an instance and the on-instance shutdown timer (the stacks were destroyed before either fired).

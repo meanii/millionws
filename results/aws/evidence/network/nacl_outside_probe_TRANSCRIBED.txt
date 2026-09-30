@@ -1,0 +1,24 @@
+Transcribed by hand from the terminal session, not a raw file: the probe function and its output file were deleted right after use.
+
+Probe: a throwaway AWS Lambda function (python3.12, outside the VPC, so not the operator's IP)
+tried a TCP connect with a 4 s timeout to each port of the 250k-run server, about 2 minutes after apply,
+before the server container was listening. Timeout = dropped by the network ACL; refused = reached the host.
+
+From AWS Lambda (not the operator IP):
+  22    timeout(blocked)
+  3000  timeout(blocked)
+  9090  timeout(blocked)
+  8080  timeout(blocked)
+  8095  timeout(blocked)
+  9101  timeout(blocked)
+  443   timeout(blocked)
+  5555  refused(reached host)      <- undenied port in 1024-65535, nothing listening: the known cost of the design
+
+From the operator's IP, after cloud-init finished (same run):
+  22    open
+  3000  open   (HTTP 200 on /api/health)
+  9090  open   (HTTP 200 on /-/ready)
+  8080  blocked or closed
+  8095  blocked or closed
+  5555  not open (refused)
+  9105  not reachable (the hand-started loadgen container was rebound to 127.0.0.1)

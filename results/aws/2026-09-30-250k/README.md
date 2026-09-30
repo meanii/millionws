@@ -23,7 +23,7 @@ Second run on real EC2 instances, after the security group was opened and filter
 | Upgrade errors, 503 rejections | 0, 0 | 0, 0 |
 | ENA `conntrack_allowance_exceeded` | 0 | 0 |
 | ENA `conntrack_allowance_available` | 76,957 (unchanged) | 76,957 (unchanged) |
-| bandwidth and packet-rate allowances exceeded | 0 | 0 |
+| bandwidth and packet-rate allowances exceeded | 0 | 0 (read at 03:16, right after the ramp) |
 | Server container memory (cgroup, all-in) | 676 MiB at 129,058 connections: 5.4 KiB per connection with the process baseline | 1.193 GiB: 5.0 KiB per connection |
 | Server process RSS | 200 MB at 129,058 | 308 MB |
 | Server CPU (`docker stats`, percent of one core; 2 vCPU host) | 13% at 129,058 | 10 to 12% |

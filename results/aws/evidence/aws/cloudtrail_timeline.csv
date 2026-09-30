@@ -1,0 +1,71 @@
+time_utc,event,service,detail,instance_ids,error
+2026-09-30T00:28:08Z,RunInstances,ec2,m6a.large spot,,Client.InvalidParameterCombination
+2026-09-30T00:28:08Z,RunInstances,ec2,m6a.large spot,,Client.InvalidParameterCombination
+2026-09-30T00:28:09Z,RunInstances,ec2,m6a.large spot,,Client.InvalidParameterCombination
+2026-09-30T00:28:09Z,RunInstances,ec2,m6a.large spot,,Client.InvalidParameterCombination
+2026-09-30T01:54:03Z,RunInstances,ec2,m6a.large spot,,Client.DryRunOperation
+2026-09-30T01:58:46Z,RunInstances,ec2,m6a.large spot,,Client.InvalidParameterCombination
+2026-09-30T01:58:46Z,RunInstances,ec2,r6a.large spot,,Client.InvalidParameterCombination
+2026-09-30T02:15:00Z,RunInstances,ec2,m6a.large on-demand,,Client.InvalidParameterCombination
+2026-09-30T02:16:09Z,RunInstances,ec2,m7i-flex.large on-demand,i-0a7709983ddbf7307,
+2026-09-30T02:16:11Z,TerminateInstances,ec2,,i-0a7709983ddbf7307,
+2026-09-30T02:16:14Z,RunInstances,ec2,c7i-flex.large on-demand,i-02aa17595c3b6af79,
+2026-09-30T02:16:16Z,TerminateInstances,ec2,,i-02aa17595c3b6af79,
+2026-09-30T02:16:19Z,RunInstances,ec2,m7i-flex.large spot,i-0a9ccee8a4c7473cc,
+2026-09-30T02:16:21Z,TerminateInstances,ec2,,i-0a9ccee8a4c7473cc,
+2026-09-30T02:19:44Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T02:19:45Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T02:19:46Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T02:19:49Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T02:19:54Z,CreateFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T02:20:11Z,RunInstances,ec2,c7i-flex.large on-demand,i-0f1c2343e5b0a3e85,
+2026-09-30T02:20:11Z,RunInstances,ec2,m7i-flex.large on-demand,i-00b917483b70bcacd,
+2026-09-30T02:55:15Z,DeleteFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T02:55:16Z,TerminateInstances,ec2,,i-00b917483b70bcacd,
+2026-09-30T02:55:16Z,TerminateInstances,ec2,,i-0f1c2343e5b0a3e85,
+2026-09-30T03:11:17Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:11:18Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:11:20Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:11:22Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:11:27Z,CreateFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T03:11:42Z,CreateNetworkAcl,ec2,,,
+2026-09-30T03:11:44Z,RunInstances,ec2,c7i-flex.large on-demand,i-0997840b970a3a480,
+2026-09-30T03:11:44Z,RunInstances,ec2,m7i-flex.large on-demand,i-0006a6ba05675a359,
+2026-09-30T03:12:18Z,CreateFunction20150331,lambda,millionws-probe,,
+2026-09-30T03:13:16Z,DeleteFunction20150331,lambda,millionws-probe,,
+2026-09-30T03:17:26Z,DeleteFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T03:17:27Z,DeleteNetworkAcl,ec2,,,
+2026-09-30T03:17:27Z,TerminateInstances,ec2,,i-0997840b970a3a480,
+2026-09-30T03:17:28Z,TerminateInstances,ec2,,i-0006a6ba05675a359,
+2026-09-30T03:18:17Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:18:18Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:18:19Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:18:22Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:18:26Z,CreateFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T03:18:43Z,CreateNetworkAcl,ec2,,,
+2026-09-30T03:18:44Z,RunInstances,ec2,c7i-flex.large on-demand,i-079933496aaef87ed,
+2026-09-30T03:18:44Z,RunInstances,ec2,c7i-flex.large on-demand,i-08176c48b4116ec55,
+2026-09-30T03:18:44Z,RunInstances,ec2,c7i-flex.large on-demand,i-0daf29280af341994,
+2026-09-30T03:18:44Z,RunInstances,ec2,m7i-flex.large on-demand,i-00fafdc9f9c9c131d,
+2026-09-30T03:27:54Z,DeleteFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T03:27:54Z,TerminateInstances,ec2,,i-00fafdc9f9c9c131d,
+2026-09-30T03:27:54Z,TerminateInstances,ec2,,i-079933496aaef87ed,
+2026-09-30T03:27:54Z,TerminateInstances,ec2,,i-08176c48b4116ec55,
+2026-09-30T03:27:54Z,TerminateInstances,ec2,,i-0daf29280af341994,
+2026-09-30T03:27:55Z,DeleteNetworkAcl,ec2,,,
+2026-09-30T03:38:48Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:38:49Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:38:51Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:38:53Z,CreateFunction20150331,lambda,millionws-bench-guard,,InvalidParameterValueException
+2026-09-30T03:38:58Z,CreateFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T03:39:15Z,CreateNetworkAcl,ec2,,,
+2026-09-30T03:39:16Z,RunInstances,ec2,c7i-flex.large on-demand,i-08bf37fa73171c7c5,
+2026-09-30T03:39:16Z,RunInstances,ec2,c7i-flex.large on-demand,i-0ab2133f756fb7965,
+2026-09-30T03:39:16Z,RunInstances,ec2,c7i-flex.large on-demand,i-0c5b3b598ea3c3057,
+2026-09-30T03:39:16Z,RunInstances,ec2,m7i-flex.large on-demand,i-00b9b1ecbc7b1cd57,
+2026-09-30T04:01:44Z,DeleteFunction20150331,lambda,millionws-bench-guard,,
+2026-09-30T04:01:44Z,TerminateInstances,ec2,,i-00b9b1ecbc7b1cd57,
+2026-09-30T04:01:44Z,TerminateInstances,ec2,,i-08bf37fa73171c7c5,
+2026-09-30T04:01:44Z,TerminateInstances,ec2,,i-0ab2133f756fb7965,
+2026-09-30T04:01:45Z,DeleteNetworkAcl,ec2,,,
+2026-09-30T04:01:45Z,TerminateInstances,ec2,,i-0c5b3b598ea3c3057,

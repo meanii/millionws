@@ -1,0 +1,57 @@
+(attempt 1)
+### date
+2026-09-30T03:54:13Z
+### uname
+Linux ip-10-0-1-155.ec2.internal 6.12.110-135.201.amzn2023.x86_64 #1 SMP PREEMPT_DYNAMIC Wed Sep 23 18:51:07 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+### GIT_SHA
+cecfc2487c9c0a23e612aff90301dbd91ca33c40
+### instance type
+c7i-flex.large
+### free -m
+               total        used        free      shared  buff/cache   available
+Mem:            3814        2053         127           0        1633        1478
+Swap:              0           0           0
+### ss -s
+Total: 333501
+TCP:   333344 (estab 333337, closed 0, orphaned 0, timewait 0)
+
+Transport Total     IP        IPv6
+RAW	  1         0         1        
+UDP	  4         2         2        
+TCP	  333344    333335    9        
+INET	  333349    333337    12       
+FRAG	  0         0         0        
+
+### sysctl
+fs.nr_open = 2000000
+fs.file-max = 3000000
+net.core.somaxconn = 65535
+net.ipv4.ip_local_port_range = 1024	65535
+### docker ps
+loadgen-4	millionws:loadgen	Up 13 minutes
+loadgen-3	millionws:loadgen	Up 13 minutes
+loadgen-2	millionws:loadgen	Up 13 minutes
+loadgen-1	millionws:loadgen	Up 13 minutes
+### docker stats
+loadgen-4	cpu=6.14%	mem=474.5MiB / 3.725GiB
+loadgen-3	cpu=6.09%	mem=475MiB / 3.725GiB
+loadgen-2	cpu=5.10%	mem=475MiB / 3.725GiB
+loadgen-1	cpu=5.88%	mem=475.6MiB / 3.725GiB
+### ENA (conntrack + allowances)
+iface=enp39s0
+     bw_in_allowance_exceeded: 0
+     bw_out_allowance_exceeded: 0
+     pps_allowance_exceeded: 0
+     conntrack_allowance_exceeded: 0
+     linklocal_allowance_exceeded: 0
+     conntrack_allowance_available: 76957
+### cgroup memory of server container
+### server log (non-INF lines)
+Error response from daemon: No such container: aws-server-1
+### cloud-init log tail
+[cloud-init] starting 4 loadgen replicas, 83333 conns each
+f2d3afeadf8cda595bfa9ef0acb7f3835ec7ad97aaad0817eff65d400b623009
+765003d8a4b957ee5ee01445e1994ef989d5963ad1979d86c0c699f8d229b9a0
+bafdf3db26362d0cbb49279a91d69e682d538d720227f5c977161b4a744c6344
+de8fe2ac469def0d8f360b8705690eb8b0a51ea177053e79167a6bb2cb74aee4
+[cloud-init] done

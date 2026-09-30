@@ -1,0 +1,15 @@
+03:27:00
+loadgen active: [('', 999999.0)]
+server active: [('host.docker.internal:8080', 999999.0)]
+rejected: [('host.docker.internal:8080', 0.0)]
+upgrade errors: [('host.docker.internal:8080', 0.0)]
+disconnects: [('', 46.0)]
+dial errors: [('refused', 281580.0), ('reset', 1288081.0), ('timeout', 2195.0)]
+echo p50 2m: [('', 0.0057)]
+echo p99 2m: [('', 0.4056)]
+msgs/s: [('', 33341.0106)]
+sent msgs/s: [('', 33333.8276)]
+server RSS: [('host.docker.internal:8080', 1470136320.0)]
+go limit: [('host.docker.internal:8080', 1752977494.0)]
+
+[exited with code 0]

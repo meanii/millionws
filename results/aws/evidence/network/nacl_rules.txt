@@ -1,0 +1,17 @@
+Network ACL as planned (tofu plan -json, aws_network_acl.bench), the operator IP shown as <operator>/32.
+The same rules are in infra/opentofu/aws-ec2/main.tf.
+
+INGRESS (evaluated in rule-number order)
+  100 allow tcp  <operator>/32  3000
+  101 allow tcp  <operator>/32  9090
+  102 allow tcp  <operator>/32  22
+  200 deny  tcp  0.0.0.0/0      3000
+  201 deny  tcp  0.0.0.0/0      9101-9104
+  202 deny  tcp  0.0.0.0/0      9090
+  203 deny  tcp  0.0.0.0/0      8080-8095
+  300 allow tcp  0.0.0.0/0      1024-65535
+  310 allow icmp 0.0.0.0/0      type 3 code 4
+EGRESS
+  100 allow all  0.0.0.0/0
+SECURITY GROUP
+  ingress: all protocols from 0.0.0.0/0     egress: all protocols to 0.0.0.0/0

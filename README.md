@@ -41,7 +41,7 @@ EC2, 2026-09-30, one `m7i-flex.large` server (8 GiB, 2 vCPU, container limited t
 | 1 client | 250,000 | 5.0 KiB | connection tracking removed (open security group, filtering in a network ACL) |
 | 3 clients | 999,999 | 5.27 KiB | the server's `MaxLoad` of 1,000,000; 5.03 of 6 GiB; echo p50 5.7 ms, p99 406 ms; no rejections |
 
-The 1M run was one five-minute hold at about 84% of the container's memory limit, and the number is the server's configured cap, not the machine's. Details, caveats and cost (about $0.07 for the 1M fleet): [results/aws](results/aws).
+The 1M run was one five-minute hold at about 84% of the container's memory limit, and the number is the server's configured cap, not the machine's. Details, caveats and cost (about $0.07 for the 1M fleet): [results/aws](results/aws). A repeat of the 1M run (999,996 held for 18 minutes) has the evidence: Grafana screenshots, exported Prometheus history and host snapshots in [results/aws/evidence](results/aws/evidence/README.md).
 
 Every step between these rows, the method, and its limits: [docs/local-benchmark.md](docs/local-benchmark.md), [docs/journey.md](docs/journey.md), and the raw data in [results/local](results/local).
 
