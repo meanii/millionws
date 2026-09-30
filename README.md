@@ -43,6 +43,8 @@ EC2, 2026-09-30, one `m7i-flex.large` server (8 GiB, 2 vCPU, container limited t
 
 The 1M run was one five-minute hold at about 84% of the container's memory limit, and the number is the server's configured cap, not the machine's. Details, caveats and cost (about $0.07 for the 1M fleet): [results/aws](results/aws). A repeat of the 1M run (999,996 held for 18 minutes) has the evidence: Grafana screenshots, exported Prometheus history and host snapshots in [results/aws/evidence](results/aws/evidence/README.md).
 
+Mumbai (ap-south-1), same server type, all times IST, 999,996 connections: held 34 minutes at a stretch, 5.3 KiB per connection all-in (5,155 to 5,224 of 6,144 MiB), echo p50 3.5 ms and p99 399 ms. The server was OOM-killed three times, each within 14 seconds of a 30-second CPU profile I ran on it (the third on purpose): a stalled read path fills socket buffers at about 120 MiB per second and a 6 GiB container has room for about 7 to 12 seconds. Video, terminal recording, Grafana screenshots, raw Prometheus data and kernel logs: [results/aws/2026-09-30-mumbai-1m](results/aws/2026-09-30-mumbai-1m/README.md).
+
 Every step between these rows, the method, and its limits: [docs/local-benchmark.md](docs/local-benchmark.md), [docs/journey.md](docs/journey.md), and the raw data in [results/local](results/local).
 
 ## How it works

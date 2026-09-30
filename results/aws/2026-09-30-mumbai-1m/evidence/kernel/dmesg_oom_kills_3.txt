@@ -1,0 +1,21 @@
+[Wed Sep 30 10:31:18 2026] millionws invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+[Wed Sep 30 10:31:18 2026] memory: usage 6296956kB, limit 6291456kB, failcnt 2807
+[Wed Sep 30 10:31:18 2026] anon 912863232
+[Wed Sep 30 10:31:18 2026] kernel 3932790784
+[Wed Sep 30 10:31:18 2026] sock 1603567616
+[Wed Sep 30 10:31:18 2026] slab 3921072136
+[Wed Sep 30 10:31:18 2026] Memory cgroup out of memory: Killed process 17000 (millionws) total-vm:2610860kB, anon-rss:891420kB, file-rss:8240kB, shmem-rss:0kB, UID:65532 pgtables:2804kB oom_score_adj:
+[Wed Sep 30 11:07:51 2026] millionws invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+[Wed Sep 30 11:07:51 2026] memory: usage 6307692kB, limit 6291456kB, failcnt 8251
+[Wed Sep 30 11:07:51 2026] anon 920768512
+[Wed Sep 30 11:07:51 2026] kernel 3932893184
+[Wed Sep 30 11:07:51 2026] sock 1605414912
+[Wed Sep 30 11:07:51 2026] slab 3921045200
+[Wed Sep 30 11:07:51 2026] Memory cgroup out of memory: Killed process 23056 (millionws) total-vm:2624172kB, anon-rss:899156kB, file-rss:8236kB, shmem-rss:0kB, UID:65532 pgtables:2964kB oom_score_adj:
+[Wed Sep 30 11:33:53 2026] millionws invoked oom-killer: gfp_mask=0xdc0(GFP_KERNEL|__GFP_ZERO), order=0, oom_score_adj=0
+[Wed Sep 30 11:33:53 2026] memory: usage 6311528kB, limit 6291456kB, failcnt 10409
+[Wed Sep 30 11:33:53 2026] anon 934834176
+[Wed Sep 30 11:33:53 2026] kernel 3933106176
+[Wed Sep 30 11:33:53 2026] sock 1601814528
+[Wed Sep 30 11:33:53 2026] slab 3921041536
+[Wed Sep 30 11:33:53 2026] Memory cgroup out of memory: Killed process 32643 (millionws) total-vm:2756540kB, anon-rss:912916kB, file-rss:8240kB, shmem-rss:0kB, UID:65532 pgtables:3176kB oom_score_adj:

@@ -10,16 +10,17 @@ CONTAINER=${3:-aws-server-1}
 mkdir -p "$(dirname "$OUT")"
 IF=$(ip -o -4 route show to default | awk '{print $5}')
 echo "utc,local,estab,load1,cpu_pct,mem_used_mib,slab_mib,tcp_mem_pages,container_mem_mib,ena_conntrack_exceeded,ena_conntrack_available,ena_pps_exceeded,ena_bw_in_exceeded,ena_bw_out_exceeded" >"$OUT"
-read -r _ u n s idle rest </proc/stat
-prev_total=$((u + n + s + idle)); prev_idle=$idle
+# cpu: all fields except guest, so softirq (network packet processing) and steal count
+read -r _ u n s idle iow irq sirq steal rest </proc/stat
+prev_total=$((u + n + s + idle + iow + irq + sirq + steal)); prev_idle=$((idle + iow))
 while true; do
   utc=$(date -u +%FT%TZ); local_=$(date +%FT%T%z)
   estab=$(ss -s | awk '/^TCP:/ {for (i = 1; i <= NF; i++) if ($i == "(estab") {gsub(",", "", $(i + 1)); print $(i + 1)}}')
   load1=$(cut -d' ' -f1 /proc/loadavg)
-  read -r _ u n s idle rest </proc/stat
-  total=$((u + n + s + idle)); dt=$((total - prev_total)); di=$((idle - prev_idle))
+  read -r _ u n s idle iow irq sirq steal rest </proc/stat
+  total=$((u + n + s + idle + iow + irq + sirq + steal)); idle_all=$((idle + iow)); dt=$((total - prev_total)); di=$((idle_all - prev_idle))
   cpu=$(awk -v dt="$dt" -v di="$di" 'BEGIN { if (dt > 0) printf "%.1f", 100 * (dt - di) / dt }')
-  prev_total=$total; prev_idle=$idle
+  prev_total=$total; prev_idle=$idle_all
   mem=$(awk '/^MemTotal/ {t=$2} /^MemAvailable/ {a=$2} END {printf "%d", (t - a) / 1024}' /proc/meminfo)
   slab=$(awk '/^Slab:/ {printf "%d", $2 / 1024}' /proc/meminfo)
   tcpmem=$(awk '/^TCP:/ {for (i = 1; i <= NF; i++) if ($i == "mem") print $(i + 1)}' /proc/net/sockstat)

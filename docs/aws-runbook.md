@@ -53,6 +53,23 @@ Consequences to keep in mind:
 - The open security group leaves the network ACL as the only filter. Read the plan output for `aws_network_acl.bench` before applying a change to it.
 - Watch it on any instance: `sudo ethtool -S $(ip -o -4 route show to default | awk '{print $5}') | grep conntrack` (cloud-init installs `ethtool`).
 
+## Another region and timezone (Mumbai, IST)
+
+Everything is per region, so before `-var region=ap-south-1` (or any region other than us-east-1):
+
+1. **Key pair.** Import the same public key: `aws ec2 import-key-pair --region <r> --key-name millionws-bench --public-key-material fileb://<(ssh-keygen -y -f ~/.ssh/millionws-bench.pem)`.
+2. **vCPU quota.** Mumbai started with 5 on-demand standard vCPUs, so it could hold only two of the 2 vCPU instances. Request 8 (`aws service-quotas request-service-quota-increase --region <r> --service-code ec2 --quota-code L-1216C47A --desired-value 8`); it was approved in about three minutes.
+3. **Instance types.** `m7i-flex.large` and `c7i-flex.large` were offered in all three Mumbai zones. Check with `describe-instance-type-offerings`.
+4. **Timezone.** The `timezone` variable (default `Asia/Kolkata`) is set on every instance and passed to the containers, so logs, `date` and Grafana use it. Prometheus data itself is in UTC.
+
+The Mumbai 1M run, with video, terminal recording, screenshots and raw data: [results/aws/2026-09-30-mumbai-1m](../results/aws/2026-09-30-mumbai-1m/README.md). Tooling for capturing that kind of evidence is in [scripts/evidence](../scripts/evidence): a per-host sampler that starts from boot, host snapshots, a Prometheus exporter, a Grafana video recorder (Playwright), a live terminal view for `asciinema`, and the plot script.
+
+## Headroom at 1M: do not stall the server, and do not profile it
+
+At 1M connections the server's container was at 5.2 of 6 GiB (84%). If the server stops reading its sockets for a few seconds, the kernel keeps accepting the clients' 33,000 messages per second into socket buffers, charged to the container at about 3.7 KiB each, so memory grows by about 120 MiB per second. The 920 MiB of headroom lasts about 7 seconds (about 12 with the Go heap shrinking). Past the limit the kernel OOM-kills the server, all 1M connections drop, and they take about 2 min 20 s to come back. The memory guard cannot prevent this: it only refuses new connections.
+
+In the Mumbai run a **30 second CPU profile** (`/debug/pprof/profile?seconds=30`) killed the server three times; a 10 second one stalled it for about 10 seconds without a kill; heap and goroutine profiles were harmless. So `deploy/aws/compose.yml` no longer passes `-pprof`, and profiles at this scale should be heap only. If you need more margin: a container limit above 6 GiB (the host has 8 GiB, shared with Prometheus and Grafana) or a larger instance; I did not test either.
+
 ## What the stack builds
 
 - One VPC, one public subnet, one availability zone. Traffic between instances uses private IPs, so there is no NAT gateway, no load balancer and no data transfer charge.

@@ -10,7 +10,6 @@ sec "free -m"; free -m
 sec "meminfo (selected)"; grep -E 'MemTotal|MemAvailable|^Slab|SReclaimable|SUnreclaim|Cached|AnonPages' /proc/meminfo
 sec "sockstat"; cat /proc/net/sockstat
 sec "ss -s"; ss -s
-sec "ss -tin sample (first 12 established, with TCP internals)"; ss -tin state established 2>/dev/null | head -25
 sec "sysctl"; sysctl fs.nr_open fs.file-max net.core.somaxconn net.ipv4.ip_local_port_range net.ipv4.tcp_max_syn_backlog 2>/dev/null
 sec "docker ps"; sudo docker ps --format '{{.Names}}\t{{.Image}}\t{{.Status}}'
 sec "docker stats"; sudo docker stats --no-stream --format '{{.Name}}\tcpu={{.CPUPerc}}\tmem={{.MemUsage}}'

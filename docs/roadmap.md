@@ -102,6 +102,10 @@ The 100k canary held 76,952 connections and was stopped by the security group's 
 
 The first canary stopped at 76,952 because the security group tracks each connection and an instance tracks only about 77,000. The stack now opens the security group both ways (untracked flows) and filters with a subnet network ACL, verified from a non-operator address. Then 250,000 connections on one client ([results](../results/aws/2026-09-30-250k/README.md)) and 999,999 on three ([results](../results/aws/2026-09-30-1m/README.md)) on one `m7i-flex.large` server: 5.27 KiB per connection all-in (3.84 KiB of that outside the process), 5.03 of 6 GiB, 62 to 73% of one core, p50 5.7 ms and p99 406 ms echo, no rejections, no failed upgrades, no connection-tracking drops. The 999,999 is the server's own `MaxLoad` (1,000,000), not a machine limit; memory was at 84% of the container limit and the memory guard would trip at about 1,074,000. Cost of all runs: under $0.30 on-demand.
 
+### 4d. Mumbai, IST, with video and raw data, 2026-09-30
+
+999,996 connections on the same server type in ap-south-1: 34 minutes 35 seconds at a stretch, 5.3 KiB per connection, no rejections. The server was OOM-killed three times, each within 14 seconds of a 30 second CPU profile started by my evidence collection (the third on purpose). The 1 s memory trace shows socket buffers growing by about 120 MiB per second while the read path is stalled; a 6 GiB container has about 920 MiB of headroom at 1M, so it survives about 7 to 12 seconds. Recovery took about 2 min 20 s each time. Report: [results/aws/2026-09-30-mumbai-1m](../results/aws/2026-09-30-mumbai-1m/README.md).
+
 ### 5. Write-up
 
 A results table in the README comparing gorilla/websocket, nbio locally, and nbio on EC2, with the measured cost of each run.
@@ -141,6 +145,7 @@ Minor: `locustfile.py` defaults to `ws://localhost:4001`, while the server liste
 
 Server:
 
+- At 1M connections the 6 GiB container has room for a 7 to 12 second stall of the read path (see the Mumbai report); a larger limit or instance, or a way to bound socket-buffer memory per container, would remove that cliff. Untested.
 - `MaxLoad` is fixed at 1,000,000 in `main.go`, so the server cannot be used to find its own limit. Make it a flag before testing above 1M.
 - Near the memory limit the GC uses a full core and echo p99 rises to about 100 ms. Each connection has its own read-deadline timer and stores its local and remote address; in the heap profile at 120,000 connections these were about 20 MB and 22.5 MB. A shared idle sweep instead of per-connection timers could save part of the 1.08 KiB of Go memory per connection. Not measured yet.
 - `deploy/millionws/deployment.yaml` limits each pod to 512 MiB and scales on CPU, which does not track idle connections.
