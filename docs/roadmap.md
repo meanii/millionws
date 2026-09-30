@@ -98,6 +98,10 @@ Every run records instance types, region, kernel version, Go version, commit SHA
 
 The 100k canary held 76,952 connections and was stopped by the security group's connection tracking, not by memory or CPU (417 MiB of the 6 GiB limit, 3 to 5% CPU). Memory per connection was about 5.3 to 5.5 KiB all-in on EC2 against 4.91 KiB locally. Details, the bugs the run found and what worked: [results/aws/2026-09-30-canary](../results/aws/2026-09-30-canary/README.md).
 
+### 4c. Result: 999,999 connections, 2026-09-30
+
+The first canary stopped at 76,952 because the security group tracks each connection and an instance tracks only about 77,000. The stack now opens the security group both ways (untracked flows) and filters with a subnet network ACL, verified from a non-operator address. Then 250,000 connections on one client ([results](../results/aws/2026-09-30-250k/README.md)) and 999,999 on three ([results](../results/aws/2026-09-30-1m/README.md)) on one `m7i-flex.large` server: 5.27 KiB per connection all-in (3.84 KiB of that outside the process), 5.03 of 6 GiB, 62 to 73% of one core, p50 5.7 ms and p99 406 ms echo, no rejections, no failed upgrades, no connection-tracking drops. The 999,999 is the server's own `MaxLoad` (1,000,000), not a machine limit; memory was at 84% of the container limit and the memory guard would trip at about 1,074,000. Cost of all runs: under $0.30 on-demand.
+
 ### 5. Write-up
 
 A results table in the README comparing gorilla/websocket, nbio locally, and nbio on EC2, with the measured cost of each run.
@@ -127,7 +131,7 @@ Still to check on the first real run: the ENA `conntrack_allowance_exceeded` cou
 
 Blocking the 1M run:
 
-- The security group tracks every connection and an instance can track only about 77,000 of them (`m7i-flex.large`): the 100k canary on 2026-09-30 stopped at 76,952 ([results](../results/aws/2026-09-30-canary/README.md)). Untracked flows need `0.0.0.0/0` rules in both directions, so the network filtering has to move somewhere else (a subnet network ACL is AWS's own recommendation) before any larger stage can run. Undecided.
+- The 1M run is done (999,999 connections, 2026-09-30, [results](../results/aws/2026-09-30-1m/README.md)). What remains open is in the list under Server below and in the results' "not measured" sections.
 - The Hetzner stack has no load generator. `cmd/loadgen` can fill that role now.
 - The Hetzner OpenTofu uses `cx23` (2 vCPU, 4 GB); a 1M run needs about 5.2 GiB for the server alone (estimate above). The AWS stack uses a 16 GiB server instead.
 
@@ -137,6 +141,7 @@ Minor: `locustfile.py` defaults to `ws://localhost:4001`, while the server liste
 
 Server:
 
+- `MaxLoad` is fixed at 1,000,000 in `main.go`, so the server cannot be used to find its own limit. Make it a flag before testing above 1M.
 - Near the memory limit the GC uses a full core and echo p99 rises to about 100 ms. Each connection has its own read-deadline timer and stores its local and remote address; in the heap profile at 120,000 connections these were about 20 MB and 22.5 MB. A shared idle sweep instead of per-connection timers could save part of the 1.08 KiB of Go memory per connection. Not measured yet.
 - `deploy/millionws/deployment.yaml` limits each pod to 512 MiB and scales on CPU, which does not track idle connections.
 

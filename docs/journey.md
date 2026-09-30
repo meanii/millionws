@@ -130,3 +130,15 @@ First run on real instances ([results/aws/2026-09-30-canary](../results/aws/2026
 
 Memory per connection on EC2 was about 5.3 to 5.5 KiB all-in, close to the local 4.91 KiB. Stack destroyed afterwards, cost about $0.15.
 
+## September 2026, 30th, later: untracked flows, 250,000 and 999,999 connections
+
+Decision: fix the connection-tracking limit by opening the security group both ways (which makes flows untracked) and moving the filtering to a subnet network ACL, AWS's own recommendation. I chose this over stopping at about 77,000 per instance or buying bigger instances.
+
+- The ACL allows SSH, Grafana and Prometheus from the operator only, denies the service ports, allows TCP 1024-65535 back in for the instances' own outbound connections, and allows the ICMP needed for path MTU discovery. Read as rules it is easy to get wrong, so I verified it from outside: a throwaway Lambda function (a non-operator AWS address) got timeouts on 22, 3000, 9090, the server ports and the loadgen metrics port, and "connection refused" on an unlisted high port, which is the known cost of the design. Any new listener of 1024 or above needs its own deny rule. I made this mistake within minutes: a loadgen container I started by hand bound its metrics to all interfaces on an undenied port. It was exposed for about a minute before I rebound it to loopback.
+- 250,000 connections on one client: `conntrack_allowance_available` stayed at its full 76,957, so the fix works ([results](../results/aws/2026-09-30-250k/README.md)).
+- Then 1,000,000 with three clients, skipping the planned 500k stage: 999,999 held on the server, 5.27 KiB per connection all-in, 5.03 of 6 GiB, no rejections, no failed upgrades ([results](../results/aws/2026-09-30-1m/README.md)).
+- The 999,999 is the server's own `MaxLoad` of 1,000,000, which I had set long before. nbio refuses connections beyond it (`len(engine.conns) >= engine.MaxLoad`). The clients asked for 1,002,000, so about 2,000 dials were refused for the whole run (1.29 million reset errors), which costs the server CPU and affects the latency figures. I had not planned this: I first read 999,999 as the machine's limit, until the reset counter kept rising and I read the nbio code.
+- My first "settled" sample was 20 seconds after the ramp because I used `date -d` in the wrong timezone; the timestamp in the output gave it away, and the results use a later sample.
+
+Total AWS spend for the day, all runs and probes, is under $0.30 by list price, against a target of $30. Every stack was destroyed and each destroy was checked with `describe-instances`, `describe-vpcs` and friends.
+

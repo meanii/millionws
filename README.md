@@ -17,7 +17,7 @@ Work in progress. The target of 1,000,000 connections has not been reached yet.
 | Go load generator (`cmd/loadgen`) | Done |
 | Local benchmark with the server capped at 1 CPU and 1 GiB | Done |
 | EC2 stack (OpenTofu), cost guards, tests | Done; first canary ran on 2026-09-30 ([runbook](docs/aws-runbook.md)) |
-| AWS EC2 runs from 100k up to 1M connections | Canary stopped at 76,952 by security-group connection tracking; see [results](results/aws/2026-09-30-canary/README.md) |
+| AWS EC2 runs | Done for 1M: 999,999 connections on one `m7i-flex.large` ([results](results/aws/2026-09-30-1m/README.md)); the 500k stage was skipped |
 
 The plan, the open items, and the cost estimates are in [docs/roadmap.md](docs/roadmap.md). How to run and pay for the AWS test, and how it is kept from overspending: [docs/aws-runbook.md](docs/aws-runbook.md). A dated log of decisions and mistakes is in [docs/journey.md](docs/journey.md).
 
@@ -32,6 +32,16 @@ Local benchmark on 2026-09-28: the server in a Docker container limited to 1 CPU
 | nbio, current | 190,894 | 4.91 KiB | 3.83 KiB | 1.08 KiB | still running, new clients get 503 |
 
 The current version holds slightly fewer connections than the first nbio version but does not crash at its limit. Most of each connection's cost is now kernel memory for the TCP socket, which the Go code cannot reduce. Near the memory limit the GC uses the whole CPU core and echo p99 is about 93 ms.
+
+EC2, 2026-09-30, one `m7i-flex.large` server (8 GiB, 2 vCPU, container limited to 6 GiB), on-demand, connections idle with one 32-byte message every 30 s:
+
+| Run | Connections held | Memory per connection (all-in) | Notes |
+| --- | --- | --- | --- |
+| Canary, 1 client | 76,952 | about 5.4 KiB | stopped by security-group connection tracking, not by the server |
+| 1 client | 250,000 | 5.0 KiB | connection tracking removed (open security group, filtering in a network ACL) |
+| 3 clients | 999,999 | 5.27 KiB | the server's `MaxLoad` of 1,000,000; 5.03 of 6 GiB; echo p50 5.7 ms, p99 406 ms; no rejections |
+
+The 1M run was one five-minute hold at about 84% of the container's memory limit, and the number is the server's configured cap, not the machine's. Details, caveats and cost (about $0.07 for the 1M fleet): [results/aws](results/aws).
 
 Every step between these rows, the method, and its limits: [docs/local-benchmark.md](docs/local-benchmark.md), [docs/journey.md](docs/journey.md), and the raw data in [results/local](results/local).
 

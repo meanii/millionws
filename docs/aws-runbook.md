@@ -2,7 +2,7 @@
 
 How to run the EC2 load test, what it costs, and how it is kept from running up a bill. The stack is `infra/opentofu/aws-ec2`. The plan and the reasoning behind it are in [roadmap.md](roadmap.md).
 
-Status on 2026-09-30 (later: the 100k canary ran and hit the connection-tracking limit below, see the results directory): the first two apply attempts were refused by `RunInstances` because they asked for instance types the free plan does not allow (see [Troubleshooting](#troubleshooting)). The defaults were then changed to free-plan types, and single-instance launch probes of `m7i-flex.large` (on-demand and Spot) and `c7i-flex.large` succeeded. The stack itself is validated (`tofu validate`, `tofu plan`, unit and end-to-end tests, local Docker runs).
+Status on 2026-09-30 (three runs later the same day, the last holding 999,999 connections; see [results/aws](../results/aws)): the first two apply attempts were refused by `RunInstances` because they asked for instance types the free plan does not allow (see [Troubleshooting](#troubleshooting)). The defaults were then changed to free-plan types, and single-instance launch probes of `m7i-flex.large` (on-demand and Spot) and `c7i-flex.large` succeeded. The stack itself is validated (`tofu validate`, `tofu plan`, unit and end-to-end tests, local Docker runs).
 
 ## Before the first apply
 
@@ -13,6 +13,8 @@ Status on 2026-09-30 (later: the 100k canary ran and hit the connection-tracking
 5. **Your public IP** for `my_ip`: `curl -s https://checkip.amazonaws.com`.
 
 ## Stages
+
+Measured so far (2026-09-30, on-demand): 76,952 (first canary, stopped by connection tracking), 250,000 (one client) and 999,999 (three clients, the server's `MaxLoad`). The 500k stage was skipped. To repeat 1M, ask for 1,000,000 connections (`conns_per_client=333332` is 83,333 per replica, 999,996 in total), not 1,002,000, so the clients are not left dialing against the server's cap.
 
 Run them in order and run `tofu destroy` after each. Every stage after the canary is only worth running if the previous one was clean.
 
@@ -35,11 +37,21 @@ tofu destroy -var my_ip=... -var key_name=millionws-bench -var git_ref=<sha>
 
 `conns_per_client` is split across `client_replicas` (default 4) loadgen containers and rounded down, so pick a multiple of 4. Each replica dials 1,000 connections per second by default, so 1M is reached in a few minutes; the local benchmark showed 5,000 dials per second is safe.
 
-## Known limit: security-group connection tracking
+## Security-group connection tracking, and the network design that follows from it
 
-The canary of 2026-09-30 ([results/aws/2026-09-30-canary](../results/aws/2026-09-30-canary/README.md)) stopped at 76,952 connections on `m7i-flex.large` because the security group tracks every connection and an instance can track only so many (`conntrack_allowance_available` reached 0, packets dropped). The current security group, with its self-referencing rule and single-IP rules, tracks everything, so **the stack as written cannot go beyond about 77,000 connections per instance on these types**. Connections are untracked only when the group has `0.0.0.0/0` rules in both directions ([AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-connection-tracking.html#untracked-connections)). Do not run the 500k or 1M stages until that is resolved.
+A security group tracks every flow it permits, and an instance can track only a limited number: about 76,957 on `m7i-flex.large` (the ENA counter `conntrack_allowance_available` starts at that value). The first canary ([results/aws/2026-09-30-canary](../results/aws/2026-09-30-canary/README.md)) hit it at 76,952 connections and dropped packets. A flow is untracked only when the group has `0.0.0.0/0` rules in both directions ([AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-connection-tracking.html#untracked-connections)).
 
-Check it on any instance: `sudo ethtool -S $(ip -o -4 route show to default | awk '{print $5}') | grep conntrack` (install `ethtool` with `dnf` if it is missing).
+So the stack does this (`main.tf`):
+
+- The **security group allows everything** in and out. That is what makes flows untracked.
+- A **subnet network ACL does the filtering**: SSH (22), Grafana (3000) and Prometheus (9090) only from `my_ip`; the service ports (server 8080-8095, Grafana, Prometheus, loadgen metrics 9101 to 9100+`client_replicas`) denied to everyone else; inbound TCP 1024-65535 allowed so replies to the instances' own outbound connections (package repositories, git, the EC2 API) get in; ICMP "fragmentation needed" for path MTU discovery. Traffic between the two instances is inside the subnet, which a network ACL does not filter.
+- The allowance stayed at its full 76,957 through the 250,000 and 1,000,000 runs, and the ACL was checked from a non-operator address (see [the 250k results](../results/aws/2026-09-30-250k/README.md#verifying-the-network-rules-from-outside)).
+
+Consequences to keep in mind:
+
+- **Any new listening port of 1024 or above is reachable from the internet** unless it has a deny rule (`local.denied_ports` in `main.tf`). Bind ad hoc processes to `127.0.0.1`. During the 250k run a loadgen metrics port outside the denied range was exposed for about a minute before I noticed.
+- The open security group leaves the network ACL as the only filter. Read the plan output for `aws_network_acl.bench` before applying a change to it.
+- Watch it on any instance: `sudo ethtool -S $(ip -o -4 route show to default | awk '{print $5}') | grep conntrack` (cloud-init installs `ethtool`).
 
 ## What the stack builds
 
@@ -47,7 +59,7 @@ Check it on any instance: `sudo ethtool -S $(ip -o -4 route show to default | aw
 - One server (`m7i-flex.large`, 2 vCPU, 8 GiB) listening on 16 ports (8080-8095), and N clients (`c7i-flex.large`, 2 vCPU, 4 GiB) each running 4 loadgen containers that spread over all 16 ports. One client IP holds about 64,000 connections per server port, so 3 clients allow about 3,000,000.
 - The server container is limited to `server_mem_limit` (default `6g` of the 8 GiB, leaving room for the OS, Prometheus and Grafana on the same machine). The server sizes its Go memory limit and the 90% admission guard from that cgroup limit. 1M connections need about 4.7 GiB at the measured 4.91 KiB each, so 1M fits with about 1.3 GiB to spare, the tightest case in the plan; if it does not fit, the 503 guard turns clients away instead of the process being killed, and that count is the result. A 4 GiB client holds about 334,000 connections (about 2.2 GiB at 6.6 KiB each).
 - Server and loadgens use Docker host networking, so connections do not each take a Docker NAT conntrack entry (1M would hit `nf_conntrack_max` of 1,048,576).
-- Prometheus and Grafana run on the server. Grafana is on port 3000 and Prometheus on 9090, reachable only from `my_ip`. Grafana has anonymous admin access enabled, so the security group is the only protection: keep `my_ip` at a /32.
+- Prometheus and Grafana run on the server. Grafana is on port 3000 and Prometheus on 9090, reachable only from `my_ip`. Grafana has anonymous admin access enabled, so the network ACL is the only protection (the security group is open on purpose, see above): keep `my_ip` at a /32.
 - Server and clients find each other through the EC2 API (instances tagged `Name=millionws-server` and `millionws-client-N`), so there are no Terraform cross-references. Each waits up to 20 minutes for the other.
 - Cloud-init writes the commit it built to `/home/ec2-user/GIT_SHA` and logs to `/tmp/cloud-init.log`.
 
@@ -59,7 +71,7 @@ The roadmap requires each run to record instance types, region, kernel version, 
 - Kernel: `uname -r`. Go version: from the Dockerfile's `golang:1.25-alpine` image.
 - Server progress: Grafana `http://<server_public_ip>:3000`, or `curl localhost:8080/metrics | grep millionws_` on the server. Loadgen progress: `docker logs loadgen-1` on a client (a line every 10 seconds).
 - Memory per connection: (server RSS at N connections minus RSS with none) divided by N, with kernel socket memory reported separately, as in the local benchmark.
-- Watch `conntrack_allowance_exceeded` and `conntrack_allowance_available` on each instance (see the known limit above; the interface is not called `ens5`, so use the command above).
+- Watch `conntrack_allowance_exceeded` and `conntrack_allowance_available` on each instance (see the connection-tracking section above; the interface is not called `ens5`, so use the command given there).
 
 ## Cost
 
@@ -106,7 +118,7 @@ Also worth doing in the console: a budget alert at $25 (a $100 monthly budget al
 | Server waits 20 minutes and Prometheus has no client targets | Instances were not found by tag. Spot instances launched through `aws_spot_instance_request` do not get the request's tags; the stack uses `aws_instance` with `instance_market_options` for that reason. |
 | Cloud-init fails at `cd .../deploy/aws` | `git_ref` points at a commit without the AWS stack, or was not pushed. |
 | Server container missing, cloud-init log ends with `error setting rlimit type 7: operation not permitted` | The container `nofile` limit is above the host `fs.nr_open` (2000000 in cloud-init). Fixed: both compose files use 2000000. |
-| New SSH, Prometheus or Grafana connections time out while existing traffic continues; dials `timeout` | Connection-tracking exhaustion, see the known limit. |
+| New SSH, Prometheus or Grafana connections time out while existing traffic continues; dials `timeout` | Connection-tracking exhaustion: `conntrack_allowance_available` is 0. The security group must be open both ways with the filtering in the network ACL (see above). |
 | `docker compose` not found | Amazon Linux 2023 does not package the compose plugin; cloud-init installs v2.29.7. |
 | `tofu apply` says `No valid credential sources found` | Credentials are not in the shell. With `aws login`, run `eval "$(aws configure export-credentials --format env)"` in the same shell. |
 
@@ -115,5 +127,5 @@ Also worth doing in the console: a budget alert at $25 (a $100 monthly budget al
 - The watchdog terminating an instance, and the on-instance shutdown timer: the canary stack was destroyed before either fired. (Lambda, EventBridge and IAM creation on the free plan worked.)
 - The whole cloud-init path (compose plugin download, image builds, discovery).
 - The watchdog terminating a real instance (unit-tested against a stub only).
-- Anything beyond about 77,000 connections per instance (see the known limit).
+- The stack above 1,000,000 connections or with a different `MaxLoad` (the server refuses beyond 1,000,000 in `main.go`), and holds longer than about 5 minutes at 1M.
 - A loadgen race: a connection that closes before it is registered stays counted as active.
