@@ -1,0 +1,322 @@
+## initial at 16:44:10
+net.ipv4.tcp_rmem = 4096	131072	6291456
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 14 alloc 1000050 mem 176
+TcpRetransSegs                  108368             0.0
+TcpExtPruneCalled               1                  0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               9097               0.0
+TcpExtTCPLossProbes             99080              0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        0                  0.0
+TcpExtTCPMemoryPressuresChrono  0                  0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         0                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## before baseline 9s at 16:44:13
+net.ipv4.tcp_rmem = 4096	131072	6291456
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 14 alloc 1000050 mem 176
+TcpRetransSegs                  110387             0.0
+TcpExtPruneCalled               1                  0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               9337               0.0
+TcpExtTCPLossProbes             100862             0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        0                  0.0
+TcpExtTCPMemoryPressuresChrono  0                  0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         0                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## after baseline 9s at 16:46:09
+net.ipv4.tcp_rmem = 4096	131072	6291456
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 997274 orphan 0 tw 0 alloc 997294 mem 687
+TcpRetransSegs                  385010             0.0
+TcpExtPruneCalled               263284             0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               65895              0.0
+TcpExtTCPLossProbes             318787             0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        1                  0.0
+TcpExtTCPMemoryPressuresChrono  8240               0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         1                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## after rmem restart at 16:52:00
+net.ipv4.tcp_rmem = 4096	4096	4096
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 16 alloc 1000051 mem 162
+TcpRetransSegs                  646869             0.0
+TcpExtPruneCalled               263284             0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               96504              0.0
+TcpExtTCPLossProbes             549810             0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        1                  0.0
+TcpExtTCPMemoryPressuresChrono  8240               0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         1                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## before rmem 9s at 16:52:01
+net.ipv4.tcp_rmem = 4096	4096	4096
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 16 alloc 1000051 mem 0
+TcpRetransSegs                  647385             0.0
+TcpExtPruneCalled               263284             0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               96552              0.0
+TcpExtTCPLossProbes             550278             0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        1                  0.0
+TcpExtTCPMemoryPressuresChrono  8240               0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         1                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## after rmem 9s at 16:53:56
+net.ipv4.tcp_rmem = 4096	4096	4096
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 999020 orphan 0 tw 0 alloc 999040 mem 919
+TcpRetransSegs                  953593             0.0
+TcpExtPruneCalled               490425             0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               172384             0.0
+TcpExtTCPLossProbes             780399             0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        2                  0.0
+TcpExtTCPMemoryPressuresChrono  16030              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         2                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## before rmem 20s at 16:56:03
+net.ipv4.tcp_rmem = 4096	4096	4096
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 19 alloc 1000050 mem 115
+TcpRetransSegs                  1036081            0.0
+TcpExtPruneCalled               490425             0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               178532             0.0
+TcpExtTCPLossProbes             856736             0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        2                  0.0
+TcpExtTCPMemoryPressuresChrono  16030              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         2                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## after rmem 20s at 16:58:12
+net.ipv4.tcp_rmem = 4096	4096	4096
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 0 alloc 1000050 mem 111
+TcpRetransSegs                  1184954            0.0
+TcpExtPruneCalled               1255059            0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               210711             0.0
+TcpExtTCPLossProbes             973260             0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        3                  0.0
+TcpExtTCPMemoryPressuresChrono  38190              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         3                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## before rmem 30s at 17:00:19
+net.ipv4.tcp_rmem = 4096	4096	4096
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 9 alloc 1000050 mem 153
+TcpRetransSegs                  1264846            0.0
+TcpExtPruneCalled               1255059            0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               217078             0.0
+TcpExtTCPLossProbes             1046785            0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        3                  0.0
+TcpExtTCPMemoryPressuresChrono  38190              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         3                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## after rmem 30s at 17:02:38
+net.ipv4.tcp_rmem = 4096	4096	4096
+net.ipv4.tcp_mem = 91830	122441	183660
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 0 alloc 1000050 mem 0
+TcpRetransSegs                  1306013            0.0
+TcpExtPruneCalled               2073767            0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               220818             0.0
+TcpExtTCPLossProbes             1083991            0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        4                  0.0
+TcpExtTCPMemoryPressuresChrono  69780              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         3                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## after tcp_mem set at 17:08:43
+net.ipv4.tcp_rmem = 4096	131072	6291456
+net.ipv4.tcp_mem = 16384	24576	32768
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 10 alloc 1000050 mem 379
+TcpRetransSegs                  1582142            0.0
+TcpExtPruneCalled               2073767            0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               250390             0.0
+TcpExtTCPLossProbes             1330418            0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        4                  0.0
+TcpExtTCPMemoryPressuresChrono  69780              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         3                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## before tcpmem 9s at 17:08:44
+net.ipv4.tcp_rmem = 4096	131072	6291456
+net.ipv4.tcp_mem = 16384	24576	32768
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 1000030 orphan 0 tw 10 alloc 1000050 mem 123
+TcpRetransSegs                  1583771            0.0
+TcpExtPruneCalled               2073767            0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               250529             0.0
+TcpExtTCPLossProbes             1331908            0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          0                  0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        4                  0.0
+TcpExtTCPMemoryPressuresChrono  69780              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         3                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## after tcpmem 9s at 17:10:41
+net.ipv4.tcp_rmem = 4096	131072	6291456
+net.ipv4.tcp_mem = 16384	24576	32768
+net.core.rmem_default = 212992
+net.core.rmem_max = 212992
+TCP: inuse 999962 orphan 0 tw 0 alloc 999982 mem 131
+TcpRetransSegs                  1981323            0.0
+TcpExtPruneCalled               2790281            0.0
+TcpExtRcvPruned                 0                  0.0
+TcpExtOfoPruned                 0                  0.0
+TcpExtListenDrops               0                  0.0
+TcpExtTCPTimeouts               391206             0.0
+TcpExtTCPLossProbes             1597997            0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPAbortOnMemory          20975              0.0
+TcpExtTCPAbortOnTimeout         0                  0.0
+TcpExtTCPMemoryPressures        5                  0.0
+TcpExtTCPMemoryPressuresChrono  85150              0.0
+TcpExtTCPBacklogDrop            0                  0.0
+TcpExtTCPToZeroWindowAdv        4                  0.0
+TcpExtTCPWantZeroWindowAdv      18                 0.0
+TcpExtTCPZeroWindowDrop         4                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+MPTcpExtRcvPruned               0                  0.0
+## before bound 60s at 17:14:05
+TCP: inuse 250024 orphan 0 tw 0 alloc 250036 mem 113
+TcpExtPruneCalled               2827267            0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPRcvQDrop               0                  0.0
+## after bound 60s at 17:15:52
+TCP: inuse 250024 orphan 0 tw 0 alloc 250035 mem 111
+TcpExtPruneCalled               2900147            0.0
+TcpExtTCPRcvCollapsed           0                  0.0
+TcpExtTCPRcvQDrop               0                  0.0

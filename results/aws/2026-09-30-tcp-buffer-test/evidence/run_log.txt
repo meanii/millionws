@@ -1,0 +1,55 @@
+16:39:17 tcp buffer test start, server 13.232.12.14
+16:42:09 at 1M: active=1000006
+16:44:11 defaults: tcp_rmem='4096 131072 6291456' tcp_mem='91830 122441 183660'
+16:44:11 == TEST 1: baseline (defaults), 6 GiB container
+16:44:28 FREEZE 9s (baseline: defaults)
+16:44:29.580 STOP pid 16927 for 9s
+16:44:38.719 CONT
+16:46:09 RESULT baseline 9s: min connections 50114 -> killed
+16:46:09 waiting for recovery
+16:46:15 at 1M: active=1000008
+16:48:15 == TEST 2: per-socket cap tcp_rmem='4096 4096 4096', server restarted so new sockets get it
+net.ipv4.tcp_rmem = 4096 4096 4096
+restarted
+16:49:59 at 1M: active=1000008
+16:52:16 FREEZE 9s (rmem: tcp_rmem=4096 4096 4096)
+16:52:17.106 STOP pid 19077 for 9s
+16:52:26.181 CONT
+16:53:56 RESULT rmem 9s: min connections 21534 -> killed
+16:53:56 waiting for recovery
+16:54:02 at 1M: active=1000008
+16:56:18 FREEZE 20s (rmem: tcp_rmem=4096 4096 4096)
+16:56:19.661 STOP pid 20158 for 20s
+16:56:39.770 CONT
+16:58:12 RESULT rmem 20s: min connections 42206 -> killed
+16:58:12 waiting for recovery
+16:58:18 at 1M: active=1000008
+17:00:34 FREEZE 30s (rmem: tcp_rmem=4096 4096 4096)
+17:00:36.066 STOP pid 22948 for 30s
+17:01:06.197 CONT
+17:02:38 RESULT rmem 30s: min connections 32130 -> killed
+17:02:38 waiting for recovery
+17:02:43 at 1M: active=1000008
+17:04:43 == TEST 3: global cap tcp_mem='16384 24576 32768' pages (64/96/128 MiB), tcp_rmem back to default, server restarted
+net.ipv4.tcp_rmem = 4096 131072 6291456
+restarted
+17:06:21 at 1M: active=999970
+net.ipv4.tcp_mem = 16384 24576 32768
+17:08:59 FREEZE 9s (tcpmem: tcp_mem=16384 24576 32768)
+17:09:00.062 STOP pid 26498 for 9s
+17:09:09.131 CONT
+17:10:41 RESULT tcpmem 9s: min connections 39171 -> killed
+17:10:41 waiting for recovery
+17:10:46 at 1M: active=1000008
+17:10:54 test 3 stopped after its first kill (20 s and 30 s would repeat it); tcp_mem restored to defaults
+17:10:54 tcp buffer test done
+17:11:00 == TEST 4: bound check at ~250k connections, 60 s freeze, defaults restored
+loadgen-1 
+loadgen-1 
+loadgen-1 
+17:12:34 connections now: 250355; settling 90 s
+17:14:21 FREEZE 60s at 250002 connections (bound check)
+17:14:21.836 STOP pid 27650 for 60s
+17:15:21.875 CONT
+17:15:52 RESULT bound check: connections after = 250002 (before 250002)
+17:15:52 test 4 done
