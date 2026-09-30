@@ -42,7 +42,7 @@ The AWS documentation says the limit varies by instance type but gives no number
 ## Bugs found by the run
 
 - The server container did not start: compose asked for `nofile` 2,097,152 while cloud-init set `fs.nr_open` to 2,000,000, so runc refused (`error setting rlimit type 7: operation not permitted`). The clients dialed a closed port until the server was restarted by hand after raising `nr_open`. Fixed: compose now asks for 2,000,000 (both the AWS and Hetzner files had the mismatch).
-- `ethtool` is not installed on Amazon Linux 2023, and the interface is not `ens5`; use `ethtool -S $(ip -o -4 route show to default | awk '{print $5}')` after `dnf install -y ethtool`.
+- The ENA counters are easy to miss: `ethtool -S ens5` failed with `No such device`, so the interface is not called `ens5`. Look it up with `ip -o -4 route show to default | awk '{print $5}'`. (My first `ethtool` calls printed nothing; I did not establish whether the binary was missing or the name was wrong, because my ssh helper hid stderr.)
 
 ## Checked and working
 

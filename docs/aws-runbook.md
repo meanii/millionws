@@ -39,7 +39,7 @@ tofu destroy -var my_ip=... -var key_name=millionws-bench -var git_ref=<sha>
 
 The canary of 2026-09-30 ([results/aws/2026-09-30-canary](../results/aws/2026-09-30-canary/README.md)) stopped at 76,952 connections on `m7i-flex.large` because the security group tracks every connection and an instance can track only so many (`conntrack_allowance_available` reached 0, packets dropped). The current security group, with its self-referencing rule and single-IP rules, tracks everything, so **the stack as written cannot go beyond about 77,000 connections per instance on these types**. Connections are untracked only when the group has `0.0.0.0/0` rules in both directions ([AWS docs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-connection-tracking.html#untracked-connections)). Do not run the 500k or 1M stages until that is resolved.
 
-Check it on any instance: `sudo dnf install -y ethtool; sudo ethtool -S $(ip -o -4 route show to default | awk '{print $5}') | grep conntrack`.
+Check it on any instance: `sudo ethtool -S $(ip -o -4 route show to default | awk '{print $5}') | grep conntrack` (install `ethtool` with `dnf` if it is missing).
 
 ## What the stack builds
 
@@ -59,7 +59,7 @@ The roadmap requires each run to record instance types, region, kernel version, 
 - Kernel: `uname -r`. Go version: from the Dockerfile's `golang:1.25-alpine` image.
 - Server progress: Grafana `http://<server_public_ip>:3000`, or `curl localhost:8080/metrics | grep millionws_` on the server. Loadgen progress: `docker logs loadgen-1` on a client (a line every 10 seconds).
 - Memory per connection: (server RSS at N connections minus RSS with none) divided by N, with kernel socket memory reported separately, as in the local benchmark.
-- Watch `conntrack_allowance_exceeded` and `conntrack_allowance_available` on each instance (see the known limit above; `ethtool` is not installed by default and the interface is not `eth0` or `ens5` by name, use the command above).
+- Watch `conntrack_allowance_exceeded` and `conntrack_allowance_available` on each instance (see the known limit above; the interface is not called `ens5`, so use the command above).
 
 ## Cost
 
