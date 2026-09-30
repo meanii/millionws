@@ -13,6 +13,10 @@ services:
     # is the measured best (see results/local/2026-09-29-optimization.md).
     # SERVER_PORTS is substituted by cloud-init from Terraform vars.
     command: ["-ports=${SERVER_PORTS:-8080-8095}", "-keepalive=0s"]
+    # Host networking: with bridge + published ports every connection would
+    # also take a Docker NAT conntrack entry, and 1M of them run into
+    # nf_conntrack_max. The host's sysctls (cloud-init) apply directly.
+    network_mode: host
     cpus: 2
     mem_limit: 8g
     memswap_limit: 8g
@@ -20,11 +24,6 @@ services:
       nofile:
         soft: 2097152
         hard: 2097152
-    sysctls:
-      net.core.somaxconn: 65535
-      net.ipv4.tcp_max_syn_backlog: 65535
-    ports:
-      - "8080-8095:8080-8095"
     restart: unless-stopped
 
   prometheus:
@@ -36,6 +35,9 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
+    # The server is on the host network; reach it through the host gateway.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "9090:9090"
     restart: unless-stopped

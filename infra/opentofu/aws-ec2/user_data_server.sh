@@ -2,12 +2,21 @@
 # Server cloud-init (Amazon Linux 2023): Docker, kernel/file tuning for 1M+
 # connections, repo clone, Prometheus targets for every client (discovered
 # through the EC2 API, so no Terraform cross-references), compose up.
-# Template vars: server_ports ("8080-8095"), expect_clients, replicas, repo_url, git_ref.
+# Template vars: server_ports ("8080-8095"), expect_clients, replicas, repo_url, git_ref, max_runtime_minutes.
 LOG=/tmp/cloud-init.log
+# Cost guard: the instance shuts itself down (and, with terminate-on-shutdown,
+# disappears) after this many minutes even if nobody runs tofu destroy.
+shutdown -h +${max_runtime_minutes}
 exec > >(tee -a $LOG) 2>&1
 
 dnf install -y docker git awscli
 systemctl enable --now docker
+# Amazon Linux 2023 ships docker but not the compose plugin.
+mkdir -p /usr/local/lib/docker/cli-plugins
+curl -fsSL https://github.com/docker/compose/releases/download/v2.29.7/docker-compose-linux-x86_64 \
+  -o /usr/local/lib/docker/cli-plugins/docker-compose
+chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+docker compose version
 usermod -aG docker ec2-user || true
 
 echo "[cloud-init] tuning kernel and file limits"
@@ -21,6 +30,7 @@ fs.file-max = 3000000
 fs.nr_open = 2000000
 net.core.somaxconn = 65535
 net.core.netdev_max_backlog = 16384
+net.ipv4.tcp_max_syn_backlog = 65535
 net.ipv4.ip_local_port_range = 1024 65535
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 15
@@ -62,7 +72,7 @@ echo "[cloud-init] writing Prometheus targets"
   echo "scrape_configs:"
   echo "  - job_name: server"
   echo "    static_configs:"
-  echo "      - targets: [\"server:8080\"]"
+  echo "      - targets: [\"host.docker.internal:8080\"]"
   echo "        labels:"
   echo "          namespace: millionws"
   echo "  - job_name: loadgen"

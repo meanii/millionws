@@ -23,13 +23,13 @@ variable "use_spot" {
 variable "server_type" {
   description = "Server instance type. Measured need: ~5 GiB RAM for 1M conns, 2 vCPU for margin."
   type        = string
-  default     = "m6a.xlarge" # 4 vCPU, 16 GiB; headroom above the measured ~5 GiB
+  default     = "r6a.large" # 2 vCPU, 16 GiB: memory-heavy, and 2 vCPU keeps the fleet inside an 8-vCPU quota
 }
 
 variable "client_count" {
-  description = "Load generator machines. 4 clients x 16 ports x 64k = ~4M capacity for the 1M target."
+  description = "Load generator machines. 3 clients x 16 ports x 64k = ~3M capacity for the 1M target."
   type        = number
-  default     = 4
+  default     = 3
 }
 
 variable "client_type" {
@@ -41,7 +41,7 @@ variable "client_type" {
 variable "conns_per_client" {
   description = "Connections each client holds. Total target = client_count x conns_per_client."
   type        = number
-  default     = 250000
+  default     = 334000
 }
 
 variable "client_replicas" {
@@ -71,4 +71,10 @@ variable "repo_url" {
 variable "git_ref" {
   description = "Branch, tag or commit SHA to build. Required so every run records exactly what it ran; the default branch (main) does not have the AWS stack or the load generator."
   type        = string
+}
+
+variable "max_runtime_minutes" {
+  description = "Cost guard: every instance powers off (and terminates) this long after boot, even if tofu destroy is forgotten."
+  type        = number
+  default     = 240
 }

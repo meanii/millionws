@@ -168,19 +168,21 @@ locals {
 }
 
 resource "aws_instance" "server" {
-  ami                         = data.aws_ami.al2023.id
-  instance_type               = var.server_type
-  subnet_id                   = aws_subnet.bench.id
-  vpc_security_group_ids      = [aws_security_group.bench.id]
-  key_name                    = var.key_name
-  iam_instance_profile        = aws_iam_instance_profile.bench.name
-  user_data_replace_on_change = true
+  ami                                  = data.aws_ami.al2023.id
+  instance_type                        = var.server_type
+  subnet_id                            = aws_subnet.bench.id
+  vpc_security_group_ids               = [aws_security_group.bench.id]
+  key_name                             = var.key_name
+  iam_instance_profile                 = aws_iam_instance_profile.bench.name
+  user_data_replace_on_change          = true
+  instance_initiated_shutdown_behavior = "terminate"
   user_data = templatefile("${path.module}/user_data_server.sh", {
-    server_ports   = "${var.server_port_first}-${var.server_port_first + var.server_port_count - 1}"
-    expect_clients = var.client_count
-    replicas       = var.client_replicas
-    repo_url       = var.repo_url
-    git_ref        = var.git_ref
+    server_ports        = "${var.server_port_first}-${var.server_port_first + var.server_port_count - 1}"
+    expect_clients      = var.client_count
+    replicas            = var.client_replicas
+    repo_url            = var.repo_url
+    git_ref             = var.git_ref
+    max_runtime_minutes = var.max_runtime_minutes
   })
   dynamic "instance_market_options" {
     for_each = local.market
@@ -202,22 +204,24 @@ resource "aws_instance" "server" {
 }
 
 resource "aws_instance" "client" {
-  count                       = var.client_count
-  ami                         = data.aws_ami.al2023.id
-  instance_type               = var.client_type
-  subnet_id                   = aws_subnet.bench.id
-  vpc_security_group_ids      = [aws_security_group.bench.id]
-  key_name                    = var.key_name
-  iam_instance_profile        = aws_iam_instance_profile.bench.name
-  user_data_replace_on_change = true
+  count                                = var.client_count
+  ami                                  = data.aws_ami.al2023.id
+  instance_type                        = var.client_type
+  subnet_id                            = aws_subnet.bench.id
+  vpc_security_group_ids               = [aws_security_group.bench.id]
+  key_name                             = var.key_name
+  iam_instance_profile                 = aws_iam_instance_profile.bench.name
+  user_data_replace_on_change          = true
+  instance_initiated_shutdown_behavior = "terminate"
   user_data = templatefile("${path.module}/user_data_client.sh", {
     port_first = var.server_port_first
     port_count = var.server_port_count
     # floor: the loadgen rejects a fractional LOADGEN_CONNS.
-    conns    = floor(var.conns_per_client / var.client_replicas)
-    replicas = var.client_replicas
-    repo_url = var.repo_url
-    git_ref  = var.git_ref
+    conns               = floor(var.conns_per_client / var.client_replicas)
+    replicas            = var.client_replicas
+    repo_url            = var.repo_url
+    git_ref             = var.git_ref
+    max_runtime_minutes = var.max_runtime_minutes
   })
   dynamic "instance_market_options" {
     for_each = local.market
